@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { QueryProvider } from "@/lib/query/query-provider";
+import { ToastProvider } from "@/components/site/toast";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -17,9 +18,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${plusJakartaSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <QueryProvider>{children}</QueryProvider>
+    <html lang="es" className={`${plusJakartaSans.variable} h-full antialiased scroll-smooth`}>
+      <body className="min-h-full flex flex-col overflow-x-clip">
+        <QueryProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </QueryProvider>
       </body>
     </html>
   );

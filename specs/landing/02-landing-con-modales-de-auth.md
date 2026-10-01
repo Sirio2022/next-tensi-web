@@ -1,6 +1,6 @@
 # SPEC 02 — Landing pública con modales de autenticación
 
-> **Status:** Draft
+> **Status:** Implementado
 > **Depends on:** SPEC 01
 > **Date:** 2026-10-01
 > **Objective:** Implementar la landing pública de Tensi según `references/01-landing`, con la calculadora de presión y los modales de login/registro que reutilizan los formularios de la SPEC 01.
@@ -88,22 +88,22 @@ Regla de categorización a replicar (idéntica a `BloodPressureCategorizer`): se
 
 ## Criterios de aceptación
 
-- [ ] `GET /` renderiza la landing sin errores en consola.
-- [ ] Las anclas `#caracteristicas`, `#simulador` y `#tendencias` llevan a su sección.
-- [ ] "Iniciar Sesión" abre el modal de login; "Comenzar Gratis" y "Crear Cuenta Gratis" abren el de registro.
-- [ ] Ambos modales cierran con Escape, con click en el backdrop y con el botón de cierre.
-- [ ] El modal de registro llama a `POST /api/auth/register`, muestra el toast y navega a `/verify-account`.
-- [ ] El modal de login autentica con la lógica de la SPEC 01 y navega a `/dashboard`.
-- [ ] `categorize(118, 78)` devuelve `optimal` y el bucket `saludable`.
-- [ ] `categorize(135, 85)` devuelve `high_normal` y el bucket `atencion`.
-- [ ] `categorize(145, 92)` devuelve `grade_1_hypertension`.
-- [ ] `categorize(165, 105)` devuelve `grade_2_hypertension`.
-- [ ] `categorize(90, 60)` devuelve `mild_hypotension` y el bucket `presion_baja` (no "Hipertensión Nivel 2").
-- [ ] Los resultados de `categorize()` coinciden con `BloodPressureCategorizer.categorize()` del backend para la matriz completa de rangos.
-- [ ] Los componentes de la landing no contienen lógica de cálculo ni validaciones.
-- [ ] La landing usa los mismos tokens de color que las pantallas de auth.
-- [ ] Usable a 375px y 1440px sin scroll horizontal.
-- [ ] `pnpm lint` y `pnpm exec tsc --noEmit` pasan.
+- [x] `GET /` renderiza la landing sin errores en consola. _(Verificado en Playwright: 3 mensajes en consola, 0 errores y 0 warnings.)_
+- [x] Las anclas `#caracteristicas`, `#simulador` y `#tendencias` llevan a su sección. _(Verificado: click real en cada ancla deja la sección a 80px del top, bajo el header sticky, gracias a `scroll-mt-20`.)_
+- [x] "Iniciar Sesión" abre el modal de login; "Comenzar Gratis" y "Crear Cuenta Gratis" abren el de registro. _(Verificado en Playwright: los diálogos resultantes son "Iniciar Sesión" y "Crear Cuenta Gratis" respectivamente.)_
+- [x] Ambos modales cierran con Escape, con click en el backdrop y con el botón de cierre. _(Verificado: Escape real, click en el backdrop y botón `aria-label="Cerrar"` dejan ausente `[role="dialog"]` en los dos modales.)_
+- [x] El modal de registro llama a `POST /api/auth/register`, muestra el toast y navega a `/verify-account`. _(Verificado E2E: `POST :3002/api/auth/register => 201`, toast "Cuenta creada con éxito" y URL `/verify-account?email=...`; screenshot `.playwright-mcp/spec02-register-toast.png`.)_
+- [x] El modal de login autentica con la lógica de la SPEC 01 y navega a `/dashboard`. _(Verificado E2E con el admin del seed: `POST :3002/api/auth/login => 200` y URL `/dashboard` (Admin, admin@tensi.com); screenshot `.playwright-mcp/spec02-login-dashboard.png`.)_
+- [x] `categorize(118, 78)` devuelve `optimal` y el bucket `saludable`. _(Verificado con el script de paridad: `optimal` / `saludable`.)_
+- [x] `categorize(135, 85)` devuelve `high_normal` y el bucket `atencion`. _(Verificado: `high_normal` / `atencion`.)_
+- [x] `categorize(145, 92)` devuelve `grade_1_hypertension`. _(Verificado: `grade_1_hypertension`.)_
+- [x] `categorize(165, 105)` devuelve `grade_2_hypertension`. _(Verificado: `grade_2_hypertension`.)_
+- [x] `categorize(90, 60)` devuelve `mild_hypotension` y el bucket `presion_baja` (no "Hipertensión Nivel 2"). _(Verificado: `mild_hypotension` / `presion_baja`.)_
+- [x] Los resultados de `categorize()` coinciden con `BloodPressureCategorizer.categorize()` del backend para la matriz completa de rangos. _(Verificado: sys 0–250 × dia 0–150 = 37.901 combinaciones, 0 discrepancias contra el `dist` del backend; script `.playwright-mcp/spec02-parity.mjs`.)_
+- [x] Los componentes de la landing no contienen lógica de cálculo ni validaciones. _(Verificado por grep en `components/landing`: sin `categorize`/`zod`/`Number(`/`parse*`/regex; `BpCalculator` solo consume `useBpCalculator`.)_
+- [x] La landing usa los mismos tokens de color que las pantallas de auth. _(Verificado por grep: `tensi-*` en landing y auth, sin `cyan-*`/`brand-*` ni hex crudos; se normalizaron a tokens los dos `stroke` del SVG de tendencia en `hero.tsx`.)_
+- [x] Usable a 375px y 1440px sin scroll horizontal. _(Verificado: `document.documentElement.scrollWidth == window.innerWidth` a 375 y a 1440; screenshots `.playwright-mcp/spec02-375.png` y `.playwright-mcp/spec02-1440.png`.)_
+- [x] `pnpm lint` y `pnpm exec tsc --noEmit` pasan. _(Verificado: `eslint` exit 0 y `tsc --noEmit` exit 0.)_
 
 ## Decisiones
 
