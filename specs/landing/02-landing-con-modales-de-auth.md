@@ -1,6 +1,6 @@
 # SPEC 02 — Landing pública con modales de autenticación
 
-> **Status:** Draft
+> **Status:** Aprobado
 > **Depends on:** SPEC 01
 > **Date:** 2026-10-01
 > **Objective:** Implementar la landing pública de Tensi según `references/01-landing`, con la calculadora de presión y los modales de login/registro que reutilizan los formularios de la SPEC 01.
