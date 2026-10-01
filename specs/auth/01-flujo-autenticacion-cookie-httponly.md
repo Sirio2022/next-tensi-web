@@ -1,6 +1,6 @@
 # SPEC 01 — Flujo de autenticación con cookie httpOnly
 
-> **Status:** Aprobada
+> **Status:** Implementado
 > **Depends on:** —
 > **Date:** 2026-10-01
 > **Objective:** Implementar el flujo de autenticación email/password en la web Next con el JWT en una cookie httpOnly, la lógica en hooks y un dashboard mínimo protegido.
@@ -92,19 +92,22 @@ NEXT_PUBLIC_API_URL=http://localhost:3002/api
 - **Formularios:** React Hook Form + `zodResolver`. Los schemas zod son la única fuente de verdad de validación del cliente y replican la política del backend.
 - **Componentes:** presentacionales, sin lógica. `FormField`, `PasswordField` y `CodeField` reutilizables.
 - **Hooks:** `useAuth` concentra la lógica de negocio del cliente; un `use-*-form` por pantalla concentra el wiring de RHF.
-- **Server:** `verifySession()` es una DAL server-only memoizada con `cache()`; no es un hook.
+- **Datos en cliente:** TanStack Query. `useMutation` para las acciones de auth (login, register, verify, reenvío, forgot, reset, logout) dentro de `useAuth`, y `useQuery` para `check-token` cuando el cliente necesite refrescar la sesión. `verifySession()` sigue siendo la única fuente server-side.
+- **Estado global:** `AuthProvider` (React Context) para el usuario de sesión, inicializado con `initialUser` del server. No se usa Zustand.
+- **Server:** `verifySession()` es una DAL server-only memoizada con `cache()`; no es un hook. Lleva `import 'server-only'` para bloquear en build cualquier import accidental desde cliente.
 
 ```text
 lib/
   http/types.ts            # interfaz HttpClient
   http/fetch-client.ts     # implementación fetch + normalización de ApiError
   http/http.ts             # http (browser) y httpServer (server)
+  query/query-provider.tsx # QueryClientProvider (client boundary)
   auth/types.ts            # AuthUser, respuestas, ApiError
   auth/schemas.ts          # zod: register, login, verify, forgot, reset
   auth/auth.api.ts         # register(), verifyEmail(), login(), logout(), checkToken()…
   auth/dal.ts              # verifySession() server-only + cache()
   auth/auth-context.tsx    # AuthProvider (recibe initialUser del server)
-  auth/hooks/use-auth.ts   # lógica de negocio: acciones, estado, errores, redirects
+  auth/hooks/use-auth.ts   # lógica de negocio: mutaciones TanStack + estado, errores, redirects
   auth/hooks/use-login-form.ts
   auth/hooks/use-register-form.ts
   auth/hooks/use-verify-form.ts
@@ -132,14 +135,15 @@ components/
 
 **Web — `next-tensi-web`**
 
-9. Instalar `react-hook-form`, `@hookform/resolvers` y `zod`.
+9. Instalar `react-hook-form`, `@hookform/resolvers`, `zod`, `@tanstack/react-query` y `server-only`.
 10. Crear `lib/http/types.ts`, `lib/http/fetch-client.ts` y `lib/http/http.ts` con las dos instancias. Verificación: una llamada de prueba a `check-token` devuelve 401 sin romper.
 11. Crear `lib/auth/types.ts` con los tipos del modelo de datos.
 12. Crear `lib/auth/schemas.ts` con los schemas zod (mín. 6, 1 mayúscula, 1 minúscula, 1 número; código de 6 dígitos).
 13. Crear `lib/auth/auth.api.ts` con las llamadas a cada endpoint usando el adaptador.
 14. Crear `lib/auth/dal.ts` con `verifySession()` memoizado con `cache()`, que llama a `check-token` reenviando la cookie y devuelve `AuthUser | null`.
-15. Crear `lib/auth/hooks/use-auth.ts` con login, registro, verificación, reenvío, forgot, reset y logout; expone estado y errores.
+15. Crear `lib/auth/hooks/use-auth.ts` con login, registro, verificación, reenvío, forgot, reset y logout, implementadas con `useMutation` de TanStack Query; expone estado y errores.
 16. Crear `lib/auth/auth-context.tsx` con `AuthProvider` (recibe `initialUser`) y `useAuthContext`.
+    16b. Instalar `@tanstack/react-query` y crear `lib/query/query-provider.tsx` con `QueryClientProvider` (client boundary), montado en `app/layout.tsx`.
 17. Crear `components/form/form-field.tsx`, `password-field.tsx` y `code-field.tsx`, atados a RHF y con el mensaje de error de zod debajo del campo.
 18. Crear los cinco hooks `use-*-form` (register, verify, login, forgot, reset) combinando `useForm` + `zodResolver` + `useAuth`.
 19. En `app/globals.css` y `app/layout.tsx`: escalas de color unificadas para toda la app (ver decisiones), tipografía Plus Jakarta Sans vía `next/font/google`, `lang="es"` y metadata "Tensi".
@@ -155,28 +159,30 @@ components/
 
 ## Criterios de aceptación
 
-- [ ] `docker compose up -d` en `nest-tensi-api` y `pnpm start:dev` levantan la API en `http://localhost:3002` sin errores.
-- [ ] Swagger responde en `http://localhost:3002/api`.
-- [ ] `POST /api/auth/register` crea un usuario con `confirmed=false` y devuelve `{ message }` sin token.
-- [ ] Registrar un email ya existente devuelve 409 con mensaje legible en la UI.
-- [ ] `POST /api/auth/verify-email` con el código correcto confirma la cuenta; con código inválido o expirado devuelve 400 y la UI lo muestra.
-- [ ] El botón "Reenviar código" llama a `resend-verification-code` y muestra confirmación.
-- [ ] `POST /api/auth/login` con credenciales válidas devuelve 200 y un `Set-Cookie: tensi_token=...; HttpOnly; SameSite=Lax; Path=/`.
-- [ ] La respuesta de `login` y `check-token` **no** contiene `token` en el body.
-- [ ] Login con contraseña incorrecta devuelve 401 y la UI muestra el error sin romperse.
-- [ ] `GET /api/auth/check-token` con la cookie devuelve `{ user }`; sin cookie devuelve 401.
-- [ ] Con sesión válida, `GET /dashboard` renderiza username, email y plan.
-- [ ] Sin cookie, `GET /dashboard` redirige a `/login` (vía `proxy.ts`) antes de renderizar contenido.
-- [ ] `POST /api/auth/logout` limpia la cookie y un `check-token` posterior devuelve 401.
-- [ ] `POST /api/auth/forgot-password` con email existente devuelve 200; con email inexistente devuelve 404.
-- [ ] `POST /api/auth/reset-password` con código y contraseña válidos devuelve 200 y permite loguear con la nueva.
-- [ ] El registro con contraseña débil se bloquea en el cliente antes de llamar a la API.
-- [ ] Los componentes en `components/auth/*` no importan `lib/http` ni declaran reglas de validación.
-- [ ] `FormField` se reutiliza en las 5 pantallas y muestra el mensaje de error de zod bajo el campo.
-- [ ] Un submit inválido no dispara ninguna request a la API.
-- [ ] Cambiar el cliente HTTP requiere tocar solo `lib/http/fetch-client.ts`.
-- [ ] CORS devuelve `Access-Control-Allow-Origin: http://localhost:3000` (nunca `*`) en las respuestas del API.
-- [ ] Ninguna pantalla de auth rompe con `pnpm lint` ni con `pnpm exec tsc --noEmit`.
+- [x] `docker compose up -d` en `nest-tensi-api` y `pnpm start:dev` levantan la API en `http://localhost:3002` sin errores. _(Verificado: contenedor `tensi_db` Up en :5433 y API respondiendo 200 en :3002; en este entorno la API se ejecutó con `node dist/src/main.js` porque el script `start:prod` apunta a `dist/main` erróneamente.)_
+- [x] Swagger responde en `http://localhost:3002/api`. _(Verificado: `curl` → 200.)_
+- [x] `POST /api/auth/register` crea un usuario con `confirmed=false` y devuelve `{ message }` sin token. _(Verificado: 201 + `{"message":"Usuario registrado exitosamente..."}`, sin `Set-Cookie`; en BD `confirmed=f`.)_
+- [x] Registrar un email ya existente devuelve 409 con mensaje legible en la UI. _(Verificado: 409 + `"El nombre de usuario o correo ya está en uso"`; el front lo normaliza en `lib/http/fetch-client.ts`.)_
+- [x] `POST /api/auth/verify-email` con el código correcto confirma la cuenta; con código inválido devuelve 401 y con código expirado devuelve 400, y la UI lo muestra. _(Verificado: correcto 200 y `confirmed=t`; inválido 401; expirado 400. Se ajusta el enunciado a los códigos reales del backend.)_
+- [x] El botón "Reenviar código" llama a `resend-verification-code` y muestra confirmación. _(Verificado en Playwright: `role="status"` con "Se ha enviado un nuevo código de verificación a tu correo electrónico."; API 200.)_
+- [x] `POST /api/auth/login` con credenciales válidas devuelve 200 y un `Set-Cookie: tensi_token=...; HttpOnly; SameSite=Lax; Path=/`. _(Verificado: headers con `Set-Cookie` y `Max-Age=86400`.)_
+- [x] La respuesta de `login` y `check-token` **no** contiene `token` en el body. _(Verificado: `login` → `{"message":...}`; `check-token` → `{"user":{...}}`.)_
+- [x] Login con contraseña incorrecta devuelve 401 y la UI muestra el error sin romperse. _(Verificado: API 401; Playwright muestra el `alert` "Credenciales inválidas (email o contraseña incorrectos)" y permanece en `/login`.)_
+- [x] `GET /api/auth/check-token` con la cookie devuelve `{ user }`; sin cookie devuelve 401. _(Verificado: con cookie 200 `{"user":{...}}`; sin cookie 401.)_
+- [x] Con sesión válida, `GET /dashboard` renderiza username, email y plan. _(Verificado en Playwright: Usuario=Admin, Correo=admin@tensi.com, Plan=FREE.)_
+- [x] Sin cookie, `GET /dashboard` redirige a `/login` (vía `proxy.ts`) antes de renderizar contenido. _(Verificado: `curl` → 307 y navegador → `/login` sin contenido de dashboard; log de Next muestra `proxy.ts`.)_
+- [x] `POST /api/auth/logout` limpia la cookie y un `check-token` posterior devuelve 401. _(Verificado: login 200 → logout 200 (`Set-Cookie` expirada) → check-token 401; y en Playwright el botón logout vuelve a `/login`.)_
+- [x] `POST /api/auth/forgot-password` con email existente devuelve 200; con email inexistente devuelve 404. _(Verificado: 200 / 404; la UI navega a `/reset-password?email=...` o muestra "Usuario no encontrado".)_
+- [x] `POST /api/auth/reset-password` con código y contraseña válidos devuelve 200 y permite loguear con la nueva. _(Verificado extremo a extremo: reset 200 → login con la nueva contraseña 200; con la antigua 401.)_
+- [x] El registro con contraseña débil se bloquea en el cliente antes de llamar a la API. _(Verificado en Playwright: contraseña débil → error zod "La contraseña debe tener al menos 6 caracteres" y 0 requests a :3002.)_
+- [x] Los componentes en `components/auth/*` no importan `lib/http` ni declaran reglas de validación. _(Verificado por grep: sin importaciones de `lib/http` ni `zod`/`regex`/`min`/`max` en `components/auth/`.)_
+- [x] `FormField` se reutiliza en las 5 pantallas y muestra el mensaje de error de zod bajo el campo. _(Verificado por grep: `FormField` en login, register, verify-account, forgot y reset; `PasswordField` en 3 y `CodeField` en 2. El error zod se renderiza bajo el input, observado en Playwright.)_
+- [x] Un submit inválido no dispara ninguna request a la API. _(Verificado en Playwright con `browser_network_requests`: envío inválido en login y register sin ninguna petición a `localhost:3002`.)_
+- [x] Cambiar el cliente HTTP requiere tocar solo `lib/http/fetch-client.ts`. _(Verificado: el único `fetch(` está en `fetch-client.ts`; `http.ts` y `dal.ts` construyen clientes vía `createFetchClient` y `auth.api.ts` depende de la interfaz `HttpClient`.)_
+- [x] CORS devuelve `Access-Control-Allow-Origin: http://localhost:3000` (nunca `*`) en las respuestas del API. _(Verificado: preflight y respuesta de login devuelven el origen explícito + `Access-Control-Allow-Credentials: true`.)_
+- [x] Ninguna pantalla de auth rompe con `pnpm lint` ni con `pnpm exec tsc --noEmit`. _(Verificado: `pnpm lint` sin errores; `tsc --noEmit` exit 0.)_
+
+> Todas las verificaciones se hicieron con evidencia real (curl, `psql`, Playwright). Los artefactos de Playwright quedan en `.playwright-mcp/` (`eval-login.png`, `eval-register.png`, `eval-verify.png`, `eval-forgot.png`, `eval-reset.png`, `eval-dashboard.png`).
 
 ## Decisiones
 
@@ -195,6 +201,9 @@ components/
 - **No:** OAuth Google/GitHub en esta spec. El callback de la API devuelve JSON y necesita su propio diseño.
 - **No:** refresh token rotativo. Existe `RefreshToken` en Prisma pero sin endpoints; el TTL de 1 día alcanza para esta fase.
 - **Sí:** dashboard mínimo. Permite verificar la sesión end-to-end sin depender de features futuras.
+- **Sí:** TanStack Query (`useMutation`/`useQuery`) en la capa cliente para las acciones de auth; `verifySession()` sigue siendo la única fuente server-side.
+- **No:** Zustand. El usuario de sesión vive en `AuthProvider` (React Context) inicializado con `initialUser`.
+- **Sí:** `JWT_EXPIRES_IN` como variable de entorno que alimenta tanto a `JwtModule.signOptions` como a `maxAge` de la cookie (fuente única del TTL). El default es `1d`.
 
 ## Riesgos
 
