@@ -1,4 +1,4 @@
-import { AuthFooter } from '@/components/auth/auth-footer'
+import { SiteFooter } from '@/components/site/site-footer'
 import { AuthHeader } from '@/components/auth/auth-header'
 
 /**
@@ -23,7 +23,7 @@ export default function AuthLayout({ children }: LayoutProps<'/'>) {
         <div className="w-full max-w-md">{children}</div>
       </main>
 
-      <AuthFooter />
+      <SiteFooter />
     </div>
   )
 }

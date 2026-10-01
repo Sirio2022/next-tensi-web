@@ -4,15 +4,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { useAuth } from './use-auth'
+import { useToast } from '@/components/site/toast'
 import { registerSchema, type RegisterInput } from '@/lib/auth/schemas'
 
 /**
  * Wiring de React Hook Form para la pantalla de registro. El submit solo llama
- * a la API si zod valida; al 200 navega a la verificación con el email.
+ * a la API si zod valida; al 200 muestra el toast y navega a la verificación.
  */
 export function useRegisterForm() {
   const router = useRouter()
   const { register: registerAction, toMessage } = useAuth()
+  const { showToast } = useToast()
 
   const form = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
@@ -22,6 +24,7 @@ export function useRegisterForm() {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       await registerAction.mutateAsync(values)
+      showToast('Cuenta creada con éxito')
       router.push(`/verify-account?email=${encodeURIComponent(values.email)}`)
     } catch (error) {
       form.setError('root', { message: toMessage(error) })
