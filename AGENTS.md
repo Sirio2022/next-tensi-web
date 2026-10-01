@@ -22,7 +22,7 @@ App web de **Tensi** (presión arterial / salud cardiovascular). Hoy es en gran 
 
 ## Comandos
 
-- `pnpm dev` — servidor de desarrollo en http://localhost:3000.
+- `pnpm dev` — servidor de desarrollo en <http://localhost:3000>.
 - `pnpm build` / `pnpm start` — build y arranque de producción.
 - `pnpm lint` — ESLint (flat config en `eslint.config.mjs`).
 - `pnpm exec tsc --noEmit` — typecheck (no hay script `typecheck`).
