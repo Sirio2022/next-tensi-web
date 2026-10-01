@@ -38,9 +38,9 @@ App web de **Tensi** (presión arterial / salud cardiovascular). Hoy es en gran 
 
 Las features grandes pasan por skills locales en `.agents/skills/` (fijadas en `skills-lock.json`):
 
-- `/spec` → escribe una spec numerada en `specs/NN-slug.md` (estado `Draft`).
+- `/spec` → escribe una spec numerada en `specs/<dominio>/NN-slug.md` (estado `Draft`), agrupada por dominio (`auth/`, `landing/`, …). La numeración es global entre todos los dominios.
 - `/spec-impl NN-slug` → implementa **solo** specs en estado Approved/Aprobado, creando la rama `spec-NN-slug`.
-- Las specs y `specs/.spec-config.yml` viven en `specs/` (se crea al primer uso). Nunca commits automáticos; nunca implementes una spec no aprobada.
+- Las specs viven en `specs/<dominio>/` y `specs/.spec-config.yml` en `specs/` (se crean al primer uso). Nunca commits automáticos; nunca implementes una spec no aprobada.
 
 ## MCPs (globales)
 
@@ -62,5 +62,5 @@ No usar para: lookups de documentación estática (usa context7), fetch simple d
 
 ## Spec Driven Development (SDD) es el flujo de trabajo principal de este proyecto. Las features grandes se implementan siguiendo un ciclo de vida de specs
 
-1. `/spec` → escribe una spec numerada en `specs/NN-slug.md` (estado `Draft`).
+1. `/spec` → escribe una spec numerada en `specs/<dominio>/NN-slug.md` (estado `Draft`), agrupada por dominio. La numeración es global entre dominios.
 2. `/spec-impl NN-slug` → implementa **solo** specs en estado Approved/Aprobado, creando la rama `spec-NN-slug`.
