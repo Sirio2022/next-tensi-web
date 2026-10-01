@@ -16,8 +16,8 @@ Current repository state:
 Current branch:
 !`git branch --show-current`
 
-Specs available in this folder:
-!`ls specs/ 2>/dev/null || echo "The specs/ folder does not exist"`
+Specs available (recursively, grouped by domain folder):
+!`find specs -name '*.md' 2>/dev/null | sort || echo "The specs/ folder does not exist"`
 
 Branch-creation config:
 !`cat specs/.spec-config.yml 2>/dev/null || echo "AutoCreateBranch: true (default, no config file)"`
@@ -36,13 +36,13 @@ The received argument is: `$ARGUMENTS`
 
 If `$ARGUMENTS` is empty:
 
-- List the files available in `specs/` (you already have them above).
+- List the files available under `specs/` recursively, including domain subfolders (you already have them above).
 - Ask the user to specify the exact name of the spec.
 - Stop and wait for an answer. Do not continue.
 
 If `$ARGUMENTS` has a value:
 
-- Look for the file in `specs/`. The user may have written the full name (`01-mvp-arkanoid`), only the number (`01`), or only the slug (`mvp-arkanoid`). Try to find the correct file in any of those cases.
+- Look for the file anywhere under `specs/`, including domain subfolders. The user may have written the full name (`01-mvp-arkanoid`), only the number (`01`), or only the slug (`mvp-arkanoid`). Try to find the correct file in any of those cases.
 - If you do not find the file, show the available specs and ask the user to correct the name.
 - If you do find it, continue to Phase 2.
 
@@ -115,17 +115,14 @@ Once you have confirmed the state means `Approved`:
    Wait for the answer. **Do not stash or commit on the user's behalf** unless they explicitly ask for it. If the working tree is clean, skip straight to step 1 without mentioning it.
 
 1. Derive the branch name from the spec file's full name, without the extension. Format: `spec-NN-slug`. Examples:
-
    - `01-mvp-arkanoid.md` → branch `spec-01-mvp-arkanoid`
    - `02-powerups.md` → branch `spec-02-powerups`
 
 2. Read the `AutoCreateBranch` flag from the **Branch-creation config** shown in the session context above.
-
    - If the config file does not exist, the value is missing, or the value is unrecognized → treat it as `true` (the default).
    - Only an explicit `false` (in any capitalization) disables automatic branch creation.
 
    **If `AutoCreateBranch` is `true` (default):** proceed without asking.
-
    - If the branch **does not exist**: create it with `git checkout -b spec-NN-slug`.
    - If it **already exists**: this means previous work is being resumed. Switch to it, read `git log --oneline` on the branch, and tell the user which steps of the plan already look done and which step you propose to resume from. Wait for confirmation on the resume point before implementing anything.
    - In both cases: switch to the branch with `git checkout spec-NN-slug` and confirm the change was successful before continuing.
@@ -145,7 +142,7 @@ Once you have confirmed the state means `Approved`:
    ```
    ✅ Ready to implement.
 
-   Spec:   specs/NN-slug.md
+   Spec:   specs/<domain>/NN-slug.md
    Branch: spec-NN-slug  (active)   (← or the current branch, if no new branch was created)
    State:  Approved   (← echo back the actual value found in the spec)
    ```

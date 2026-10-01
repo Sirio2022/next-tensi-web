@@ -13,8 +13,8 @@ allowed-tools: Read, Glob, Grep, Write, AskUserQuestion, Bash(ls:*), Bash(cat:*)
 Today's date (use this for the spec header, never guess it):
 !`date +%F`
 
-Specs that already exist:
-!`ls specs/ 2>/dev/null || echo "The specs/ folder does not exist yet"`
+Specs that already exist (recursively, grouped by domain folder):
+!`find specs -name '*.md' 2>/dev/null | sort || echo "The specs/ folder does not exist yet"`
 
 ---
 
@@ -36,7 +36,7 @@ Read `template.md` (in the same directory as this skill) to see the full structu
 Before asking questions about the feature, make sure you have project context:
 
 1. Read the project-memory file, if one exists. Try in order and stop at the first hit: `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `README.md`. This adapts the skill to whichever agent is running it (Claude Code, Codex, Gemini CLI, etc.).
-2. Look at the `specs/` listing in the session context above to see which specs already exist and how they are numbered.
+2. Look at the recursive `specs/` listing in the session context above to see which specs already exist, in which domain folder each one lives, and how they are numbered.
 3. If previous specs exist, read at least the two most recent ones to pick up the project's conventions — including the **language** they are written in and the exact wording they use for states and section headings. A new spec must match the existing ones.
 
 If the `$ARGUMENTS` argument comes in empty, ask the user for an initial **single-sentence** description of what they want to build. If the description does not fit in one sentence, that is the first signal that the feature is too big — suggest splitting it before continuing.
@@ -110,12 +110,12 @@ In both cases the content follows the same order:
 
 When the content is ready (either because you had everything, or because all sections were confirmed):
 
-1. Determine the next sequential number from the `specs/` listing in the session context. Take the highest existing number and add one, zero-padded to two digits. If the last one is `02-powerups.md`, this one will be `03-`. If `specs/` is empty or missing, start at `01-`.
+1. Determine the next sequential number from the recursive `specs/` listing in the session context. Take the highest existing number across all domain folders and add one, zero-padded to two digits. If the last one is `02-powerups.md`, this one will be `03-`. If `specs/` is empty or missing, start at `01-`.
 2. Generate a short kebab-case slug from the objective (e.g. `levels-and-highscores`). See **Arguments** below for when `$ARGUMENTS` is the slug instead.
 3. Use the date from the session context above for the `**Date:**` field. **Never write a date you did not read from there.**
-4. Write the file directly at `specs/NN-slug.md` with all the sections. **Do not ask for permission to write it and do not ask whether the file name works** — announce the path in the final confirmation. Only ask if the target file already exists.
+4. Write the file directly at `specs/<domain>/NN-slug.md` with all the sections, creating the domain folder if it does not exist. Pick `<domain>` from the feature's area (for example `auth`, `landing`); if the spec spans several areas, pick the dominant one. **Do not ask for permission to write it and do not ask whether the file name or folder works** — announce the path in the final confirmation. Only ask if the target file already exists.
 5. Mark the state as `Draft` by default (or the equivalent word used by the existing specs in this repo). **Do not mark it as `Approved` automatically** — the user does that once they have re-read it.
-6. If the header lists dependencies (`**Depends on:** SPEC 01`), check that each referenced spec actually exists in `specs/`. If one does not, say so instead of writing a dangling reference.
+6. If the header lists dependencies (`**Depends on:** SPEC 01`), check that each referenced spec actually exists anywhere under `specs/` (including domain subfolders). If one does not, say so instead of writing a dangling reference.
 7. **Seed the config file if it does not exist.** Check for `specs/.spec-config.yml`. If it is **missing**, create it with the default content below. If it **already exists, leave it untouched** — never overwrite the user's settings.
 
    ```yaml
