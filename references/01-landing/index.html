@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="es" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tensi — Controla tu Presión Arterial y Salud Cardiovascular</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              tensi: {
+                50: "#f0f7ff",
+                400: "#38bdf8",
+                500: "#06b6d4",
+                600: "#0284c7",
+                700: "#0369a1",
+                violet: "#8b5cf6",
+                rose: "#f43f5e",
+                dark: "#030712",
+                card: "#0f172a"
+              }
+            },
+            fontFamily: {
+              sans: [
+                "-apple-system",
+                "BlinkMacSystemFont",
+                "SF Pro Display",
+                "Inter",
+                "sans-serif"
+              ]
+            }
+          }
+        }
+      }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #030712;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 4px;
+      }
+
+      .glass-panel {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .hero-glow {
+        background: radial-gradient(
+          circle at 50% 20%,
+          rgba(56, 189, 248, 0.15) 0%,
+          rgba(139, 92, 246, 0.12) 35%,
+          transparent 70%
+        );
+      }
+
+      .glow-card-blue {
+        box-shadow: 0 0 30px -10px rgba(56, 189, 248, 0.25);
+      }
+      .glow-card-emerald {
+        box-shadow: 0 0 30px -10px rgba(16, 185, 129, 0.25);
+      }
+      .glow-card-rose {
+        box-shadow: 0 0 30px -10px rgba(244, 63, 94, 0.25);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white relative overflow-x-hidden"
+  >
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <div
+        class="absolute -top-32 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] hero-glow pointer-events-none"
+      ></div>
+      <div
+        class="absolute top-[35%] -left-48 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none"
+      ></div>
+      <div
+        class="absolute top-[55%] -right-48 w-96 h-96 bg-violet-600/10 rounded-full blur-[140px] pointer-events-none"
+      ></div>
+    </div>
+
+    <header
+      class="sticky top-0 z-50 w-full glass-panel border-b border-slate-800/80"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
+        <a href="#" class="flex items-center space-x-3 group">
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-all duration-300"
+          >
+            <i
+              data-lucide="heart-pulse"
+              class="w-6 h-6 text-white stroke-[2.5]"
+            ></i>
+          </div>
+          <span
+            class="font-extrabold text-xl tracking-tight text-white group-hover:text-cyan-400 transition-colors"
+            >Tensi</span
+          >
+        </a>
+
+        <nav
+          class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300"
+        >
+          <a
+            href="#caracteristicas"
+            class="hover:text-cyan-400 transition-colors"
+            >Registra</a
+          >
+          <a href="#tendencias" class="hover:text-cyan-400 transition-colors"
+            >Analiza</a
+          >
+          <a href="#simulador" class="hover:text-cyan-400 transition-colors"
+            >Calculadora</a
+          >
+          <a href="#contacto" class="hover:text-cyan-400 transition-colors"
+            >Contacto</a
+          >
+        </nav>
+
+        <div class="flex items-center space-x-3">
+          <button
+            onclick="openModal('loginModal')"
+            class="hidden sm:inline-flex text-sm font-medium text-slate-300 hover:text-white px-3.5 py-2 rounded-xl transition-colors"
+          >
+            Iniciar Sesión
+          </button>
+          <button
+            onclick="openModal('registerModal')"
+            class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full shadow-lg shadow-cyan-500/20 transition-all hover:scale-[1.02] flex items-center space-x-2"
+          >
+            <span>Comenzar Gratis</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="relative z-10 flex-grow">
+      <section class="relative pt-12 pb-16 md:pt-20 md:pb-28">
+        <div
+          class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
+        >
+          <div
+            class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-slate-900/90 border border-cyan-500/30 text-slate-200 text-xs font-medium mb-8 shadow-xl"
+          >
+            <span
+              class="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping"
+            ></span>
+            <span class="text-cyan-400 font-semibold"
+              >Salud Cardiovascular Inteligente</span
+            >
+          </div>
+
+          <h1
+            class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.12]"
+          >
+            Controla tu Presión Arterial
+          </h1>
+
+          <p
+            class="mt-6 text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed"
+          >
+            Registra, analiza y mejora tu salud cardiovascular con un control
+            diario sencillo, preciso e intuitivo.
+          </p>
+
+          <div
+            class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto"
+          >
+            <button
+              onclick="openModal('registerModal')"
+              class="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold px-8 py-3.5 rounded-full shadow-xl shadow-cyan-500/25 transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
+            >
+              <span>Comenzar Gratis</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+
+            <button
+              onclick="openModal('loginModal')"
+              class="w-full sm:w-auto bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-semibold px-8 py-3.5 rounded-full backdrop-blur-md transition-all duration-300"
+            >
+              Iniciar Sesión
+            </button>
+          </div>
+
+          <div class="mt-14 max-w-4xl mx-auto relative">
+            <div
+              class="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-indigo-500 to-violet-500 rounded-3xl blur-2xl opacity-20"
+            ></div>
+
+            <div
+              class="relative glass-panel rounded-2xl md:rounded-3xl p-6 shadow-2xl overflow-hidden border border-slate-800 text-left"
+            >
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div
+                  class="bg-slate-900/90 p-4 rounded-xl border border-slate-800"
+                >
+                  <div class="text-slate-400 text-xs">Presión Arterial</div>
+                  <div class="text-3xl font-bold text-white mt-1">
+                    118 / 78
+                    <span class="text-xs text-slate-400 font-normal">mmHg</span>
+                  </div>
+                  <span
+                    class="inline-block mt-2 text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold"
+                    >Óptima</span
+                  >
+                </div>
+                <div
+                  class="bg-slate-900/90 p-4 rounded-xl border border-slate-800"
+                >
+                  <div class="text-slate-400 text-xs">Frecuencia Cardíaca</div>
+                  <div class="text-3xl font-bold text-white mt-1">
+                    72
+                    <span class="text-xs text-slate-400 font-normal">BPM</span>
+                  </div>
+                  <span
+                    class="inline-block mt-2 text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-semibold"
+                    >Reposo Excelente</span
+                  >
+                </div>
+                <div
+                  class="bg-slate-900/90 p-4 rounded-xl border border-slate-800"
+                >
+                  <div class="text-slate-400 text-xs">Monitoreo Semanal</div>
+                  <div class="text-3xl font-bold text-cyan-400 mt-1">
+                    Estable
+                  </div>
+                  <span
+                    class="inline-block mt-2 text-[10px] px-2 py-0.5 rounded bg-violet-500/10 text-violet-400 border border-violet-500/20 font-semibold"
+                    >Riesgo Bajo</span
+                  >
+                </div>
+              </div>
+
+              <div
+                class="bg-slate-900/60 p-4 rounded-xl border border-slate-800"
+              >
+                <div class="flex items-center justify-between mb-3 text-xs">
+                  <span class="font-semibold text-slate-200"
+                    >Tendencia Cardiovascular</span
+                  >
+                  <span class="text-slate-500">Últimos 7 Días</span>
+                </div>
+                <div class="h-28 w-full relative">
+                  <svg
+                    class="w-full h-full"
+                    viewBox="0 0 500 100"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M0,45 Q100,25 200,35 T400,28 T500,38"
+                      fill="none"
+                      stroke="#38bdf8"
+                      stroke-width="3"
+                    />
+                    <path
+                      d="M0,75 Q100,68 200,72 T400,70 T500,74"
+                      fill="none"
+                      stroke="#8b5cf6"
+                      stroke-width="3"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="caracteristicas"
+        class="py-16 bg-slate-900/30 border-t border-slate-800/80"
+      >
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+              class="glass-panel p-8 rounded-2xl border border-slate-800 glow-card-blue flex flex-col justify-between hover:-translate-y-1 transition-all duration-300"
+            >
+              <div>
+                <div
+                  class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-6"
+                >
+                  <i data-lucide="activity" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">
+                  Registra tus mediciones
+                </h3>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                  Lleva un control preciso de tu presión arterial diariamente de
+                  forma intuitiva y rápida.
+                </p>
+              </div>
+            </div>
+
+            <div
+              id="tendencias"
+              class="glass-panel p-8 rounded-2xl border border-slate-800 glow-card-emerald flex flex-col justify-between hover:-translate-y-1 transition-all duration-300"
+            >
+              <div>
+                <div
+                  class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6"
+                >
+                  <i data-lucide="trending-up" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">
+                  Analiza tendencias
+                </h3>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                  Visualiza patrones detallados y evalúa la evolución continua
+                  de tu salud cardiovascular.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="glass-panel p-8 rounded-2xl border border-slate-800 glow-card-rose flex flex-col justify-between hover:-translate-y-1 transition-all duration-300"
+            >
+              <div>
+                <div
+                  class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mb-6"
+                >
+                  <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">
+                  Comparte con tu médico
+                </h3>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                  Genera reportes profesionales y consolidados listos para
+                  llevar a tus consultas médicas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="simulador" class="py-16">
+        <div class="max-w-4xl mx-auto px-4">
+          <div class="text-center mb-8">
+            <span
+              class="text-xs uppercase font-bold tracking-widest text-cyan-400"
+              >Herramienta Interactiva</span
+            >
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+              Calculadora de Presión Arterial
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400 mt-2">
+              Ingresa tus valores para evaluar tu estado de salud en tiempo
+              real.
+            </p>
+          </div>
+
+          <div
+            class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800"
+          >
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2"
+                  >Sistólica (SYS mmHg)</label
+                >
+                <input
+                  id="inputSys"
+                  type="number"
+                  value="120"
+                  min="70"
+                  max="220"
+                  oninput="calculateBP()"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white font-mono text-lg focus:outline-none focus:border-cyan-400"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2"
+                  >Diastólica (DIA mmHg)</label
+                >
+                <input
+                  id="inputDia"
+                  type="number"
+                  value="80"
+                  min="40"
+                  max="140"
+                  oninput="calculateBP()"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white font-mono text-lg focus:outline-none focus:border-cyan-400"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2"
+                  >Pulso (BPM)</label
+                >
+                <input
+                  id="inputPulse"
+                  type="number"
+                  value="72"
+                  min="40"
+                  max="180"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white font-mono text-lg focus:outline-none focus:border-cyan-400"
+                />
+              </div>
+            </div>
+
+            <div
+              id="resultBox"
+              class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between"
+            >
+              <div class="flex items-center space-x-3">
+                <div
+                  id="resultIcon"
+                  class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold"
+                >
+                  <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <div class="text-xs text-slate-400">Categoría estimada:</div>
+                  <div
+                    id="resultCategory"
+                    class="text-base font-extrabold text-emerald-400"
+                  >
+                    Presión Arterial Óptima / Normal
+                  </div>
+                </div>
+              </div>
+              <span
+                id="resultTag"
+                class="text-xs font-mono font-bold px-3 py-1 rounded bg-emerald-500/20 text-emerald-300"
+              >
+                Saludable
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+          <div
+            class="glass-panel rounded-3xl p-8 sm:p-12 border border-cyan-500/30 shadow-2xl relative overflow-hidden"
+          >
+            <div
+              class="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"
+            ></div>
+
+            <h2
+              class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight relative z-10"
+            >
+              ¿Listo para comenzar?
+            </h2>
+            <p
+              class="mt-4 text-slate-300 text-sm max-w-lg mx-auto relative z-10"
+            >
+              Crea tu cuenta en Tensi para comenzar a cuidar tu salud
+              cardiovascular hoy mismo.
+            </p>
+
+            <div class="mt-8 relative z-10">
+              <button
+                onclick="openModal('registerModal')"
+                class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm px-8 py-3.5 rounded-full shadow-lg shadow-cyan-500/30 transition-all hover:scale-105"
+              >
+                Crear Cuenta Gratis
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer
+      id="contacto"
+      class="bg-slate-950 border-t border-slate-800/80 py-12 text-xs text-slate-400 relative z-10"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div class="md:col-span-2">
+            <div class="flex items-center space-x-2.5 mb-3">
+              <div
+                class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-violet-500 flex items-center justify-center text-white font-bold"
+              >
+                <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+              </div>
+              <span class="font-extrabold text-base text-white">Tensi</span>
+            </div>
+            <p class="text-slate-400 text-xs max-w-sm leading-relaxed">
+              Controla tu presión arterial de forma inteligente y mejora tu
+              salud cardiovascular.
+            </p>
+          </div>
+
+          <div>
+            <h4
+              class="font-semibold text-white text-xs uppercase tracking-wider mb-3"
+            >
+              Enlaces
+            </h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="hover:text-cyan-400 transition-colors"
+                  >Términos y Condiciones</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-cyan-400 transition-colors"
+                  >Política de Privacidad</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contacto"
+                  class="hover:text-cyan-400 transition-colors"
+                  >Contacto</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4
+              class="font-semibold text-white text-xs uppercase tracking-wider mb-3"
+            >
+              Desarrollado por
+            </h4>
+            <ul class="space-y-1.5 text-slate-400">
+              <li class="font-medium text-slate-200">Juan Manuel Alvarez</li>
+              <li class="flex items-center space-x-1">
+                <i data-lucide="map-pin" class="w-3 h-3 text-slate-500"></i>
+                <span>Medellín, Colombia</span>
+              </li>
+              <li class="flex items-center space-x-1 pt-1">
+                <i data-lucide="mail" class="w-3 h-3 text-slate-500"></i>
+                <a
+                  href="mailto:juanmadev@icloud.com"
+                  class="text-cyan-400 hover:underline"
+                  >juanmadev@icloud.com</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="pt-6 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px]"
+        >
+          <p>© 2026 Tensi. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Modal Login -->
+    <div
+      id="loginModal"
+      class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+    >
+      <div
+        class="glass-panel bg-slate-900 rounded-2xl max-w-md w-full p-6 border border-slate-700 shadow-2xl relative"
+      >
+        <button
+          onclick="closeModal('loginModal')"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <h3 class="text-xl font-bold text-white mb-1">Iniciar Sesión</h3>
+        <p class="text-xs text-slate-400 mb-6">
+          Accede a tu historial y registro de mediciones
+        </p>
+
+        <form onsubmit="handleAuth(event, 'Sesión iniciada')" class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1"
+              >Correo Electrónico</label
+            >
+            <input
+              type="email"
+              required
+              placeholder="tu@email.com"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1"
+              >Contraseña</label
+            >
+            <input
+              type="password"
+              required
+              placeholder="••••••••"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-cyan-500/20 text-sm"
+          >
+            Ingresar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Registro -->
+    <div
+      id="registerModal"
+      class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+    >
+      <div
+        class="glass-panel bg-slate-900 rounded-2xl max-w-md w-full p-6 border border-slate-700 shadow-2xl relative"
+      >
+        <button
+          onclick="closeModal('registerModal')"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <h3 class="text-xl font-bold text-white mb-1">Crear Cuenta Gratis</h3>
+        <p class="text-xs text-slate-400 mb-6">
+          Comienza a controlar tu salud cardiovascular con Tensi
+        </p>
+
+        <form
+          onsubmit="handleAuth(event, 'Cuenta creada con éxito')"
+          class="space-y-4"
+        >
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1"
+              >Nombre Completo</label
+            >
+            <input
+              type="text"
+              required
+              placeholder="Juan Pérez"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1"
+              >Correo Electrónico</label
+            >
+            <input
+              type="email"
+              required
+              placeholder="tu@email.com"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1"
+              >Contraseña</label
+            >
+            <input
+              type="password"
+              required
+              placeholder="••••••••"
+              class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-cyan-500/20 text-sm"
+          >
+            Comenzar Ahora
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div
+      id="toastContainer"
+      class="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"
+    ></div>
+
+    <script>
+      lucide.createIcons()
+
+      function openModal(id) {
+        document.getElementById(id).classList.remove("hidden")
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).classList.add("hidden")
+      }
+
+      function handleAuth(e, msg) {
+        e.preventDefault()
+        closeModal("loginModal")
+        closeModal("registerModal")
+        showToast(msg)
+      }
+
+      function calculateBP() {
+        const sys = parseInt(document.getElementById("inputSys").value) || 120
+        const dia = parseInt(document.getElementById("inputDia").value) || 80
+
+        const categoryEl = document.getElementById("resultCategory")
+        const boxEl = document.getElementById("resultBox")
+        const tagEl = document.getElementById("resultTag")
+
+        if (sys < 120 && dia < 80) {
+          categoryEl.innerText = "Presión Arterial Óptima / Normal"
+          boxEl.className =
+            "p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between"
+          tagEl.className =
+            "text-xs font-mono font-bold px-3 py-1 rounded bg-emerald-500/20 text-emerald-300"
+          tagEl.innerText = "Saludable"
+        } else if (sys >= 120 && sys <= 129 && dia < 80) {
+          categoryEl.innerText = "Presión Arterial Elevada"
+          boxEl.className =
+            "p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between"
+          tagEl.className =
+            "text-xs font-mono font-bold px-3 py-1 rounded bg-amber-500/20 text-amber-300"
+          tagEl.innerText = "Atención"
+        } else if ((sys >= 130 && sys <= 139) || (dia >= 80 && dia <= 89)) {
+          categoryEl.innerText = "Hipertensión Nivel 1"
+          boxEl.className =
+            "p-4 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-between"
+          tagEl.className =
+            "text-xs font-mono font-bold px-3 py-1 rounded bg-orange-500/20 text-orange-300"
+          tagEl.innerText = "Riesgo Moderado"
+        } else {
+          categoryEl.innerText = "Hipertensión Nivel 2 / Alta"
+          boxEl.className =
+            "p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-between"
+          tagEl.className =
+            "text-xs font-mono font-bold px-3 py-1 rounded bg-rose-500/20 text-rose-300"
+          tagEl.innerText = "Consultar Médico"
+        }
+      }
+
+      function showToast(msg) {
+        const container = document.getElementById("toastContainer")
+        const toast = document.createElement("div")
+        toast.className =
+          "bg-slate-900 text-white border border-cyan-500/40 px-4 py-3 rounded-xl shadow-xl text-xs flex items-center space-x-2 pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300"
+        toast.innerHTML = `
+                <i data-lucide="check-circle" class="w-4 h-4 text-cyan-400"></i>
+                <span>${msg}</span>
+            `
+        container.appendChild(toast)
+        lucide.createIcons()
+
+        setTimeout(() => {
+          toast.classList.remove("translate-y-2", "opacity-0")
+        }, 10)
+
+        setTimeout(() => {
+          toast.classList.add("opacity-0", "translate-y-2")
+          setTimeout(() => toast.remove(), 300)
+        }, 3000)
+      }
+    </script>
+  </body>
+</html>
