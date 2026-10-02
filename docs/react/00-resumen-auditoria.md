@@ -38,6 +38,19 @@ No se encontró **ningún incumplimiento de severidad alta**. La arquitectura Ap
 
 > Las cuatro áreas modificaron archivos disjuntos: no hubo conflictos ni cambios cruzados entre sesiones.
 
+### 2.1 Correcciones de seguimiento (post-auditoría)
+
+Detectadas al revisar la afirmación del informe 03 sobre `lib/auth/dal.ts`:
+
+| Archivo | Cambio |
+| ------- | ------ |
+| `lib/auth/dal.ts` | Añadido `import 'server-only'` (el informe afirmaba por error que ya estaba). |
+| `lib/http/http.ts` | Eliminada la export muerta `httpServer`. |
+| `lib/auth/auth.api.ts` | Corregido el comentario que mencionaba `httpServer`. |
+| `package.json` | Añadida la dependencia `server-only` (el spec ya la listaba). |
+
+Verificado con `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` (10/10 páginas).
+
 ## 3. Verificación consolidada ejecutada
 
 | Comprobación | Comando | Resultado |
@@ -59,6 +72,7 @@ No se encontró **ningún incumplimiento de severidad alta**. La arquitectura Ap
 - **`query-provider.tsx`:** cambio de comportamiento interno justificado por la doc oficial; conserva idénticos `defaultOptions`.
 - **Sin anti-patrones React legacy** (`forwardRef`, `defaultProps`, refs string, `React.FC`, `any`, `dangerouslySetInnerHTML`) en ninguno de los archivos revisados.
 - **Sin `<img>`** en la app: no aplica `next/image` (los gráficos son SVG inline con `aria-hidden`).
+- **Corrección de exactitud:** el informe 03 afirmaba que `lib/auth/dal.ts` ya importaba `server-only`; era falso (solo un comentario). Se corrigió el código y el informe en la revisión posterior (§2.1).
 
 ## 5. Recomendaciones pendientes priorizadas (no aplicadas)
 
@@ -76,9 +90,9 @@ Se dejaron sin aplicar por cambiar comportamiento, API pública, requerir archiv
 10. **`toast.tsx`**: cierre manual/pausa (WCAG 2.2.1) — cruza con el punto 2 (01).
 11. **`use-auth.ts`**: la invalidación de `['auth', 'session']` es un no-op (nadie registra esa query) (03).
 12. **`lib/http/fetch-client.ts`**: timeout con `AbortSignal` y type guards en las respuestas (03).
-13. **`lib/http/http.ts`**: `httpServer` no se usa y no es `server-only` (03).
+13. **Resuelto en seguimiento (§2.1):** `lib/http/http.ts` ya no exporta `httpServer` y `lib/auth/dal.ts` usa `import 'server-only'` (03).
 14. **`lib/auth/types.ts`**: reexporta el valor `ApiError`; importarlo directo desde `@/lib/http/types` (03).
 
 ## 6. Estado del árbol de trabajo
 
-10 archivos modificados + 4 informes nuevos (`docs/react/`). **No se hizo ningún commit.** `references/` se respetó como fuente de verdad del diseño: los cambios de copy/UX sugeridos quedaron como recomendación.
+10 archivos modificados por la auditoría + 4 informes nuevos (`docs/react/`); las correcciones de seguimiento (§2.1) suman `lib/auth/dal.ts`, `lib/http/http.ts`, `lib/auth/auth.api.ts` y `package.json`. **No se hizo ningún commit.** `references/` se respetó como fuente de verdad del diseño: los cambios de copy/UX sugeridos quedaron como recomendación.

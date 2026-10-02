@@ -11,7 +11,7 @@
 
 Se auditaron **17 archivos**. La capa está en buen estado: no hay violaciones de las reglas de los hooks, no hay `useEffect` que derive estado, no hay memoización innecesaria en la capa de formularios y la frontera Server/Client es la mínima necesaria.
 
-Se detectaron **12 hallazgos**: **0 de severidad alta**, **2 media** y **10 baja**. Se aplicaron **3 correcciones** (2 media + 1 baja) en 2 archivos; el resto son recomendaciones que alterarían comportamiento, API pública o requerirían archivos fuera del alcance autorizado, por lo que se describen sin aplicarse.
+Se detectaron **12 hallazgos**: **0 de severidad alta**, **2 media** y **10 baja**. Se aplicaron **4 correcciones** (2 media + 2 baja, una de ellas en el seguimiento §3.3) en 4 archivos; el resto son recomendaciones que alterarían comportamiento, API pública o requerirían archivos fuera del alcance autorizado, por lo que se describen sin aplicarse.
 
 Los dos hallazgos de severidad media son reales y están respaldados por documentación oficial:
 
@@ -34,7 +34,7 @@ Los dos hallazgos de severidad media son reales y están respaldados por documen
 | 6 | `lib/auth/hooks/use-verify-form.ts:24` y `lib/auth/hooks/use-reset-form.ts:24` | `useForm({ defaultValues: { email, ... } })` | `defaultValues` se lee solo en el montaje de RHF. Si el prop `email` cambia en una navegación cliente sobre la misma ruta (solo cambia el query param), el campo conserva el valor anterior. La solución **no** debe ser un `useEffect` props→estado: React lo desaconseja explícitamente (*"Avoid: Adjusting state on prop change in an Effect"*). | Baja | Opciones idiomáticas: pasar `key={email}` al formulario (reset por identidad) o usar la prop `values` de RHF. Ambas tocan `components/auth/*` (fuera de alcance) y cambian comportamiento → se describe. | ❌ No |
 | 7 | `lib/http/fetch-client.ts` | `73-85`: `const response = await fetch(...)` | No hay timeout por defecto ni `AbortController`. El contrato sí acepta `signal` (`HttpRequestOptions.signal`), así que la cancelación es posible, pero una request colgada bloquearía una mutación indefinidamente. | Baja | Aceptar un `timeout?: number` opcional y combinarlo con `AbortSignal.timeout()`/`AbortSignal.any()`. Añadir un timeout por defecto **cambia comportamiento** → requiere decisión. | ❌ No |
 | 8 | `lib/http/fetch-client.ts` | `10-11`, `37`: `const errorBody = body as Partial<ApiErrorBody> \| undefined`; `93`: `return parsed as T` | Casts sin validación en runtime. Si la API devuelve un cuerpo no-JSON (p. ej. una página de error HTML de un proxy), `parseBody` devuelve `string` y `parsed as T` lo propaga como si fuera el tipo esperado en un 2xx. | Baja | Introducir un type guard mínimo para `ApiErrorBody` y/o validar la forma en éxito (p. ej. `T` sólo cuando `Content-Type` es JSON). Es endurecimiento de tipos, no un bug observado. | ❌ No |
-| 9 | `lib/http/http.ts` | `15`: `export const httpServer: HttpClient = createFetchClient()` | `httpServer` no se usa en ningún sitio (el DAL crea su propio cliente con la cookie) y además se exporta desde un módulo que importan componentes cliente (`auth.api.ts` → `http`), sin marca `server-only`. | Baja | Mover `httpServer` a un módulo propio con `import 'server-only'` y usarlo en `dal.ts`, o eliminarlo. Implica crear un archivo nuevo / cambiar API pública → no se aplica. | ❌ No |
+| 9 | `lib/http/http.ts` | `15`: `export const httpServer: HttpClient = createFetchClient()` | `httpServer` no se usaba en ningún sitio (el DAL creaba su propio cliente con la cookie) y se exportaba desde un módulo que importan componentes cliente (`auth.api.ts` → `http`), sin marca `server-only`; al ser un cliente global tampoco podía recibir la cookie por request. | Baja | Eliminar la export muerta de `http.ts` y marcar con `import 'server-only'` el DAL real (`lib/auth/dal.ts`), que es quien usa `next/headers`. | ✅ Sí (seguimiento §3.3) |
 | 10 | `lib/auth/types.ts` | `20`: `export { ApiError } from '@/lib/http/types'` | Un módulo llamado `types.ts` reexporta un **valor** (la clase `ApiError`), generando dos rutas de import para la misma clase (`@/lib/auth/types` y `@/lib/http/types`). No rompe nada, pero difumina la frontera tipo/valor. | Baja | Importar `ApiError` directamente desde `@/lib/http/types` (como ya hace `http/fetch-client.ts`) y dejar `types.ts` solo con tipos. Al ser superficie pública, se describe. | ❌ No |
 | 11 | `lib/bp/bp-categories.ts` | `65`: `if (category.includes('hypotension'))` | La distinción hipo/hipertensión se hace con `String.includes`. Funciona (la tabla es fija y `'hypertension'` no contiene `'hypotension'`), pero es una heurística frágil ante un nombre nuevo. | Baja | Sustituir por un `Set<BpCategory>` explícito de categorías de hipotensión o por un `kind` en la tabla de rangos. Refactor cosmético → se describe. | ❌ No |
 | 12 | `lib/bp/hooks/use-bp-calculator.ts` | `42-46`: `useMemo(() => { ... categorize(...) }, [systolicValue, diastolicValue])` | `categorize()` recorre 9 entradas: coste no medible. React reserva `useMemo` para cómputo caro o estabilidad referencial de props. | Baja | Puede eliminarse. **No se aplica** porque el memo sí evita recalcular y regenerar `result` cuando solo cambia `pulse`; es una defensa razonable y el valor no se pasa a componentes memoizados. Se documenta como "aceptable, no incumplimiento". | ❌ No |
@@ -45,8 +45,8 @@ Los dos hallazgos de severidad media son reales y están respaldados por documen
 | --- | --- | --- |
 | Alta | 0 | 0 |
 | Media | 2 | 2 |
-| Baja | 10 | 1 |
-| **Total** | **12** | **3** |
+| Baja | 10 | 2 |
+| **Total** | **12** | **4** |
 
 ---
 
@@ -110,7 +110,18 @@ Los dos hallazgos de severidad media son reales y están respaldados por documen
 
 - Se conservan exactamente los `defaultOptions` originales.
 - Server: un cliente nuevo por render (aislamiento entre peticiones). Navegador: singleton a nivel de módulo, estable aunque el árbol suspenda durante el render inicial.
-- Sin nuevas dependencias.
+- Sin nuevas dependencias para este cambio.
+
+### 3.3 Correcciones de seguimiento (post-auditoría)
+
+Al revisar la afirmación de este informe sobre `lib/auth/dal.ts` se detectó un error y se cerró el hallazgo 9:
+
+- **`lib/auth/dal.ts`**: se añadió `import 'server-only'` como primera línea. **El informe afirmaba que ya estaba; no era cierto** (solo había un comentario con esas palabras). Es el guardarraíl correcto porque el DAL usa `next/headers` (`cookies()`), que no puede bundlearse en el cliente.
+- **`lib/http/http.ts`**: eliminada la export muerta `httpServer` (sin consumidores y sin poder recibir la cookie por request al ser un cliente global).
+- **`lib/auth/auth.api.ts`**: corregido el comentario que mencionaba `httpServer` (ya no existe).
+- **`package.json`**: añadida la dependencia `server-only@0.0.1` (el spec ya la listaba en su paso 1, pero no estaba instalada).
+
+Verificado con `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` (10/10 páginas).
 
 ---
 
@@ -118,7 +129,7 @@ Los dos hallazgos de severidad media son reales y están respaldados por documen
 
 | Archivo | Verificación |
 | --- | --- |
-| `lib/auth/dal.ts` | Cumple el patrón oficial de Data Access Layer: `import 'server-only'` (`:1`), `cache()` de React envolviendo la lectura (`:18`), `await cookies()` (`:19`) y reenvío explícito de la cookie al `fetch` server (`:26`). La memoización por render pass evita llamadas duplicadas desde layout + page. Manejo correcto de 401/403 → `null` y re-lanzado del resto de errores. |
+| `lib/auth/dal.ts` | Patrón oficial de Data Access Layer: `cache()` de React envolviendo la lectura (`:17`), `await cookies()` (`:18`) y reenvío explícito de la cookie al `fetch` server (`:25`). La memoización por render pass evita llamadas duplicadas desde layout + page. Manejo correcto de 401/403 → `null` y re-lanzado del resto de errores. **Corrección:** este informe afirmó por error que el archivo ya tenía `import 'server-only'`; no lo tenía (solo un comentario con esas palabras). Se añadió en el seguimiento (§3.3). |
 | `lib/auth/auth.api.ts` | Funciones puras que reciben `HttpClient` inyectado (`:12-14`); sin hooks, sin estado, sin directivas innecesarias. Isomorfo y utilizable desde server y cliente. |
 | `lib/auth/schemas.ts` | zod v4 bien usado: `z.email()` de nivel superior (`:12`), `.pipe()` para separar "obligatorio" de "formato", regex de política replicando el DTO del backend. Sin `any`, sin defaults mutables compartidos. |
 | `lib/http/types.ts` | `ApiError` extiende `Error` correctamente para `target: ES2017` (no hace falta el `setPrototypeOf` que sí requiere ES5); `details` y `status` son `readonly`; el contrato `HttpClient` está tipado sin `any`. |
@@ -127,7 +138,7 @@ Además: en **ninguno** de los 17 archivos hay `useEffect` (por tanto no hay lim
 
 ### Detalles que revisé y consideré correctos (para que quede constancia)
 
-- **Frontera Server/Client mínima:** `'use client'` aparece solo donde se usan hooks/estado (`auth-context.tsx`, los 5 hooks de formulario, `use-bp-calculator.ts`, `query-provider.tsx`). `dal.ts` usa `server-only`; `auth.api.ts`, `schemas.ts`, `types.ts`, `bp-categories.ts` y `lib/http/*` permanecen isomorfos.
+- **Frontera Server/Client mínima:** `'use client'` aparece solo donde se usan hooks/estado (`auth-context.tsx`, los 5 hooks de formulario, `use-bp-calculator.ts`, `query-provider.tsx`). `dal.ts` usa `server-only` (añadido en §3.3); `auth.api.ts`, `schemas.ts`, `types.ts`, `bp-categories.ts` y `lib/http/*` permanecen isomorfos.
 - **Props serializables en la frontera:** `AuthProvider` recibe `initialUser: AuthUser` (objeto plano) desde un Server Component. `auth-context.tsx` no pasa funciones ni clases del server al cliente.
 - **Datos derivados en render, no en estado:** `use-bp-calculator.ts:39-40` calcula `systolicValue`/`diastolicValue` durante el render (patrón recomendado), y `use-auth.ts:83-90` deriva `isBusy` de los `isPending` de las mutaciones.
 - **Reglas de los hooks:** los 7 hooks llaman a sus hooks en el nivel superior, sin condicionales ni bucles; las lecturas de contexto (`useOptionalAuthContext`) ocurren antes de cualquier lógica.
@@ -153,6 +164,7 @@ Además: en **ninguno** de los 17 archivos hay `useEffect` (por tanto no hay lim
 | `pnpm lint` (antes y después) | Sin errores ni warnings |
 | `pnpm exec tsc --noEmit` (antes y después) | Exit 0 |
 | `pnpm build` (después) | `✓ Compiled successfully` — 10/10 páginas generadas, incluidas `/dashboard`, `/login`, `/register`, `/verify-account`, `/reset-password` |
+| `pnpm lint` / `tsc` / `build` (seguimiento §3.3) | Sin errores; build 10/10 páginas |
 | Context7 `/reactjs/react.dev` | `useContext` (memoizar el value con `useMemo`/`useCallback`), `createContext` (`<SomeContext>` como provider desde React 19; `<SomeContext.Provider>` = *legacy*), reglas de los hooks, `useCallback` en hooks personalizados, `you-might-not-need-an-effect` (no ajustar estado desde props en un efecto) |
 | Context7 `/vercel/next.js` | `authentication` (DAL con `cache()` + `cookies()`), `server-only`, guía TanStack Query de Next 16 (`getQueryClient` con singleton en navegador) |
 | Context7 `/tanstack/query` | `advanced-ssr` (evitar `useState` para el `QueryClient` sin frontera de `Suspense`), `invalidations-from-mutations` |
@@ -161,8 +173,9 @@ Además: en **ninguno** de los 17 archivos hay `useEffect` (por tanto no hay lim
 
 - `lib/auth/auth-context.tsx`
 - `lib/query/query-provider.tsx`
+- `lib/auth/dal.ts`, `lib/http/http.ts`, `lib/auth/auth.api.ts` y `package.json` (correcciones de seguimiento, §3.3)
 
-Ningún otro archivo fue tocado por esta auditoría. No se hicieron commits.
+No se hicieron commits.
 
 > Nota: `git status` muestra además cambios sin commitear en `app/layout.tsx`, `app/(auth)/layout.tsx`, `components/landing/*` y `components/site/*` que **no** corresponden a este trabajo (provienen de sesiones en paralelo). Este informe solo cubre los archivos listados arriba.
 

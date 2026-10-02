@@ -1,3 +1,4 @@
+import "server-only"
 import { createFetchClient } from "@/lib/http/fetch-client"
 import { ApiError } from "@/lib/http/types"
 import { cookies } from "next/headers"
@@ -21,10 +22,10 @@ export const verifySession = cache(async (): Promise<AuthUser | null> => {
 
   // Cliente server-side: `fetch` de Next no propaga la cookie entrante por
   // defecto, así que se reenvía explícitamente el header `Cookie`.
-  const httpServer = createFetchClient(() => ({ Cookie: cookie }))
+  const sessionClient = createFetchClient(() => ({ Cookie: cookie }))
 
   try {
-    const { user } = await checkToken(httpServer)
+    const { user } = await checkToken(sessionClient)
     return user
   } catch (error) {
     if (

@@ -6,7 +6,7 @@ import type { CheckTokenResponse, MessageResponse } from './types'
 /**
  * Llamadas a los endpoints de auth de la API Nest. Reciben el `HttpClient`
  * por parámetro (por defecto el de navegador) para que la capa server-side
- * pueda pasar `httpServer` con la cookie reenviada.
+ * pueda pasar un cliente con la cookie entrante reenviada.
  */
 
 function client(httpClient?: HttpClient): HttpClient {

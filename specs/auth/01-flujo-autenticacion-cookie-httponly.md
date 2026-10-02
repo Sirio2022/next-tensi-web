@@ -135,27 +135,27 @@ components/
 
 **Web — `next-tensi-web`**
 
-9. Instalar `react-hook-form`, `@hookform/resolvers`, `zod`, `@tanstack/react-query` y `server-only`.
-10. Crear `lib/http/types.ts`, `lib/http/fetch-client.ts` y `lib/http/http.ts` con las dos instancias. Verificación: una llamada de prueba a `check-token` devuelve 401 sin romper.
-11. Crear `lib/auth/types.ts` con los tipos del modelo de datos.
-12. Crear `lib/auth/schemas.ts` con los schemas zod (mín. 6, 1 mayúscula, 1 minúscula, 1 número; código de 6 dígitos).
-13. Crear `lib/auth/auth.api.ts` con las llamadas a cada endpoint usando el adaptador.
-14. Crear `lib/auth/dal.ts` con `verifySession()` memoizado con `cache()`, que llama a `check-token` reenviando la cookie y devuelve `AuthUser | null`.
-15. Crear `lib/auth/hooks/use-auth.ts` con login, registro, verificación, reenvío, forgot, reset y logout, implementadas con `useMutation` de TanStack Query; expone estado y errores.
-16. Crear `lib/auth/auth-context.tsx` con `AuthProvider` (recibe `initialUser`) y `useAuthContext`.
-    16b. Instalar `@tanstack/react-query` y crear `lib/query/query-provider.tsx` con `QueryClientProvider` (client boundary), montado en `app/layout.tsx`.
-17. Crear `components/form/form-field.tsx`, `password-field.tsx` y `code-field.tsx`, atados a RHF y con el mensaje de error de zod debajo del campo.
-18. Crear los cinco hooks `use-*-form` (register, verify, login, forgot, reset) combinando `useForm` + `zodResolver` + `useAuth`.
-19. En `app/globals.css` y `app/layout.tsx`: escalas de color unificadas para toda la app (ver decisiones), tipografía Plus Jakarta Sans vía `next/font/google`, `lang="es"` y metadata "Tensi".
-20. Crear `app/(auth)/layout.tsx` con el shell compartido (header y footer) según los mockups.
-21. `app/(auth)/register/page.tsx`: formulario username/email/password; `POST /auth/register`; al 200 redirige a `/verify-account?email=...`.
-22. `app/(auth)/verify-account/page.tsx`: email precargado + 6 inputs de dígito; `POST /auth/verify-email`; al 200 redirige a `/login`; botón "Reenviar código" → `POST /auth/resend-verification-code`.
-23. `app/(auth)/login/page.tsx`: email/password; `POST /auth/login`; al 200 `router.push('/dashboard')`; enlace a `/forgot-password`; botones Google/GitHub deshabilitados con aviso "Próximamente".
-24. `app/(auth)/forgot-password/page.tsx`: email; `POST /auth/forgot-password`; redirige a `/reset-password?email=...`.
-25. `app/(auth)/reset-password/page.tsx`: email + 6 dígitos + nueva contraseña; `POST /auth/reset-password`; al 200 redirige a `/login`.
-26. Crear `proxy.ts` en la raíz: chequeo optimista sin red. Si el matcher coincide y no existe la cookie `tensi_token`, redirige a `/login`. `matcher: ['/dashboard/:path*']`.
-27. `app/(dashboard)/dashboard/page.tsx`: Server Component que llama `verifySession()`; si devuelve `null`, `redirect('/login')`; si no, muestra username/email/plan y un botón de logout.
-28. Logout: botón cliente que llama `POST /auth/logout` con `credentials: 'include'`, luego `router.push('/login')` y `router.refresh()`.
+1. Instalar `react-hook-form`, `@hookform/resolvers`, `zod`, `@tanstack/react-query` y `server-only`.
+2. Crear `lib/http/types.ts`, `lib/http/fetch-client.ts` y `lib/http/http.ts` con las dos instancias. Verificación: una llamada de prueba a `check-token` devuelve 401 sin romper.
+3. Crear `lib/auth/types.ts` con los tipos del modelo de datos.
+4. Crear `lib/auth/schemas.ts` con los schemas zod (mín. 6, 1 mayúscula, 1 minúscula, 1 número; código de 6 dígitos).
+5. Crear `lib/auth/auth.api.ts` con las llamadas a cada endpoint usando el adaptador.
+6. Crear `lib/auth/dal.ts` con `verifySession()` memoizado con `cache()`, que llama a `check-token` reenviando la cookie y devuelve `AuthUser | null`.
+7. Crear `lib/auth/hooks/use-auth.ts` con login, registro, verificación, reenvío, forgot, reset y logout, implementadas con `useMutation` de TanStack Query; expone estado y errores.
+8. Crear `lib/auth/auth-context.tsx` con `AuthProvider` (recibe `initialUser`) y `useAuthContext`.
+9. Instalar `@tanstack/react-query` y crear `lib/query/query-provider.tsx` con `QueryClientProvider` (client boundary), montado en `app/layout.tsx`.
+10. Crear `components/form/form-field.tsx`, `password-field.tsx` y `code-field.tsx`, atados a RHF y con el mensaje de error de zod debajo del campo.
+11. Crear los cinco hooks `use-*-form` (register, verify, login, forgot, reset) combinando `useForm` + `zodResolver` + `useAuth`.
+12. En `app/globals.css` y `app/layout.tsx`: escalas de color unificadas para toda la app (ver decisiones), tipografía Plus Jakarta Sans vía `next/font/google`, `lang="es"` y metadata "Tensi".
+13. Crear `app/(auth)/layout.tsx` con el shell compartido (header y footer) según los mockups.
+14. `app/(auth)/register/page.tsx`: formulario username/email/password; `POST /auth/register`; al 200 redirige a `/verify-account?email=...`.
+15. `app/(auth)/verify-account/page.tsx`: email precargado + 6 inputs de dígito; `POST /auth/verify-email`; al 200 redirige a `/login`; botón "Reenviar código" → `POST /auth/resend-verification-code`.
+16. `app/(auth)/login/page.tsx`: email/password; `POST /auth/login`; al 200 `router.push('/dashboard')`; enlace a `/forgot-password`; botones Google/GitHub deshabilitados con aviso "Próximamente".
+17. `app/(auth)/forgot-password/page.tsx`: email; `POST /auth/forgot-password`; redirige a `/reset-password?email=...`.
+18. `app/(auth)/reset-password/page.tsx`: email + 6 dígitos + nueva contraseña; `POST /auth/reset-password`; al 200 redirige a `/login`.
+19. Crear `proxy.ts` en la raíz: chequeo optimista sin red. Si el matcher coincide y no existe la cookie `tensi_token`, redirige a `/login`. `matcher: ['/dashboard/:path*']`.
+20. `app/(dashboard)/dashboard/page.tsx`: Server Component que llama `verifySession()`; si devuelve `null`, `redirect('/login')`; si no, muestra username/email/plan y un botón de logout.
+21. Logout: botón cliente que llama `POST /auth/logout` con `credentials: 'include'`, luego `router.push('/login')` y `router.refresh()`.
 
 ## Criterios de aceptación
 
