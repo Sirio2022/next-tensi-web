@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'Restablecer contraseña — Tensi',
 }
 
-export default async function ResetPasswordPage({ searchParams }: PageProps<'/reset-password'>) {
+export default async function ResetPasswordPage({ searchParams }: Readonly<PageProps<'/reset-password'>>) {
   const params = await searchParams
   const email = typeof params.email === 'string' ? params.email : undefined
 

@@ -15,7 +15,7 @@ interface ResetPasswordFormProps {
 }
 
 /** Formulario de restablecimiento: email + código de 6 dígitos + nueva contraseña. */
-export function ResetPasswordForm({ email }: ResetPasswordFormProps) {
+export function ResetPasswordForm({ email }: Readonly<ResetPasswordFormProps>) {
   const { onSubmit, isSubmitting, error, ...form } = useResetForm({ email })
 
   return (

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
  * Shell compartido de las pantallas de auth: fondo con glows, header y footer
  * de los mockups. Las páginas sólo aportan su tarjeta (`max-w-md`).
  */
-export default function AuthLayout({ children }: LayoutProps<'/'>) {
+export default function AuthLayout({ children }: Readonly<LayoutProps<'/'>>) {
   return (
     <div className="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-tensi-500 selection:text-white antialiased relative overflow-x-hidden">
       <div

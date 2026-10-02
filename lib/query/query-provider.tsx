@@ -30,6 +30,6 @@ function getQueryClient(): QueryClient {
 }
 
 /** Client boundary que monta el `QueryClient` de TanStack Query. */
-export function QueryProvider({ children }: { children: ReactNode }) {
+export function QueryProvider({ children }: Readonly<{ children: ReactNode }>) {
   return <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>
 }

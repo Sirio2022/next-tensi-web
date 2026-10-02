@@ -32,7 +32,7 @@ export function FormField<T extends FieldValues>({
   disabled,
   inputMode,
   maxLength,
-}: FormFieldProps<T>) {
+}: Readonly<FormFieldProps<T>>) {
   const id = useId()
   const {
     register,

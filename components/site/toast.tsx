@@ -38,7 +38,7 @@ export function useToast(): ToastContextValue {
  * Provee el feedback de la landing (toast de éxito). Se monta a nivel global
  * en `app/layout.tsx` para sobrevivir a la navegación tras un registro.
  */
-export function ToastProvider({ children }: { children: ReactNode }) {
+export function ToastProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [toasts, setToasts] = useState<ToastItem[]>([])
   const nextId = useRef(0)
   const timers = useRef(new Set<number>())

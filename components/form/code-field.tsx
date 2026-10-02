@@ -15,7 +15,7 @@ interface CodeFieldProps<T extends FieldValues> {
  * único campo `name` en el formulario (el valor es el string de 6 dígitos) y se
  * renderiza como 6 inputs accesibles, con navegación por teclado y pegado.
  */
-export function CodeField<T extends FieldValues>({ name, label }: CodeFieldProps<T>) {
+export function CodeField<T extends FieldValues>({ name, label }: Readonly<CodeFieldProps<T>>) {
   const baseId = useId()
   const inputsRef = useRef<Array<HTMLInputElement | null>>([])
 

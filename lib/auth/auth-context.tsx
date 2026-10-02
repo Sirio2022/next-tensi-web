@@ -21,7 +21,7 @@ interface AuthProviderProps {
  * `initialUser` calculado en el server. No se usa Zustand; Next recomienda
  * React Context para este caso.
  */
-export function AuthProvider({ initialUser, children }: AuthProviderProps) {
+export function AuthProvider({ initialUser, children }: Readonly<AuthProviderProps>) {
   const [user, setUser] = useState<AuthUser | null>(initialUser)
 
   // El valor del contexto se memoiza para que los consumidores no se

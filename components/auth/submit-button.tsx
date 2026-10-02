@@ -6,7 +6,7 @@ interface SubmitButtonProps {
 }
 
 /** Botón de submit compartido por las pantallas de auth. */
-export function SubmitButton({ isSubmitting, children }: SubmitButtonProps) {
+export function SubmitButton({ isSubmitting, children }: Readonly<SubmitButtonProps>) {
   return (
     <button
       type="submit"

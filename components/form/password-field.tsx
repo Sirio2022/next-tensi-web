@@ -19,7 +19,7 @@ export function PasswordField<T extends FieldValues>({
   label,
   placeholder,
   autoComplete,
-}: PasswordFieldProps<T>) {
+}: Readonly<PasswordFieldProps<T>>) {
   const id = useId()
   const [visible, setVisible] = useState(false)
   const {

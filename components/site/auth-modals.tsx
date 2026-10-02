@@ -42,7 +42,7 @@ export function useAuthModals(): AuthModalsContextValue {
  * Provee los modales de login y registro de la landing. Monta los mismos
  * `LoginForm`/`RegisterForm` de la SPEC 01 (cero duplicación de formularios).
  */
-export function AuthModalsProvider({ children }: { children: ReactNode }) {
+export function AuthModalsProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [mode, setMode] = useState<AuthModalMode | null>(null)
 
   const openLogin = useCallback(() => setMode('login'), [])
@@ -101,7 +101,7 @@ const FOCUSABLE_SELECTOR = [
  * botón de cierre; al abrir mueve el foco al panel y lo atrapa con Tab, bloquea
  * el scroll del fondo y al cerrar restaura el foco al elemento que lo abrió.
  */
-function Modal({ open, onClose, title, description, children }: ModalProps) {
+function Modal({ open, onClose, title, description, children }: Readonly<ModalProps>) {
   const titleId = useId()
   const descriptionId = useId()
   const panelRef = useRef<HTMLDivElement>(null)

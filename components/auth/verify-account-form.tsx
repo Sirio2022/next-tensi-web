@@ -14,7 +14,7 @@ interface VerifyAccountFormProps {
 }
 
 /** Formulario de verificación de cuenta: email + código de 6 dígitos. */
-export function VerifyAccountForm({ email }: VerifyAccountFormProps) {
+export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
   const { onSubmit, onResend, isSubmitting, isResending, error, notice, ...form } = useVerifyForm({
     email,
   })

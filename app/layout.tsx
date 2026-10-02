@@ -25,7 +25,7 @@ export const viewport: Viewport = {
   themeColor: "#030712",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: Readonly<LayoutProps<"/">>) {
   return (
     <html lang="es" className={`${plusJakartaSans.variable} h-full antialiased scroll-smooth`}>
       <body className="min-h-full flex flex-col overflow-x-clip">

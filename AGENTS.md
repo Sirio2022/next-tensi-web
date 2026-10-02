@@ -20,6 +20,16 @@ App web de **Tensi** (presión arterial / salud cardiovascular). Hoy es en gran 
 - Gestor de paquetes: **pnpm 12.8.1** (campo `packageManager`). No usar npm ni yarn.
 - Tipos de rutas generados: `layout.tsx`/`page.tsx` reciben tipos como `LayoutProps<"/">` o `PageProps<...>` desde `.next/types`. No los declares ni importes a mano; los regenera `next dev`/`next build`.
 
+### Props de componentes (read-only)
+
+- Todos los props de componentes se declaran **read-only** envolviéndolos con `Readonly<>`, tanto si el tipo es un objeto inline como una interfaz/alias:
+  - `function Card({ title }: Readonly<CardProps>) { … }`
+  - `function Provider({ children }: Readonly<{ children: ReactNode }>) { … }`
+  - Tipos de ruta generados: `Readonly<LayoutProps<"/">>`, `Readonly<PageProps<'/login'>>`.
+- Motivo: React trata los props como inmutables (los congela en desarrollo) y un componente nunca debe mutarlos. Marcarlos `Readonly` lo hace explícito en tipos y evita mutaciones accidentales (`props.x = …` deja de compilar).
+- No hace falta repetir `readonly` en cada propiedad si envuelves el tipo completo con `Readonly<>`.
+- Está forzada por la regla ESLint `react/prefer-read-only-props` (`error`) en `eslint.config.mjs`; `pnpm lint` falla si un componente no envuelve sus props en `Readonly<>`.
+
 ## Comandos
 
 - `pnpm dev` — servidor de desarrollo en <http://localhost:3000>.

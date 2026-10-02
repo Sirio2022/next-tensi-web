@@ -3,7 +3,7 @@ interface FormErrorProps {
 }
 
 /** Mensaje de error de API compartido por las pantallas de auth. */
-export function FormError({ message }: FormErrorProps) {
+export function FormError({ message }: Readonly<FormErrorProps>) {
   if (!message) return null
 
   return (

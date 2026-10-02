@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'Verificar cuenta — Tensi',
 }
 
-export default async function VerifyAccountPage({ searchParams }: PageProps<'/verify-account'>) {
+export default async function VerifyAccountPage({ searchParams }: Readonly<PageProps<'/verify-account'>>) {
   const params = await searchParams
   const email = typeof params.email === 'string' ? params.email : undefined
 

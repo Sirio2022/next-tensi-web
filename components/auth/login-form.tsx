@@ -74,7 +74,7 @@ export function LoginForm() {
 }
 
 /** Botón OAuth deshabilitado: la spec difiere Google/GitHub a futuro. */
-function OAuthButton({ label, children }: { label: string; children: React.ReactNode }) {
+function OAuthButton({ label, children }: Readonly<{ label: string; children: React.ReactNode }>) {
   return (
     <button
       type="button"
