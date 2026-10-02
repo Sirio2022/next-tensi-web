@@ -99,7 +99,9 @@ criterio en cada hallazgo.
   enlace "saltar al contenido".
 - 2.4.2 Titulado de páginas — cada ruta tiene `title` descriptivo vía metadata.
 - 2.4.3 Orden del foco — el foco sigue un orden lógico.
-- 2.4.4 Propósito del enlace (en contexto) — texto de enlace significativo.
+- 2.4.4 Propósito del enlace (en contexto) — texto de enlace significativo. En
+  este repo la navegación se implementa con `next/link`; **nunca** etiquetas
+  `<a>` (regla del proyecto, ver `AGENTS.md`).
 - 2.4.6 Encabezados y etiquetas — jerarquía de encabezados correcta y etiquetas
   descriptivas.
 - 2.4.7 Foco visible — indicador de foco visible en todo elemento enfocable.

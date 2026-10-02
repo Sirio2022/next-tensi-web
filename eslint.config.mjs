@@ -34,6 +34,22 @@ const eslintConfig = defineConfig([
       "better-tailwindcss/no-unnecessary-whitespace": "error",
     },
   },
+  {
+    // Convención de navegación: siempre `next/link`, nunca etiquetas `<a>`
+    // (ver AGENTS.md). Se acota a las carpetas de UI de la app para no
+    // bloquear código generado o de ejemplo.
+    files: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
+    rules: {
+      "@next/next/no-html-link-for-pages": "error",
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "JSXOpeningElement[name.name='a']",
+          message: "Usa `next/link`; las etiquetas `<a>` no están permitidas.",
+        },
+      ],
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

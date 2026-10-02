@@ -143,8 +143,17 @@ hallazgo y marca si es un **incumplimiento** o una **mejora recomendada**.
 - Considerar separar contextos (datos vs. acciones) o `useContext` selectores si
   el valor cambia muy a menudo.
 
+## Navegación (Next.js)
+
+- Usar **siempre** `next/link`; **nunca** etiquetas `<a>` en el JSX de la app,
+  incluidas anclas de la misma página (`#hash`) y enlaces externos/`mailto:`.
+  Motivo: prefetch, navegación cliente y accesibilidad coherente. Está forzado
+  por ESLint (`no-restricted-syntax` + `@next/next/no-html-link-for-pages`);
+  ver `AGENTS.md`.
+
 ## Anti-patrones legacy (o incorrectos)
 
+- Etiquetas `<a>` para navegar en lugar de `next/link` (regla del repo).
 - `defaultProps` en componentes de función (usar parámetros por defecto).
 - Refs string (usar `useRef`/callback refs).
 - Mutar el estado o las props directamente.

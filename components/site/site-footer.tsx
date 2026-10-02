@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 /**
  * Footer compartido por la landing y las pantallas de auth (unifica el footer
  * de la SPEC 01 con el de `references/01-landing`). Server Component.
@@ -42,22 +44,22 @@ export function SiteFooter() {
             </h2>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-tensi-400 transition-colors">
+                <Link href="#" className="hover:text-tensi-400 transition-colors">
                   Términos y Condiciones
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-tensi-400 transition-colors">
+                <Link href="#" className="hover:text-tensi-400 transition-colors">
                   Política de Privacidad
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="#contacto"
                   className="hover:text-tensi-400 transition-colors"
                 >
                   Contacto
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -108,12 +110,12 @@ export function SiteFooter() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <a
+                <Link
                   href="mailto:juanmadev@icloud.com"
                   className="text-tensi-400 hover:underline"
                 >
                   juanmadev@icloud.com
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

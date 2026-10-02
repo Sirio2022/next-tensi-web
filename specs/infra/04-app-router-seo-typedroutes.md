@@ -1,6 +1,6 @@
 # SPEC 04 — Infra App Router: error/loading, SEO y rutas tipadas
 
-> **Status:** Borrador
+> **Status:** Aprobado
 > **Depends on:** SPEC 01, SPEC 03
 > **Date:** 2026-10-02
 > **Objective:** Endurecer el App Router con fronteras de error/404/carga, metadatos SEO y rutas tipadas, sin cambiar el comportamiento funcional actual.
@@ -77,11 +77,11 @@ No hay estructuras nuevas. Se introduce la variable de entorno `NEXT_PUBLIC_SITE
 
 ## Riesgos
 
-| Riesgo                                                     | Mitigación                                                                 |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------- |
-| `typedRoutes` rompe rutas construidas con plantilla         | Tiparlas con `Route`/`as Route` y validar con `tsc` en el paso 1            |
-| El refactor a `<Suspense>` altera cuándo ocurre el redirect | Mantener el `redirect` en el componente suspendible y probar sin cookie     |
-| `NEXT_PUBLIC_SITE_URL` ausente en producción                | Fallback documentado y verificado en el paso 8                              |
+| Riesgo                                                      | Mitigación                                                              |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `typedRoutes` rompe rutas construidas con plantilla         | Tiparlas con `Route`/`as Route` y validar con `tsc` en el paso 1        |
+| El refactor a `<Suspense>` altera cuándo ocurre el redirect | Mantener el `redirect` en el componente suspendible y probar sin cookie |
+| `NEXT_PUBLIC_SITE_URL` ausente en producción                | Fallback documentado y verificado en el paso 8                          |
 
 ## Qué **no** entra en esta spec
 
