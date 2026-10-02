@@ -1,5 +1,3 @@
-"use client"
-
 import { LockBadge } from "@/components/ui/lock-badge"
 import type { DashboardNavItem, DashboardNavItemId } from "@/lib/dashboard/nav"
 import Link from "next/link"
@@ -111,13 +109,22 @@ const NAV_ICON: Record<DashboardNavItemId, ReactNode> = {
   )
 }
 
-interface SidebarNavItemProps {
+interface SidebarNavItemBaseProps {
   item: DashboardNavItem
   /** Marca el ítem como la página actual (`aria-current="page"`). */
   active?: boolean
-  /** Se invoca al hacer click en un ítem bloqueado (Premium). */
-  onLockedSelect?: () => void
 }
+
+/**
+ * Props del ítem del sidebar como unión discriminada: cuando el ítem es Premium
+ * (`requiresPremium: true`), `onLockedSelect` es obligatorio; el tipo impide
+ * renderizarlo sin handler.
+ */
+type SidebarNavItemProps = SidebarNavItemBaseProps &
+  (
+    | { item: DashboardNavItem & { requiresPremium: true }; onLockedSelect: () => void }
+    | { item: DashboardNavItem & { requiresPremium?: false }; onLockedSelect?: never }
+  )
 
 /**
  * Ítem del sidebar. Los ítems bloqueados se renderizan como botón (su click

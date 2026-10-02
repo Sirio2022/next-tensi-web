@@ -5,16 +5,10 @@ import {
   DASHBOARD_NAV_ITEMS,
   DASHBOARD_SETTINGS_ITEM
 } from "@/lib/dashboard/nav"
+import { scrollToUpgradeBanner } from "@/lib/dashboard/scroll-to-upgrade"
 import { usePathname } from "next/navigation"
 import { SidebarBrand } from "./sidebar-brand"
 import { SidebarNavItem } from "./sidebar-nav-item"
-
-/** Desplaza el viewport al banner de upgrade (los ítems bloqueados apuntan ahí). */
-function scrollToUpgradeBanner() {
-  document
-    .getElementById("upgrade")
-    ?.scrollIntoView({ behavior: "smooth", block: "start" })
-}
 
 /**
  * Sidebar del área autenticada: marca, navegación principal y bloque inferior
@@ -37,14 +31,25 @@ export function DashboardSidebar() {
         </div>
 
         <nav aria-label="Navegación principal" className="space-y-1 p-4">
-          {DASHBOARD_NAV_ITEMS.map((item) => (
-            <SidebarNavItem
-              key={item.id}
-              item={item}
-              active={item.href !== "#" && pathname === item.href}
-              onLockedSelect={scrollToUpgradeBanner}
-            />
-          ))}
+          {DASHBOARD_NAV_ITEMS.map((item) =>
+            item.requiresPremium ? (
+              <SidebarNavItem
+                key={item.id}
+                item={item}
+                onLockedSelect={scrollToUpgradeBanner}
+              />
+            ) : (
+              <SidebarNavItem
+                key={item.id}
+                item={item}
+                active={
+                  item.href !== "#" &&
+                  (pathname === item.href ||
+                    pathname.startsWith(`${item.href}/`))
+                }
+              />
+            )
+          )}
         </nav>
       </div>
 

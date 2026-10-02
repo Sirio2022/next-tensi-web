@@ -8,12 +8,23 @@ export type DashboardNavItemId =
   | "reports"
   | "settings"
 
-export interface DashboardNavItem {
+interface DashboardNavItemBase {
   id: DashboardNavItemId
   label: string
   href: Route
-  /** La feature existe en el producto pero no para el plan Free. */
-  requiresPremium: boolean
+}
+
+/**
+ * Unión discriminada: un ítem con `requiresPremium: true` siempre requiere
+ * `onLockedSelect`, de modo que el tipo impide renderizarlo sin handler.
+ */
+export type DashboardNavItem =
+  | (DashboardNavItemBase & { requiresPremium: true })
+  | (DashboardNavItemBase & { requiresPremium?: false })
+
+/** Ítem no bloqueado (sin Premium). */
+export type FreeDashboardNavItem = DashboardNavItemBase & {
+  requiresPremium?: false
 }
 
 /**
@@ -23,7 +34,7 @@ export interface DashboardNavItem {
  * marcadores (`#`) y no navegan (ver SPEC 03, fuera de alcance). `analytics` y
  * `reports` además están bloqueadas para el plan Free (`requiresPremium`).
  */
-export const DASHBOARD_NAV_ITEMS: readonly DashboardNavItem[] = [
+export const DASHBOARD_NAV_ITEMS: readonly Readonly<DashboardNavItem>[] = [
   {
     id: "dashboard",
     label: "Dashboard",
@@ -57,7 +68,7 @@ export const DASHBOARD_NAV_ITEMS: readonly DashboardNavItem[] = [
 ]
 
 /** Ítem del bloque inferior del sidebar (junto a "Cerrar Sesión"). */
-export const DASHBOARD_SETTINGS_ITEM: DashboardNavItem = {
+export const DASHBOARD_SETTINGS_ITEM: Readonly<FreeDashboardNavItem> = {
   id: "settings",
   label: "Configuración",
   href: "#",

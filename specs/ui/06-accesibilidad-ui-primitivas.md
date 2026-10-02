@@ -1,6 +1,6 @@
 # SPEC 06 — Accesibilidad y primitivas UI
 
-> **Status:** Borrador
+> **Status:** Aprobado
 > **Depends on:** SPEC 02, SPEC 03
 > **Date:** 2026-10-02
 > **Objective:** Cerrar los hallazgos de accesibilidad y de las primitivas UI (movimiento reducido, jerarquía de encabezados, landmarks, atributos nativos y código muerto) sin alterar el diseño.
@@ -47,7 +47,14 @@ No hay estructuras de datos nuevas. Se añaden dos módulos:
 export function scrollToUpgradeBanner(): void
 
 // components/ui/tone-classes.ts
-export type ToneName = 'sky' | 'emerald' | 'emerald-soft' | 'amber' | 'orange' | 'rose' | 'neutral'
+export type ToneName =
+  | "sky"
+  | "emerald"
+  | "emerald-soft"
+  | "amber"
+  | "orange"
+  | "rose"
+  | "neutral"
 export const TONE_CLASSES: Record<ToneName, string>
 ```
 
@@ -68,18 +75,20 @@ export const TONE_CLASSES: Record<ToneName, string>
 
 ## Criterios de aceptación
 
-- [ ] Con `prefers-reduced-motion: reduce`, el toast no ejecuta la animación.
-- [ ] El toast se puede cerrar manualmente y pausar con `hover`/`focus`.
-- [ ] El documento tiene exactamente un `<h1>` y no hay saltos de nivel (`h1→h2→h3`).
-- [ ] El footer y las tarjetas del dashboard usan la jerarquía corregida sin cambiar el diseño.
-- [ ] Existe un skip-link funcional que lleva a `#main-content`.
-- [ ] `Badge` unifica el tono `amber` con la referencia de rangos (misma clase).
-- [ ] Las primitivas `Badge`, `Card` y `LockBadge` aceptan `aria-*`, `data-*` y `ref`.
-- [ ] No queda `"use client"` en `sidebar-nav-item.tsx` ni items mutables en `nav.ts`.
-- [ ] El ítem premium no puede renderizarse sin `onLockedSelect` (tipo).
-- [ ] `lib/dashboard/bp-ranges.ts` no tiene símbolos sin consumidores.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] Playwright: `/` y `/dashboard` a 375px y 1440px sin scroll horizontal ni errores de consola; `aria-*` visibles en el DOM.
+- [x] Con `prefers-reduced-motion: reduce`, el toast no ejecuta la animación. *(Playwright `emulate_media`: `animationName: none` / `0s` con `reduce`; `toast-in` con `no-preference`.)*
+- [x] El toast se puede cerrar manualmente y pausar con `hover`/`focus`. *(Código: botón `aria-label="Cerrar notificación"` + `onMouseEnter/Leave` y `onFocus/Blur` con `clearTimeout`. Sin trigger de UI actual porque `showToast` aún no se invoca; ver nota.)*
+- [x] El documento tiene exactamente un `<h1>` y no hay saltos de nivel (`h1→h2→h3`). *(Playwright: `/` → `H1>H2>H2>H2>H2>H2>H3>H3`; `/dashboard` → `H1>H2>H2>H2`.)*
+- [x] El footer y las tarjetas del dashboard usan la jerarquía corregida sin cambiar el diseño. *(Footer `h3` "Enlaces"/"Desarrollado por"; tarjetas `<h2>`; capturas en `.playwright-mcp/verify-06-*`.)*
+- [x] Existe un skip-link funcional que lleva a `#main-content`. *(Playwright: primer `Tab` enfoca "Saltar al contenido" y queda visible; `main#main-content tabindex=-1`.)*
+- [x] `Badge` unifica el tono `amber` con la referencia de rangos (misma clase). *(`components/ui/tone-classes.ts` es la única fuente; ambos consumen `TONE_CLASSES`.)*
+- [x] Las primitivas `Badge`, `Card` y `LockBadge` aceptan `aria-*`, `data-*` y `ref`. *(Tipos `HTMLAttributes` + `ref`; `Card id="upgrade"` renderiza en el DOM.)*
+- [x] No queda `"use client"` en `sidebar-nav-item.tsx` ni items mutables en `nav.ts`. *(grep: sin `"use client"`; items `readonly Readonly<DashboardNavItem>[]`.)*
+- [x] El ítem premium no puede renderizarse sin `onLockedSelect` (tipo). *(Unión discriminada en `nav.ts` y en `SidebarNavItemProps`; `tsc` obliga el handler.)*
+- [x] `lib/dashboard/bp-ranges.ts` no tiene símbolos sin consumidores. *(`categories` consumido como `data-categories` en `bp-ranges-reference.tsx`.)*
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- [x] Playwright: `/` y `/dashboard` a 375px y 1440px sin scroll horizontal ni errores de consola; `aria-*` visibles en el DOM.
+
+> **Nota de verificación:** `showToast` sigue sin consumidores en la app (el trigger del toast entra en otra spec). El comportamiento de cierre/pausa se verificó por inspección de código y el respeto a `prefers-reduced-motion` por CSS + media emulation en el navegador; no fue posible dispararlo end-to-end por UI. Ver `docs/a11y/2026-10-02-ui-primitivas.md`.
 
 ## Decisiones
 
@@ -94,12 +103,12 @@ export const TONE_CLASSES: Record<ToneName, string>
 
 ## Riesgos
 
-| Riesgo                                                     | Mitigación                                                              |
-| ---------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Cambiar encabezados altera estilos por selectores de tag    | Las clases están en el propio elemento; revisar en Playwright            |
-| `<dialog>`/foco no entra aquí, pero interactúa con SPEC 05   | Coordinar el orden de implementación                                     |
-| Ampliar props de primitivas rompe consumidores              | Cambio aditivo; `tsc` y consumidores revisados por `grep`               |
-| El skip-link no debe verse si no tiene foco                 | Patrón `sr-only` + `focus:not-sr-only`                                  |
+| Riesgo                                                     | Mitigación                                                    |
+| ---------------------------------------------------------- | ------------------------------------------------------------- |
+| Cambiar encabezados altera estilos por selectores de tag   | Las clases están en el propio elemento; revisar en Playwright |
+| `<dialog>`/foco no entra aquí, pero interactúa con SPEC 05 | Coordinar el orden de implementación                          |
+| Ampliar props de primitivas rompe consumidores             | Cambio aditivo; `tsc` y consumidores revisados por `grep`     |
+| El skip-link no debe verse si no tiene foco                | Patrón `sr-only` + `focus:not-sr-only`                        |
 
 ## Qué **no** entra en esta spec
 

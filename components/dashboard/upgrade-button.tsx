@@ -1,14 +1,8 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { scrollToUpgradeBanner } from "@/lib/dashboard/scroll-to-upgrade"
 import type { Plan } from "@/lib/auth/types"
-
-/** Desplaza el viewport al banner de upgrade. */
-function scrollToUpgradeBanner() {
-  document
-    .getElementById("upgrade")
-    ?.scrollIntoView({ behavior: "smooth", block: "start" })
-}
 
 interface UpgradeButtonProps {
   plan: Plan

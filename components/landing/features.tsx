@@ -25,9 +25,9 @@ export function Features() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h2 className="text-xl font-bold text-white mb-2">
                 Registra tus mediciones
-              </h3>
+              </h2>
               <p className="text-slate-400 text-sm/relaxed">
                 Lleva un control preciso de tu presión arterial diariamente de
                 forma intuitiva y rápida.
@@ -62,9 +62,9 @@ export function Features() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h2 className="text-xl font-bold text-white mb-2">
                 Analiza tendencias
-              </h3>
+              </h2>
               <p className="text-slate-400 text-sm/relaxed">
                 Visualiza patrones detallados y evalúa la evolución continua de
                 tu salud cardiovascular.
@@ -102,9 +102,9 @@ export function Features() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h2 className="text-xl font-bold text-white mb-2">
                 Comparte con tu médico
-              </h3>
+              </h2>
               <p className="text-slate-400 text-sm/relaxed">
                 Genera reportes profesionales y consolidados listos para llevar
                 a tus consultas médicas.
