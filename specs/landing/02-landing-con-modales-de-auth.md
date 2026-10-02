@@ -93,7 +93,7 @@ Regla de categorización a replicar (idéntica a `BloodPressureCategorizer`): se
 - [x] "Iniciar Sesión" abre el modal de login; "Comenzar Gratis" y "Crear Cuenta Gratis" abren el de registro. _(Verificado en Playwright: los diálogos resultantes son "Iniciar Sesión" y "Crear Cuenta Gratis" respectivamente.)_
 - [x] Ambos modales cierran con Escape, con click en el backdrop y con el botón de cierre. _(Verificado: Escape real, click en el backdrop y botón `aria-label="Cerrar"` dejan ausente `[role="dialog"]` en los dos modales.)_
 - [x] El modal de registro llama a `POST /api/auth/register`, muestra el toast y navega a `/verify-account`. _(Verificado E2E: `POST :3002/api/auth/register => 201`, toast "Cuenta creada con éxito" y URL `/verify-account?email=...`; screenshot `.playwright-mcp/spec02-register-toast.png`.)_
-- [x] El modal de login autentica con la lógica de la SPEC 01 y navega a `/dashboard`. _(Verificado E2E con el admin del seed: `POST :3002/api/auth/login => 200` y URL `/dashboard` (Admin, admin@tensi.com); screenshot `.playwright-mcp/spec02-login-dashboard.png`.)_
+- [x] El modal de login autentica con la lógica de la SPEC 01 y navega a `/dashboard`. _(Verificado E2E con el admin del seed: `POST :3002/api/auth/login => 200` y URL `/dashboard` (Admin, <admin@tensi.com>); screenshot `.playwright-mcp/spec02-login-dashboard.png`.)_
 - [x] `categorize(118, 78)` devuelve `optimal` y el bucket `saludable`. _(Verificado con el script de paridad: `optimal` / `saludable`.)_
 - [x] `categorize(135, 85)` devuelve `high_normal` y el bucket `atencion`. _(Verificado: `high_normal` / `atencion`.)_
 - [x] `categorize(145, 92)` devuelve `grade_1_hypertension`. _(Verificado: `grade_1_hypertension`.)_

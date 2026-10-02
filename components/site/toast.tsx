@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -40,6 +41,17 @@ export function useToast(): ToastContextValue {
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([])
   const nextId = useRef(0)
+  const timers = useRef(new Set<number>())
+
+  // Cada toast agenda su autodescarte con un timer; hay que cancelarlos si el
+  // provider se desmonta (tests, cambios de raíz) para no dejar callbacks vivos.
+  useEffect(() => {
+    const pending = timers.current
+    return () => {
+      pending.forEach((timer) => window.clearTimeout(timer))
+      pending.clear()
+    }
+  }, [])
 
   const dismiss = useCallback((id: number) => {
     setToasts((current) => current.filter((toast) => toast.id !== id))
@@ -50,7 +62,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       const id = nextId.current
       nextId.current += 1
       setToasts((current) => [...current, { id, message }])
-      window.setTimeout(() => dismiss(id), TOAST_DURATION_MS)
+      const timer = window.setTimeout(() => {
+        timers.current.delete(timer)
+        dismiss(id)
+      }, TOAST_DURATION_MS)
+      timers.current.add(timer)
     },
     [dismiss],
   )

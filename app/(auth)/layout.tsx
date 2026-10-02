@@ -1,5 +1,18 @@
+import type { Metadata } from 'next'
 import { SiteFooter } from '@/components/site/site-footer'
 import { AuthHeader } from '@/components/auth/auth-header'
+
+/**
+ * Las pantallas de auth son rutas utilitarias (login, registro, recuperación):
+ * no deben indexarse. `robots` se hereda por los segmentos hijos y cada página
+ * puede sobreescribirlo si hiciera falta.
+ */
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 /**
  * Shell compartido de las pantallas de auth: fondo con glows, header y footer

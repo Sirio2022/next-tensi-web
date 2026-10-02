@@ -1,19 +1,19 @@
-'use client'
+"use client"
 
-import { useId } from 'react'
-import { useBpCalculator } from '@/lib/bp/hooks/use-bp-calculator'
-import type { BpCategory, BpVisualBucket } from '@/lib/bp/bp-categories'
+import type { BpCategory, BpVisualBucket } from "@/lib/bp/bp-categories"
+import { useBpCalculator } from "@/lib/bp/hooks/use-bp-calculator"
+import { useId } from "react"
 
 const CATEGORY_LABELS: Record<BpCategory, string> = {
-  optimal: 'Presión Arterial Óptima',
-  normal: 'Presión Arterial Normal',
-  high_normal: 'Presión Arterial Normal-Alta',
-  grade_1_hypertension: 'Hipertensión Nivel 1',
-  grade_2_hypertension: 'Hipertensión Nivel 2',
-  grade_3_hypertension: 'Hipertensión Nivel 3',
-  mild_hypotension: 'Hipotensión Leve',
-  moderate_hypotension: 'Hipotensión Moderada',
-  severe_hypotension: 'Hipotensión Severa',
+  optimal: "Presión Arterial Óptima",
+  normal: "Presión Arterial Normal",
+  high_normal: "Presión Arterial Normal-Alta",
+  grade_1_hypertension: "Hipertensión Nivel 1",
+  grade_2_hypertension: "Hipertensión Nivel 2",
+  grade_3_hypertension: "Hipertensión Nivel 3",
+  mild_hypotension: "Hipotensión Leve",
+  moderate_hypotension: "Hipotensión Moderada",
+  severe_hypotension: "Hipotensión Severa"
 }
 
 interface BucketStyle {
@@ -26,64 +26,74 @@ interface BucketStyle {
 
 const BUCKET_STYLES: Record<BpVisualBucket, BucketStyle> = {
   saludable: {
-    label: 'Saludable',
-    box: 'bg-emerald-500/10 border-emerald-500/30',
-    icon: 'bg-emerald-500/20 text-emerald-400',
-    tag: 'bg-emerald-500/20 text-emerald-300',
-    title: 'text-emerald-400',
+    label: "Saludable",
+    box: "bg-emerald-500/10 border-emerald-500/30",
+    icon: "bg-emerald-500/20 text-emerald-400",
+    tag: "bg-emerald-500/20 text-emerald-300",
+    title: "text-emerald-400"
   },
   atencion: {
-    label: 'Atención',
-    box: 'bg-amber-500/10 border-amber-500/30',
-    icon: 'bg-amber-500/20 text-amber-400',
-    tag: 'bg-amber-500/20 text-amber-300',
-    title: 'text-amber-400',
+    label: "Atención",
+    box: "bg-amber-500/10 border-amber-500/30",
+    icon: "bg-amber-500/20 text-amber-400",
+    tag: "bg-amber-500/20 text-amber-300",
+    title: "text-amber-400"
   },
   riesgo_moderado: {
-    label: 'Riesgo Moderado',
-    box: 'bg-orange-500/10 border-orange-500/30',
-    icon: 'bg-orange-500/20 text-orange-400',
-    tag: 'bg-orange-500/20 text-orange-300',
-    title: 'text-orange-400',
+    label: "Riesgo Moderado",
+    box: "bg-orange-500/10 border-orange-500/30",
+    icon: "bg-orange-500/20 text-orange-400",
+    tag: "bg-orange-500/20 text-orange-300",
+    title: "text-orange-400"
   },
   consultar_medico: {
-    label: 'Consultar Médico',
-    box: 'bg-rose-500/10 border-rose-500/30',
-    icon: 'bg-rose-500/20 text-rose-400',
-    tag: 'bg-rose-500/20 text-rose-300',
-    title: 'text-rose-400',
+    label: "Consultar Médico",
+    box: "bg-rose-500/10 border-rose-500/30",
+    icon: "bg-rose-500/20 text-rose-400",
+    tag: "bg-rose-500/20 text-rose-300",
+    title: "text-rose-400"
   },
   presion_baja: {
-    label: 'Presión Baja',
-    box: 'bg-sky-500/10 border-sky-500/30',
-    icon: 'bg-sky-500/20 text-sky-400',
-    tag: 'bg-sky-500/20 text-sky-300',
-    title: 'text-sky-400',
-  },
+    label: "Presión Baja",
+    box: "bg-sky-500/10 border-sky-500/30",
+    icon: "bg-sky-500/20 text-sky-400",
+    tag: "bg-sky-500/20 text-sky-300",
+    title: "text-sky-400"
+  }
 }
 
 /** Icono decorativo por bucket; el color lo aporta el contenedor. */
-function BucketIcon({ bucket }: { bucket: BpVisualBucket }) {
+function BucketIcon({ bucket }: Readonly<{ bucket: BpVisualBucket }>) {
   const common = {
-    className: 'w-6 h-6',
-    fill: 'none',
-    stroke: 'currentColor',
-    viewBox: '0 0 24 24',
-    'aria-hidden': true,
+    className: "w-6 h-6",
+    fill: "none",
+    stroke: "currentColor",
+    viewBox: "0 0 24 24",
+    "aria-hidden": true
   } as const
 
-  if (bucket === 'saludable') {
+  if (bucket === "saludable") {
     return (
       <svg {...common}>
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
       </svg>
     )
   }
 
-  if (bucket === 'presion_baja') {
+  if (bucket === "presion_baja") {
     return (
       <svg {...common}>
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 14l-7 7m0 0l-7-7m7 7V3"
+        />
       </svg>
     )
   }
@@ -101,13 +111,14 @@ function BucketIcon({ bucket }: { bucket: BpVisualBucket }) {
 }
 
 const INPUT_CLASSES =
-  'w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white font-mono text-lg focus:outline-none focus:border-tensi-400 focus:ring-1 focus:ring-tensi-400 transition-colors'
-const LABEL_CLASSES = 'block text-xs font-semibold text-slate-300 mb-2'
+  "w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white font-mono text-lg focus:outline-none focus:border-tensi-400 focus:ring-1 focus:ring-tensi-400 transition-colors"
+const LABEL_CLASSES = "block text-xs font-semibold text-slate-300 mb-2"
 
 /** Calculadora de presión de la landing: solo renderiza el estado del hook. */
 export function BpCalculator() {
-  const ids = { sys: useId(), dia: useId(), pulse: useId(), result: useId() }
-  const { values, setSystolic, setDiastolic, setPulse, result } = useBpCalculator()
+  const ids = { sys: useId(), dia: useId(), pulse: useId() }
+  const { values, setSystolic, setDiastolic, setPulse, result } =
+    useBpCalculator()
 
   const bucketStyle = result ? BUCKET_STYLES[result.bucket] : null
 
@@ -176,33 +187,47 @@ export function BpCalculator() {
           </div>
 
           <div
-            id={ids.result}
             aria-live="polite"
+            aria-atomic="true"
             className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center items-start justify-between gap-3 ${
-              bucketStyle ? bucketStyle.box : 'bg-slate-900/60 border-slate-800'
+              bucketStyle ? bucketStyle.box : "bg-slate-900/60 border-slate-800"
             }`}
           >
             {result && bucketStyle ? (
               <>
                 <div className="flex items-center space-x-3 min-w-0">
-                  <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center ${bucketStyle.icon}`}>
+                  <div
+                    className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center ${bucketStyle.icon}`}
+                  >
                     <BucketIcon bucket={result.bucket} />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xs text-slate-400">Categoría estimada:</div>
-                    <div className={`text-base font-extrabold leading-snug ${bucketStyle.title}`}>
+                    <div className="text-xs text-slate-400">
+                      Categoría estimada:
+                    </div>
+                    <div
+                      className={`text-base font-extrabold leading-snug ${bucketStyle.title}`}
+                    >
                       {CATEGORY_LABELS[result.category]}
                     </div>
                   </div>
                 </div>
-                <span className={`shrink-0 text-xs font-mono font-bold px-3 py-1 rounded ${bucketStyle.tag}`}>
+                <span
+                  className={`shrink-0 text-xs font-mono font-bold px-3 py-1 rounded ${bucketStyle.tag}`}
+                >
                   {bucketStyle.label}
                 </span>
               </>
             ) : (
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -212,7 +237,9 @@ export function BpCalculator() {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">Categoría estimada:</div>
+                  <div className="text-xs text-slate-400">
+                    Categoría estimada:
+                  </div>
                   <div className="text-base font-semibold text-slate-300">
                     Ingresa tu sistólica y diastólica
                   </div>
