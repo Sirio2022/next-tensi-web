@@ -169,7 +169,7 @@ components/
 - [x] La respuesta de `login` y `check-token` **no** contiene `token` en el body. _(Verificado: `login` → `{"message":...}`; `check-token` → `{"user":{...}}`.)_
 - [x] Login con contraseña incorrecta devuelve 401 y la UI muestra el error sin romperse. _(Verificado: API 401; Playwright muestra el `alert` "Credenciales inválidas (email o contraseña incorrectos)" y permanece en `/login`.)_
 - [x] `GET /api/auth/check-token` con la cookie devuelve `{ user }`; sin cookie devuelve 401. _(Verificado: con cookie 200 `{"user":{...}}`; sin cookie 401.)_
-- [x] Con sesión válida, `GET /dashboard` renderiza username, email y plan. _(Verificado en Playwright: Usuario=Admin, Correo=admin@tensi.com, Plan=FREE.)_
+- [x] Con sesión válida, `GET /dashboard` renderiza username, email y plan. _(Verificado en Playwright: Usuario=Admin, Correo=<admin@tensi.com>, Plan=FREE.)_
 - [x] Sin cookie, `GET /dashboard` redirige a `/login` (vía `proxy.ts`) antes de renderizar contenido. _(Verificado: `curl` → 307 y navegador → `/login` sin contenido de dashboard; log de Next muestra `proxy.ts`.)_
 - [x] `POST /api/auth/logout` limpia la cookie y un `check-token` posterior devuelve 401. _(Verificado: login 200 → logout 200 (`Set-Cookie` expirada) → check-token 401; y en Playwright el botón logout vuelve a `/login`.)_
 - [x] `POST /api/auth/forgot-password` con email existente devuelve 200; con email inexistente devuelve 404. _(Verificado: 200 / 404; la UI navega a `/reset-password?email=...` o muestra "Usuario no encontrado".)_

@@ -1,4 +1,4 @@
-export type Plan = 'FREE' | 'PREMIUM'
+export type Plan = "FREE" | "PREMIUM"
 
 export interface AuthUser {
   id: string
@@ -17,5 +17,5 @@ export interface MessageResponse {
   message: string
 }
 
-export { ApiError } from '@/lib/http/types'
-export type { ApiErrorBody } from '@/lib/http/types'
+export { ApiError } from "@/lib/http/types"
+export type { ApiErrorBody } from "@/lib/http/types"
