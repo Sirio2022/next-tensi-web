@@ -1,6 +1,6 @@
 # SPEC 05 — Endurecimiento de auth, formularios y lib
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 01
 > **Date:** 2026-10-02
 > **Objective:** Corregir los hallazgos funcionales de auth, formularios y `lib/` (validación, foco, navegación, timeout HTTP y acoplamiento de sesión) manteniendo la compatibilidad de la API pública.
@@ -55,20 +55,20 @@ No hay cambios de base de datos.
 
 ## Criterios de aceptación
 
-- [ ] Un 2xx con cuerpo no-JSON no se propaga como el tipo esperado `T`.
-- [ ] Una request que supera el `timeout` se aborta (test manual con endpoint lento).
-- [ ] `ApiError` se importa solo desde `@/lib/http/types` (sin reexport en `lib/auth/types.ts`).
-- [ ] Login/logout siguen funcionando sin la invalidación `['auth','session']`.
-- [ ] El sidebar usa `useLogout()` y no `useAuth()`.
-- [ ] `code-field` no muestra error con 1–5 dígitos y sí a los 6.
-- [ ] `submit-button` mantiene el foco del elemento activo durante el envío.
-- [ ] "¿Olvidaste tu contraseña?" es un `<Link>` navegable con teclado.
-- [ ] Abrir un modal no re-renderiza `Hero`, `SiteHeader` ni `Cta` (el `mode` no está en el `value`).
-- [ ] El modal usa `<dialog>` y ya no dispara el warning `prefer-tag-over-role`.
-- [ ] "Cambiar tema" está `disabled` y anuncia "Próximamente".
-- [ ] API pública compatible: los consumidores actuales de los componentes y hooks siguen compilando.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] Playwright (con mock de la API Nest si hace falta): register → verify → login → logout sin errores de consola.
+- [x] Un 2xx con cuerpo no-JSON no se propaga como el tipo esperado `T`. _(Self-test temporal: `GET /verify/non-json` lanza `ApiError` status 200 "La respuesta del servidor no es JSON válido"; evidencia en `.playwright-mcp/fetch-client-selftest.json`.)_
+- [x] Una request que supera el `timeout` se aborta (test manual con endpoint lento). _(Self-test: endpoint de 5 s con `timeout: 300` aborta a los 304 ms con `TimeoutError`; `AbortSignal.any` con señal externa aborta a los 203 ms.)_
+- [x] `ApiError` se importa solo desde `@/lib/http/types` (sin reexport en `lib/auth/types.ts`). _(El valor `ApiError` solo aparece en `lib/http/*`, `lib/auth/dal.ts` y `lib/auth/hooks/use-auth.ts`, siempre desde `@/lib/http/types`; `lib/auth/types.ts` solo reexporta el tipo `ApiErrorBody`.)_
+- [x] Login/logout siguen funcionando sin la invalidación `['auth','session']`. _(Playwright contra mock Nest: login → `/dashboard` y logout → `/login`.)_
+- [x] El sidebar usa `useLogout()` y no `useAuth()`. _(`components/dashboard/dashboard-sidebar.tsx` importa `useLogout` de `@/lib/auth/hooks/use-logout`; sin import de `useAuth`.)_
+- [x] `code-field` no muestra error con 1–5 dígitos y sí a los 6. _(Playwright: 5 dígitos sin error; submit con 5 → "El código debe tener exactamente 6 dígitos"; el 6º dígito revalida y limpia el error.)_
+- [x] `submit-button` mantiene el foco del elemento activo durante el envío. _(Playwright: durante el pending (`aria-busy`/`aria-disabled` true, `disabled` false) `document.activeElement` sigue siendo el botón.)_
+- [x] "¿Olvidaste tu contraseña?" es un `<Link>` navegable con teclado. _(Playwright: `Tab` hasta `<a href="/forgot-password">` y `Enter` navega a `/forgot-password`.)_
+- [x] Abrir un modal no re-renderiza `Hero`, `SiteHeader` ni `Cta` (el `mode` no está en el `value`). _(Instrumentación temporal con `console.count`: los contadores no cambian al abrir el modal; el contexto solo expone acciones memoizadas y `mode` vive en el estado local del provider.)_
+- [x] El modal usa `<dialog>` y ya no dispara el warning `prefer-tag-over-role`. _(Playwright: `dialog[open]` con `tagName === "DIALOG"` y sin atributo `role`; `pnpm lint` sin warnings.)_
+- [x] "Cambiar tema" está `disabled` y anuncia "Próximamente". _(Playwright en `/login`: `disabled=true`, `aria-disabled="true"`, `title="Próximamente"`, nombre accesible "Cambiar tema (Próximamente)".)_
+- [x] API pública compatible: los consumidores actuales de los componentes y hooks siguen compilando. _(`pnpm exec tsc --noEmit` y `pnpm build` (typecheck) en verde.)_
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan. _(Los tres con exit 0.)_
+- [x] Playwright (con mock de la API Nest si hace falta): register → verify → login → logout sin errores de consola. _(Mock Nest propio en `.playwright-mcp/mock-nest-api.mjs`: flujo completo OK, 0 errores de consola y 0 `pageerror`.)_
 
 ## Decisiones
 
