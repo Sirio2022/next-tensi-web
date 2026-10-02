@@ -36,6 +36,11 @@ export interface HttpRequestOptions {
   headers?: Record<string, string>
   signal?: AbortSignal
   cache?: RequestCache
+  /**
+   * Milisegundos máximos de la request antes de abortarla. Opcional: si no se
+   * define, el comportamiento es el actual (sin timeout implícito).
+   */
+  timeout?: number
 }
 
 /**

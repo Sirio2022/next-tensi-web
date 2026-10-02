@@ -2,7 +2,6 @@
 
 import { loginSchema, type LoginInput } from "@/lib/auth/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useAuth } from "./use-auth"
 
@@ -11,7 +10,6 @@ import { useAuth } from "./use-auth"
  * dashboard la hace `useAuth.login.onSuccess`.
  */
 export function useLoginForm() {
-  const router = useRouter()
   const { login, toMessage } = useAuth()
 
   const form = useForm<LoginInput>({
@@ -33,7 +31,6 @@ export function useLoginForm() {
     isSubmitting: login.isPending,
     error: login.isError
       ? toMessage(login.error)
-      : form.formState.errors.root?.message,
-    goToForgotPassword: () => router.push("/forgot-password")
+      : form.formState.errors.root?.message
   }
 }

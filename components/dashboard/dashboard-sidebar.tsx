@@ -1,6 +1,6 @@
 "use client"
 
-import { useAuth } from "@/lib/auth/hooks/use-auth"
+import { useLogout } from "@/lib/auth/hooks/use-logout"
 import {
   DASHBOARD_NAV_ITEMS,
   DASHBOARD_SETTINGS_ITEM
@@ -18,12 +18,13 @@ function scrollToUpgradeBanner() {
 
 /**
  * Sidebar del área autenticada: marca, navegación principal y bloque inferior
- * (Configuración + Cerrar Sesión). El logout reutiliza `useAuth().logout`, que
- * ya llama a `POST /api/auth/logout` y redirige a `/login`.
+ * (Configuración + Cerrar Sesión). El logout usa `useLogout()`, que llama a
+ * `POST /api/auth/logout` y redirige a `/login` sin arrastrar el resto de
+ * mutaciones de `useAuth`.
  */
 export function DashboardSidebar() {
   const pathname = usePathname()
-  const { logout } = useAuth()
+  const { logout } = useLogout()
 
   return (
     <aside

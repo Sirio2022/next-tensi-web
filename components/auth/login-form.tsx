@@ -10,8 +10,7 @@ import { FormProvider } from "react-hook-form"
 
 /** Formulario de login: email/password + OAuth diferido. */
 export function LoginForm() {
-  const { onSubmit, isSubmitting, error, goToForgotPassword, ...form } =
-    useLoginForm()
+  const { onSubmit, isSubmitting, error, ...form } = useLoginForm()
 
   return (
     <FormProvider {...form}>
@@ -84,13 +83,12 @@ export function LoginForm() {
 
       <div className="mt-6 text-center space-y-2">
         <p>
-          <button
-            type="button"
-            onClick={goToForgotPassword}
+          <Link
+            href="/forgot-password"
             className="text-xs text-tensi-400 hover:text-tensi-300 font-medium transition-colors"
           >
             ¿Olvidaste tu contraseña?
-          </button>
+          </Link>
         </p>
         <p className="text-xs text-slate-400">
           ¿No tienes cuenta?{" "}

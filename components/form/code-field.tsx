@@ -1,8 +1,15 @@
 "use client"
 
-import { useId, useRef, type ClipboardEvent, type KeyboardEvent } from "react"
+import {
+  useEffect,
+  useId,
+  useRef,
+  type ClipboardEvent,
+  type KeyboardEvent
+} from "react"
 import {
   useFormContext,
+  useWatch,
   type FieldError,
   type FieldValues,
   type Path
@@ -13,6 +20,10 @@ const LENGTH = 6
 interface CodeFieldProps<T extends FieldValues> {
   name: Path<T>
   label: string
+  /** Deshabilita los 6 inputs (p. ej. durante el submit). */
+  disabled?: boolean
+  /** Enfoca el primer dígito al montar el campo. */
+  autoFocus?: boolean
 }
 
 /**
@@ -22,18 +33,23 @@ interface CodeFieldProps<T extends FieldValues> {
  */
 export function CodeField<T extends FieldValues>({
   name,
-  label
+  label,
+  disabled = false,
+  autoFocus = false
 }: Readonly<CodeFieldProps<T>>) {
   const baseId = useId()
   const inputsRef = useRef<Array<HTMLInputElement | null>>([])
+  const didAutoFocusRef = useRef(false)
 
   const {
+    control,
     setValue,
-    watch,
     formState: { errors }
   } = useFormContext<T>()
 
-  const value = String(watch(name) ?? "")
+  // `useWatch` aísla el re-render del campo: solo cambia cuando cambia `name`,
+  // no cuando lo hace el resto del formulario (a diferencia de `watch`).
+  const value = String(useWatch({ control, name }) ?? "")
   const digits = Array.from(
     { length: LENGTH },
     (_, index) => value[index] ?? ""
@@ -44,9 +60,18 @@ export function CodeField<T extends FieldValues>({
     error?.message || (error ? "Este campo no es válido" : undefined)
   const errorId = `${baseId}-error`
 
+  // Enfoca el primer dígito una sola vez: los inputs se re-montan al cambiar
+  // su `key`, así que el atributo `autoFocus` volvería a robar el foco.
+  useEffect(() => {
+    if (!autoFocus || didAutoFocusRef.current) return
+    didAutoFocusRef.current = true
+    inputsRef.current[0]?.focus()
+  }, [autoFocus])
+
   const commit = (next: string) => {
     setValue(name, next.slice(0, LENGTH) as never, {
-      shouldValidate: true,
+      // Solo valida al completar los 6 dígitos para no marcar error antes.
+      shouldValidate: next.length === LENGTH,
       shouldDirty: true
     })
   }
@@ -135,6 +160,7 @@ export function CodeField<T extends FieldValues>({
             inputMode="numeric"
             autoComplete={index === 0 ? "one-time-code" : "off"}
             maxLength={1}
+            disabled={disabled}
             value={digit}
             onChange={(event) => handleChange(index, event.target.value)}
             onKeyDown={(event) => handleKeyDown(index, event)}
@@ -142,7 +168,7 @@ export function CodeField<T extends FieldValues>({
             aria-label={`Dígito ${index + 1} de ${LENGTH}`}
             aria-invalid={message ? true : undefined}
             aria-describedby={message ? errorId : undefined}
-            className="min-w-0 flex-1 basis-0 h-12 text-center text-lg font-bold rounded-xl bg-slate-950/80 border border-slate-500 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all aria-invalid:border-red-500"
+            className="min-w-0 flex-1 basis-0 h-12 text-center text-lg font-bold rounded-xl bg-slate-950/80 border border-slate-500 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all aria-invalid:border-red-500 disabled:cursor-not-allowed disabled:opacity-60"
           />
         ))}
       </div>

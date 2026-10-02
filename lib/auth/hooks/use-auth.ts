@@ -1,7 +1,7 @@
 "use client"
 
-import { useOptionalAuthContext } from "@/lib/auth/auth-context"
 import * as authApi from "@/lib/auth/auth.api"
+import { useLogout } from "@/lib/auth/hooks/use-logout"
 import type {
   ForgotInput,
   LoginInput,
@@ -11,7 +11,7 @@ import type {
 } from "@/lib/auth/schemas"
 import type { MessageResponse } from "@/lib/auth/types"
 import { ApiError } from "@/lib/http/types"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 
 /** Mensaje legible para cualquier fallo de una mutación de auth. */
@@ -24,12 +24,11 @@ function toMessage(error: unknown): string {
 /**
  * Lógica de negocio del cliente para el flujo de auth. Cada acción es una
  * mutación de TanStack Query; la navegación posterior se hace con el `router`
- * de Next y, cuando cambia la sesión, se invalida la query `['auth','session']`.
+ * de Next y la sesión se refresca con `router.refresh()`.
  */
 export function useAuth() {
   const router = useRouter()
-  const queryClient = useQueryClient()
-  const authContext = useOptionalAuthContext()
+  const { logout } = useLogout()
 
   const register = useMutation<MessageResponse, unknown, RegisterInput>({
     mutationFn: (input) => authApi.register(input)
@@ -46,7 +45,6 @@ export function useAuth() {
   const login = useMutation<MessageResponse, unknown, LoginInput>({
     mutationFn: (input) => authApi.login(input),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["auth", "session"] })
       router.push("/dashboard")
       router.refresh()
     }
@@ -58,16 +56,6 @@ export function useAuth() {
 
   const reset = useMutation<MessageResponse, unknown, ResetInput>({
     mutationFn: (input) => authApi.resetPassword(input)
-  })
-
-  const logout = useMutation<MessageResponse, unknown, void>({
-    mutationFn: () => authApi.logout(),
-    onSuccess: () => {
-      authContext?.setUser(null)
-      queryClient.clear()
-      router.push("/login")
-      router.refresh()
-    }
   })
 
   return {

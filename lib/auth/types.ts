@@ -17,5 +17,4 @@ export interface MessageResponse {
   message: string
 }
 
-export { ApiError } from "@/lib/http/types"
 export type { ApiErrorBody } from "@/lib/http/types"
