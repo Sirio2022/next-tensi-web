@@ -11,6 +11,9 @@ const eslintConfig = defineConfig([
       // Los props de los componentes se declaran read-only (Readonly<...>).
       // El plugin `react` ya está registrado por eslint-config-next.
       "react/prefer-read-only-props": "error",
+      // Prefiere el elemento nativo cuando exista equivalente (p. ej. <output>
+      // en lugar de role="status"). El plugin `jsx-a11y` ya viene registrado.
+      "jsx-a11y/prefer-tag-over-role": "warn",
     },
   },
   // Override default ignores of eslint-config-next.

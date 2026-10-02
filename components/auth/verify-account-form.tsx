@@ -51,9 +51,9 @@ export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
         </p>
 
         {notice ? (
-          <p role="status" className="text-xs text-emerald-400">
+          <output aria-live="polite" className="block text-xs text-emerald-400">
             {notice}
-          </p>
+          </output>
         ) : null}
 
         <p>
