@@ -106,7 +106,7 @@ const LABEL_CLASSES = 'block text-xs font-semibold text-slate-300 mb-2'
 
 /** Calculadora de presión de la landing: solo renderiza el estado del hook. */
 export function BpCalculator() {
-  const ids = { sys: useId(), dia: useId(), pulse: useId(), result: useId() }
+  const ids = { sys: useId(), dia: useId(), pulse: useId() }
   const { values, setSystolic, setDiastolic, setPulse, result } = useBpCalculator()
 
   const bucketStyle = result ? BUCKET_STYLES[result.bucket] : null
@@ -176,8 +176,8 @@ export function BpCalculator() {
           </div>
 
           <div
-            id={ids.result}
             aria-live="polite"
+            aria-atomic="true"
             className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center items-start justify-between gap-3 ${
               bucketStyle ? bucketStyle.box : 'bg-slate-900/60 border-slate-800'
             }`}

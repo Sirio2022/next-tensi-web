@@ -155,7 +155,7 @@ function Modal({ open, onClose, title, description, children }: ModalProps) {
     return () => {
       document.removeEventListener('keydown', onKeyDown)
       document.body.style.overflow = previousOverflow
-      previouslyFocused.current?.focus?.()
+      previouslyFocused.current?.focus()
     }
   }, [open, onClose])
 

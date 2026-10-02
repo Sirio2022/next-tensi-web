@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
 import type { AuthUser } from './types'
 
 interface AuthContextValue {
@@ -24,7 +24,12 @@ interface AuthProviderProps {
 export function AuthProvider({ initialUser, children }: AuthProviderProps) {
   const [user, setUser] = useState<AuthUser | null>(initialUser)
 
-  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>
+  // El valor del contexto se memoiza para que los consumidores no se
+  // re-rendericen cuando el provider lo hace por motivos ajenos a `user`
+  // (p. ej. el nuevo render del layout tras `router.refresh()` o al navegar).
+  const value = useMemo<AuthContextValue>(() => ({ user, setUser }), [user])
+
+  return <AuthContext value={value}>{children}</AuthContext>
 }
 
 export function useAuthContext(): AuthContextValue {

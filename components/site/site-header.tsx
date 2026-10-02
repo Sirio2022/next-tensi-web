@@ -60,14 +60,14 @@ export function SiteHeader() {
           <div className="flex items-center space-x-3">
             <button
               type="button"
-              onClick={openLogin}
+              onClick={handleLogin}
               className="hidden sm:inline-flex text-sm font-medium text-slate-300 hover:text-white px-3.5 py-2 rounded-xl transition-colors"
             >
               Iniciar Sesión
             </button>
             <button
               type="button"
-              onClick={openRegister}
+              onClick={handleRegister}
               className="bg-gradient-to-r from-tensi-500 to-blue-600 hover:from-tensi-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full shadow-lg shadow-tensi-500/20 transition-all hover:scale-[1.02] flex items-center space-x-2"
             >
               <span>Comenzar Gratis</span>

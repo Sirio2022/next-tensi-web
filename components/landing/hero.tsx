@@ -13,7 +13,7 @@ export function Hero() {
     <section className="relative pt-12 pb-16 md:pt-20 md:pb-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-slate-900/90 border border-tensi-500/30 text-slate-200 text-xs font-medium mb-8 shadow-xl">
-          <span className="flex h-2 w-2 rounded-full bg-tensi-400 animate-ping" />
+          <span className="flex h-2 w-2 rounded-full bg-tensi-400 animate-ping motion-reduce:animate-none" />
           <span className="text-tensi-400 font-semibold">Salud Cardiovascular Inteligente</span>
         </div>
 
