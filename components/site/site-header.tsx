@@ -61,13 +61,13 @@ export function SiteHeader() {
 
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="hover:text-tensi-400 transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -150,14 +150,14 @@ export function SiteHeader() {
             className="md:hidden border-t border-slate-800/80 py-3 space-y-1 text-sm font-medium text-slate-300"
           >
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className="block px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-tensi-400 transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <button
               type="button"

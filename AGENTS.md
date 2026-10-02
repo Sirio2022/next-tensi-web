@@ -43,6 +43,17 @@ App web de **Tensi** (presión arterial / salud cardiovascular). Hoy es en gran 
 - **No** se convierten los valores que no usan la escala de espaciado, que siguen siendo arbitrarios y son correctos: tamaños de fuente (`text-[10px]`), radios (`rounded-[10px]`), `blur-[140px]`, porcentajes (`top-[35%]`), `max-h-[90vh]`, colores/gradientes (`bg-[radial-gradient(...)]`).
 - El plugin necesita `settings["better-tailwindcss"].entryPoint = "app/globals.css"` porque Tailwind v4 no tiene `tailwind.config.*` (los tokens viven en el CSS).
 
+### Navegación (siempre `next/link`, nunca `<a>`)
+
+- **Nunca uses etiquetas `<a>` en el JSX de la app.** Toda navegación se implementa con `next/link` (`import Link from "next/link"`).
+- La regla es absoluta y cubre los tres casos:
+  - Enlaces internos entre rutas (`<Link href="/login">`).
+  - Enlaces externos (`<Link href="https://…">`) y `mailto:`.
+  - Anclas de la misma página (`<Link href="#simulador">`), también las del nav del header.
+- Motivo: `next/link` aporta prefetch, navegación cliente sin recarga y accesibilidad coherente; además funciona igual con URLs absolutas y con hash.
+- Está forzada por ESLint en `eslint.config.mjs`: `@next/next/no-html-link-for-pages` (`error`) y `no-restricted-syntax` con el selector `JSXOpeningElement[name.name='a']`. `pnpm lint` falla si aparece un `<a>`.
+- Con `typedRoutes` activo, tipa los `href` con hash usando un helper que devuelva `Route` (ver `lib/nav/anchors.ts`) para que `tsc` no rechace el literal `"#…"`.
+
 ## Comandos
 
 - `pnpm dev` — servidor de desarrollo en <http://localhost:3000>.

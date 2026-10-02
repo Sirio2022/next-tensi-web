@@ -1,6 +1,6 @@
 # SPEC 07 — Convención de navegación: nunca `<a>`, siempre `next/link`
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 04
 > **Date:** 2026-10-02
 > **Objective:** Establecer, documentar y forzar con ESLint la convención de usar siempre `next/link` (nunca `<a>`) y migrar los `<a>` existentes.
