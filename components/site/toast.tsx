@@ -35,41 +35,93 @@ export function useToast(): ToastContextValue {
 }
 
 /**
+ * Toast individual. El auto-descarte se pausa con `hover`/`focus` y se puede
+ * cerrar a mano (WCAG 2.2.1, Timing Adjustable). El timer vive en el propio
+ * componente, así el cleanup del `useEffect` lo cancela al desmontarse.
+ */
+function Toast({
+  id,
+  message,
+  onDismiss
+}: Readonly<{
+  id: number
+  message: string
+  onDismiss: (id: number) => void
+}>) {
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    if (paused) return
+
+    const timer = window.setTimeout(() => onDismiss(id), TOAST_DURATION_MS)
+    return () => window.clearTimeout(timer)
+  }, [id, onDismiss, paused])
+
+  return (
+    <div
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+      className="pointer-events-auto flex items-center space-x-2 rounded-xl border border-tensi-500/40 bg-slate-900 px-4 py-3 text-xs text-white shadow-xl animate-toast-in motion-reduce:animate-none"
+    >
+      <svg
+        className="size-4 shrink-0 text-tensi-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span>{message}</span>
+      <button
+        type="button"
+        onClick={() => onDismiss(id)}
+        aria-label="Cerrar notificación"
+        className="ml-1 shrink-0 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tensi-400"
+      >
+        <svg
+          className="size-3.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  )
+}
+
+/**
  * Provee el feedback de la landing (toast de éxito). Se monta a nivel global
  * en `app/layout.tsx` para sobrevivir a la navegación tras un registro.
  */
 export function ToastProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [toasts, setToasts] = useState<ToastItem[]>([])
   const nextId = useRef(0)
-  const timers = useRef(new Set<number>())
-
-  // Cada toast agenda su autodescarte con un timer; hay que cancelarlos si el
-  // provider se desmonta (tests, cambios de raíz) para no dejar callbacks vivos.
-  useEffect(() => {
-    const pending = timers.current
-    return () => {
-      pending.forEach((timer) => window.clearTimeout(timer))
-      pending.clear()
-    }
-  }, [])
 
   const dismiss = useCallback((id: number) => {
     setToasts((current) => current.filter((toast) => toast.id !== id))
   }, [])
 
-  const showToast = useCallback(
-    (message: string) => {
-      const id = nextId.current
-      nextId.current += 1
-      setToasts((current) => [...current, { id, message }])
-      const timer = window.setTimeout(() => {
-        timers.current.delete(timer)
-        dismiss(id)
-      }, TOAST_DURATION_MS)
-      timers.current.add(timer)
-    },
-    [dismiss]
-  )
+  const showToast = useCallback((message: string) => {
+    const id = nextId.current
+    nextId.current += 1
+    setToasts((current) => [...current, { id, message }])
+  }, [])
 
   const value = useMemo<ToastContextValue>(() => ({ showToast }), [showToast])
 
@@ -82,26 +134,12 @@ export function ToastProvider({ children }: Readonly<{ children: ReactNode }>) {
         className="pointer-events-none fixed bottom-6 right-6 z-60 flex flex-col space-y-2"
       >
         {toasts.map((toast) => (
-          <div
+          <Toast
             key={toast.id}
-            className="pointer-events-auto flex items-center space-x-2 rounded-xl border border-tensi-500/40 bg-slate-900 px-4 py-3 text-xs text-white shadow-xl animate-[toast-in_0.3s_ease-out]"
-          >
-            <svg
-              className="size-4 shrink-0 text-tensi-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>{toast.message}</span>
-          </div>
+            id={toast.id}
+            message={toast.message}
+            onDismiss={dismiss}
+          />
         ))}
       </div>
     </ToastContext.Provider>

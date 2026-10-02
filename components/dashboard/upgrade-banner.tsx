@@ -22,9 +22,9 @@ export function UpgradeBanner() {
       <div className="relative z-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
         <div className="max-w-xl space-y-3">
           <Badge tone="amber">✨ Desbloquea Tensi Premium</Badge>
-          <h3 className="text-xl font-bold tracking-tight text-white">
+          <h2 className="text-xl font-bold tracking-tight text-white">
             Obtén gráficos de evolución y reportes exportables para tu médico
-          </h3>
+          </h2>
           <p className="text-xs/relaxed text-slate-300">
             Accede al historial ilimitado, tendencias de presión
             sistólica/diastólica por hora y generación automática de PDFs para

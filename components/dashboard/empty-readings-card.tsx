@@ -31,16 +31,21 @@ export function EmptyReadingsCard() {
           </svg>
         </div>
 
-        <h3 className="text-xl font-bold tracking-tight text-white">
+        <h2 className="text-xl font-bold tracking-tight text-white">
           ¡Bienvenido a tu control de presión!
-        </h3>
+        </h2>
         <p className="text-xs/relaxed text-slate-400">
           Registra tu primera medición de hoy para obtener el cálculo automático
           de tu categoría médica y tu resumen diario.
         </p>
 
         <div className="pt-2">
-          <Button tone="gradient">Agregar mi primera medición</Button>
+          <Button tone="gradient" disabled>
+            Agregar mi primera medición
+          </Button>
+          <p className="mt-2 text-[10px] text-slate-500">
+            Disponible cuando se habilite el registro de mediciones.
+          </p>
         </div>
       </div>
     </Card>

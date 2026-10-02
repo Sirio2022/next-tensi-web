@@ -39,20 +39,12 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h2 className="font-semibold text-white text-xs uppercase tracking-wider mb-3">
+            <h3 className="font-semibold text-white text-xs uppercase tracking-wider mb-3">
               Enlaces
-            </h2>
+            </h3>
             <ul className="space-y-2">
-              <li>
-                <Link href="#" className="hover:text-tensi-400 transition-colors">
-                  Términos y Condiciones
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-tensi-400 transition-colors">
-                  Política de Privacidad
-                </Link>
-              </li>
+              <li className="text-slate-400">Términos y Condiciones</li>
+              <li className="text-slate-400">Política de Privacidad</li>
               <li>
                 <Link
                   href="#contacto"
@@ -65,9 +57,9 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h2 className="font-semibold text-white text-xs uppercase tracking-wider mb-3">
+            <h3 className="font-semibold text-white text-xs uppercase tracking-wider mb-3">
               Desarrollado por
-            </h2>
+            </h3>
             <ul className="space-y-1.5 text-slate-400">
               <li className="font-medium text-slate-200">
                 Juan Manuel Alvarez
