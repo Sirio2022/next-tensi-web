@@ -1,6 +1,6 @@
 # SPEC 07 — Convención de navegación: nunca `<a>`, siempre `next/link`
 
-> **Status:** Borrador
+> **Status:** Aprobado
 > **Depends on:** SPEC 04
 > **Date:** 2026-10-02
 > **Objective:** Establecer, documentar y forzar con ESLint la convención de usar siempre `next/link` (nunca `<a>`) y migrar los `<a>` existentes.
@@ -38,7 +38,7 @@ No hay estructuras nuevas. Si hiciera falta, un helper tipado para anclas:
 
 ```ts
 // lib/nav/anchors.ts (solo si typedRoutes lo exige)
-import type { Route } from 'next'
+import type { Route } from "next"
 export const anchor = (id: `#${string}`): Route => id as Route
 ```
 
@@ -71,12 +71,12 @@ export const anchor = (id: `#${string}`): Route => id as Route
 
 ## Riesgos
 
-| Riesgo                                                          | Mitigación                                                                 |
-| --------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| `no-restricted-syntax` bloquea ejemplos legítimos de terceros     | Revisar `globalIgnores`/overrides si algún archivo generado lo necesita     |
-| `Link` con `href="#hash"` no desplaza igual que `<a>`             | Probar con Playwright; usar `scroll`/`scrollIntoView` si difiere           |
-| `typedRoutes` rechaza hashes                                      | Helper `anchor()` tipado como `Route` en `lib/nav/anchors.ts`              |
-| La regla rompe builds por `<a>` en código generado                | Acotar la regla a `app/**` y `components/**`                              |
+| Riesgo                                                        | Mitigación                                                              |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `no-restricted-syntax` bloquea ejemplos legítimos de terceros | Revisar `globalIgnores`/overrides si algún archivo generado lo necesita |
+| `Link` con `href="#hash"` no desplaza igual que `<a>`         | Probar con Playwright; usar `scroll`/`scrollIntoView` si difiere        |
+| `typedRoutes` rechaza hashes                                  | Helper `anchor()` tipado como `Route` en `lib/nav/anchors.ts`           |
+| La regla rompe builds por `<a>` en código generado            | Acotar la regla a `app/**` y `components/**`                            |
 
 ## Qué **no** entra en esta spec
 
