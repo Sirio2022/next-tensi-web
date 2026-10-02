@@ -1,3 +1,5 @@
+import type { Route } from "next"
+
 export type DashboardNavItemId =
   | "dashboard"
   | "new-reading"
@@ -9,7 +11,7 @@ export type DashboardNavItemId =
 export interface DashboardNavItem {
   id: DashboardNavItemId
   label: string
-  href: string
+  href: Route
   /** La feature existe en el producto pero no para el plan Free. */
   requiresPremium: boolean
 }
