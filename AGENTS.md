@@ -52,7 +52,7 @@ App web de **Tensi** (presión arterial / salud cardiovascular). Hoy es en gran 
   - Anclas de la misma página (`<Link href="#simulador">`), también las del nav del header.
 - Motivo: `next/link` aporta prefetch, navegación cliente sin recarga y accesibilidad coherente; además funciona igual con URLs absolutas y con hash.
 - Está forzada por ESLint en `eslint.config.mjs`: `@next/next/no-html-link-for-pages` (`error`) y `no-restricted-syntax` con el selector `JSXOpeningElement[name.name='a']`. `pnpm lint` falla si aparece un `<a>`.
-- Con `typedRoutes` activo, tipa los `href` con hash usando un helper que devuelva `Route` (ver `lib/nav/anchors.ts`) para que `tsc` no rechace el literal `"#…"`.
+- Con `typedRoutes` activo, los `href` con ancla (`#…`) son válidos como `Route`: el tipo generado por Next incluye `` `#${string}` `` (y `?${string}`), así que puedes usar el literal directamente (`<Link href="#simulador">`). No hace falta ningún helper.
 
 ## Comandos
 
