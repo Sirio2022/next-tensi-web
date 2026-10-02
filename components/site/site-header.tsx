@@ -34,8 +34,8 @@ export function SiteHeader() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3 group" onClick={() => setMenuOpen(false)}>
-            <span className="w-10 h-10 rounded-xl bg-gradient-to-tr from-tensi-500 via-indigo-500 to-tensi-violet flex items-center justify-center shadow-lg shadow-tensi-500/20 group-hover:scale-105 transition-transform duration-300">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <span className="size-10 rounded-xl bg-linear-to-tr from-tensi-500 via-indigo-500 to-tensi-violet flex items-center justify-center shadow-lg shadow-tensi-500/20 group-hover:scale-105 transition-transform duration-300">
+              <svg className="size-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -68,10 +68,10 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={handleRegister}
-              className="bg-gradient-to-r from-tensi-500 to-blue-600 hover:from-tensi-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full shadow-lg shadow-tensi-500/20 transition-all hover:scale-[1.02] flex items-center space-x-2"
+              className="bg-linear-to-r from-tensi-500 to-blue-600 hover:from-tensi-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full shadow-lg shadow-tensi-500/20 transition-all hover:scale-[1.02] flex items-center space-x-2"
             >
               <span>Comenzar Gratis</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </button>
@@ -85,11 +85,11 @@ export function SiteHeader() {
               className="md:hidden p-2 rounded-lg text-slate-300 hover:text-white transition-colors"
             >
               {menuOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}

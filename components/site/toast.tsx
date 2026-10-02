@@ -79,7 +79,7 @@ export function ToastProvider({ children }: Readonly<{ children: ReactNode }>) {
 
       <div
         aria-live="polite"
-        className="pointer-events-none fixed bottom-6 right-6 z-[60] flex flex-col space-y-2"
+        className="pointer-events-none fixed bottom-6 right-6 z-60 flex flex-col space-y-2"
       >
         {toasts.map((toast) => (
           <div
@@ -87,7 +87,7 @@ export function ToastProvider({ children }: Readonly<{ children: ReactNode }>) {
             className="pointer-events-auto flex items-center space-x-2 rounded-xl border border-tensi-500/40 bg-slate-900 px-4 py-3 text-xs text-white shadow-xl animate-[toast-in_0.3s_ease-out]"
           >
             <svg
-              className="w-4 h-4 shrink-0 text-tensi-400"
+              className="size-4 shrink-0 text-tensi-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

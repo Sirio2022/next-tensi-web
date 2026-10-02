@@ -13,7 +13,7 @@ export function Hero() {
     <section className="relative pt-12 pb-16 md:pt-20 md:pb-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-slate-900/90 border border-tensi-500/30 text-slate-200 text-xs font-medium mb-8 shadow-xl">
-          <span className="flex h-2 w-2 rounded-full bg-tensi-400 animate-ping motion-reduce:animate-none" />
+          <span className="flex size-2 rounded-full bg-tensi-400 animate-ping motion-reduce:animate-none" />
           <span className="text-tensi-400 font-semibold">Salud Cardiovascular Inteligente</span>
         </div>
 
@@ -21,7 +21,7 @@ export function Hero() {
           Controla tu Presión Arterial
         </h1>
 
-        <p className="mt-6 text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
+        <p className="mt-6 text-lg/relaxed sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal">
           Registra, analiza y mejora tu salud cardiovascular con un control diario sencillo, preciso
           e intuitivo.
         </p>
@@ -30,10 +30,10 @@ export function Hero() {
           <button
             type="button"
             onClick={openRegister}
-            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-tensi-500 to-blue-600 hover:from-tensi-400 hover:to-blue-500 text-white font-semibold px-8 py-3.5 rounded-full shadow-xl shadow-tensi-500/25 transition-all duration-300 hover:scale-105"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-linear-to-r from-tensi-500 to-blue-600 hover:from-tensi-400 hover:to-blue-500 text-white font-semibold px-8 py-3.5 rounded-full shadow-xl shadow-tensi-500/25 transition-all duration-300 hover:scale-105"
           >
             <span>Comenzar Gratis</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </button>
@@ -50,7 +50,7 @@ export function Hero() {
         <div className="mt-14 max-w-4xl mx-auto relative">
           <div
             aria-hidden="true"
-            className="absolute -inset-1 bg-gradient-to-r from-tensi-500 via-indigo-500 to-tensi-violet rounded-3xl blur-2xl opacity-20"
+            className="absolute -inset-1 bg-linear-to-r from-tensi-500 via-indigo-500 to-tensi-violet rounded-3xl blur-2xl opacity-20"
           />
 
           <div className="relative text-left rounded-2xl md:rounded-3xl border border-slate-800 bg-slate-900/70 backdrop-blur-xl p-6 shadow-2xl overflow-hidden">
@@ -88,7 +88,7 @@ export function Hero() {
                 <span className="text-slate-500">Últimos 7 Días</span>
               </div>
               <div className="h-28 w-full relative">
-                <svg className="w-full h-full" viewBox="0 0 500 100" preserveAspectRatio="none" aria-hidden="true">
+                <svg className="size-full" viewBox="0 0 500 100" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M0,45 Q100,25 200,35 T400,28 T500,38" fill="none" stroke="currentColor" strokeWidth={3} className="text-tensi-400" />
                   <path d="M0,75 Q100,68 200,72 T400,70 T500,74" fill="none" stroke="currentColor" strokeWidth={3} className="text-tensi-violet" />
                 </svg>

@@ -183,7 +183,7 @@ function Modal({ open, onClose, title, description, children }: Readonly<ModalPr
           aria-label="Cerrar"
           className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
