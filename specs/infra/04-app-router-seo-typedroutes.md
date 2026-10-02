@@ -1,6 +1,6 @@
 # SPEC 04 — Infra App Router: error/loading, SEO y rutas tipadas
 
-> **Status:** Aprobando
+> **Status:** Aprobado
 > **Depends on:** SPEC 01, SPEC 03
 > **Date:** 2026-10-02
 > **Objective:** Endurecer el App Router con fronteras de error/404/carga, metadatos SEO y rutas tipadas, sin cambiar el comportamiento funcional actual.
