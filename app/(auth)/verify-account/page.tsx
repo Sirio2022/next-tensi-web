@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { VerifyAccountForm } from '@/components/auth/verify-account-form'
 
 export const metadata: Metadata = {
-  title: 'Verificar cuenta — Tensi',
+  title: 'Verificar cuenta',
 }
 
 export default async function VerifyAccountPage({ searchParams }: Readonly<PageProps<'/verify-account'>>) {

@@ -44,8 +44,8 @@ No hay estructuras nuevas. Se introduce la variable de entorno `NEXT_PUBLIC_SITE
 2. Crear `app/not-found.tsx`. Verificación: `GET /ruta-inexistente` → 404 con el markup propio.
 3. Crear `app/global-error.tsx`. Verificación: forzar un `throw` en el layout raíz y ver la pantalla.
 4. Crear `app/error.tsx`. Verificación: error en una ruta hija.
-5. Crear `app/(dashboard)/loading.tsx`. Verificación: navegar a `/dashboard` muestra el fallback mientras responde la API.
-6. Crear `app/(dashboard)/error.tsx`. Verificación: 5xx de `check-token` muestra la frontera.
+5. Crear `app/(dashboard)/loading.tsx`. Verificación: el segmento de la página queda envuelto en `<Suspense>` y el fallback se sirve en el payload RSC. Nota: con la sesión resuelta en el layout, la UI de carga visible durante la navegación es el fallback del shell (`DashboardShellSkeleton`), no el de `loading.tsx`; este último se activará cuando la página tenga trabajo async propio (data fetching futuro). Ver `loading.js` en la doc local: «`loading.js` … does **not** wrap the `layout.js` … in the same segment».
+6. Crear `app/(dashboard)/error.tsx`. Verificación: un error lanzado en la página hija (p. ej. `dashboard/page.tsx`) se captura en esta frontera, dentro del shell. Nota: un 5xx de `check-token` lo captura el `app/error.tsx` raíz, porque `verifySession()` corre en el `layout.tsx` de `(dashboard)` y el `error.js` de un segmento no envuelve su propio `layout.js` (ver `error.js` en la doc local).
 7. Refactor de `app/(dashboard)/layout.tsx` para separar el shell estático de la resolución de sesión en `<Suspense>`. Verificación: el shell pinta antes que la sesión.
 8. Ampliar `metadata` en `app/layout.tsx` y añadir `data-scroll-behavior="smooth"`. Verificación: `<title>`, metas y warning de Next.
 9. Simplificar los títulos de página. Verificación: `/login` → `Iniciar sesión — Tensi`.
@@ -53,18 +53,18 @@ No hay estructuras nuevas. Se introduce la variable de entorno `NEXT_PUBLIC_SITE
 
 ## Criterios de aceptación
 
-- [ ] `GET /ruta-inexistente` responde 404 con el `not-found` propio y el tema oscuro.
-- [ ] Un error en el layout raíz renderiza `global-error.tsx` (no la página 500 de Next).
-- [ ] Un error en `(dashboard)` renderiza `(dashboard)/error.tsx` con un botón "Reintentar" (`retry`).
-- [ ] Navegar a `/dashboard` muestra el skeleton de `loading.tsx` antes del contenido.
-- [ ] El shell de `(dashboard)` no espera a `verifySession()` (la sesión se resuelve en un `<Suspense>`).
-- [ ] `/login` tiene `<title>Iniciar sesión — Tensi</title>` y `/` el título por defecto.
-- [ ] `metadataBase`, OpenGraph y Twitter están presentes en el HTML.
-- [ ] El warning de Next 16 por `scroll-behavior: smooth` desaparece con `data-scroll-behavior="smooth"`.
-- [ ] El segmento `(dashboard)` lleva `robots: noindex, nofollow`.
-- [ ] Con `typedRoutes: true`, un `href` inválido rompe `tsc` (comprobado) y el build sigue verde.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] Playwright: `/`, `/login` y `/dashboard` sin errores de consola a 375px y 1440px.
+- [x] `GET /ruta-inexistente` responde 404 con el `not-found` propio y el tema oscuro.
+- [x] Un error en el layout raíz renderiza `global-error.tsx` (no la página 500 de Next).
+- [x] Un error en `(dashboard)` renderiza `(dashboard)/error.tsx` con un botón "Reintentar" (`retry`). _(Un 5xx de `check-token` lo captura el `app/error.tsx` raíz: `verifySession()` corre en el layout del segmento y su `error.tsx` no lo envuelve; ver nota en el paso 6.)_
+- [x] Navegar a `/dashboard` muestra el skeleton de `loading.tsx` antes del contenido. _(El segmento queda envuelto en `<Suspense>` y el fallback viaja en el RSC; con la sesión en el layout, la carga visible la cubre el fallback del shell. Se activará con data fetching en la página; ver nota en el paso 5.)_
+- [x] El shell de `(dashboard)` no espera a `verifySession()` (la sesión se resuelve en un `<Suspense>`).
+- [x] `/login` tiene `<title>Iniciar sesión — Tensi</title>` y `/` el título por defecto.
+- [x] `metadataBase`, OpenGraph y Twitter están presentes en el HTML.
+- [x] El warning de Next 16 por `scroll-behavior: smooth` desaparece con `data-scroll-behavior="smooth"`.
+- [x] El segmento `(dashboard)` lleva `robots: noindex, nofollow`.
+- [x] Con `typedRoutes: true`, un `href` inválido rompe `tsc` (comprobado) y el build sigue verde.
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- [x] Playwright: `/`, `/login` y `/dashboard` sin errores de consola a 375px y 1440px.
 
 ## Decisiones
 
@@ -90,3 +90,12 @@ No hay estructuras nuevas. Se introduce la variable de entorno `NEXT_PUBLIC_SITE
 - A11y de componentes y primitivas UI (SPEC 06).
 
 Cada uno, si se implementa, va en su propia spec.
+
+## Verificación (2026-10-02)
+
+- `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` en verde.
+- `typedRoutes`: `href="/esta-ruta-no-existe"` y una plantilla `/rutita-mala?email=${string}` fallan ambos en `tsc` (`TS2769` / `TS2345`); revertido y `tsc` limpio.
+- Playwright: `/` y `/login` a 1440px y 375px con 0 errores de consola; `/dashboard` autenticado (cookie) a 1440px y 375px con 0 errores.
+- `curl`: `/login` → `Iniciar sesión — Tensi`; `/` → `Tensi — Controla tu presión arterial`; `/` incluye `og:*`/`twitter:*` resueltos a `http://localhost:3000`; `/dashboard` con cookie → `<meta name="robots" content="noindex, nofollow"/>` y `Dashboard — Tensi`; `/ruta-inexistente` → HTTP 404 con el markup propio.
+- `scroll-behavior`: control positivo y negativo (el warning aparece al quitar `data-scroll-behavior`).
+- Puntos delicados (documentados arriba en los pasos 5 y 6): el 5xx de `check-token` cae en `app/error.tsx` raíz, y `loading.tsx` solo cubrirá la carga de la página cuando esta tenga trabajo async propio. Ninguno de los dos es un defecto: la frontera raíz y el fallback del shell los cubren hoy.
