@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import { useAuthModals } from '@/components/site/auth-modals'
+import { useAuthModals } from "@/components/site/auth-modals"
 
 /** CTA final de la landing: abre el modal de registro. */
 export function Cta() {
@@ -19,7 +19,8 @@ export function Cta() {
             ¿Listo para comenzar?
           </h2>
           <p className="relative z-10 mt-4 text-slate-300 text-sm max-w-lg mx-auto">
-            Crea tu cuenta en Tensi para comenzar a cuidar tu salud cardiovascular hoy mismo.
+            Crea tu cuenta en Tensi para comenzar a cuidar tu salud
+            cardiovascular hoy mismo.
           </p>
 
           <div className="relative z-10 mt-8">

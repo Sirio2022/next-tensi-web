@@ -1,12 +1,12 @@
-'use client'
+"use client"
 
-import { useMemo, useState } from 'react'
 import {
   categorize,
   categoryToBucket,
   type BpCategory,
-  type BpVisualBucket,
-} from '@/lib/bp/bp-categories'
+  type BpVisualBucket
+} from "@/lib/bp/bp-categories"
+import { useMemo, useState } from "react"
 
 export interface BpCalculatorResult {
   category: BpCategory
@@ -14,13 +14,13 @@ export interface BpCalculatorResult {
 }
 
 // Valores iniciales del mockup de la landing (`references/01-landing`).
-const DEFAULT_SYSTOLIC = '120'
-const DEFAULT_DIASTOLIC = '80'
-const DEFAULT_PULSE = '72'
+const DEFAULT_SYSTOLIC = "120"
+const DEFAULT_DIASTOLIC = "80"
+const DEFAULT_PULSE = "72"
 
 function parseReading(value: string): number | null {
   const trimmed = value.trim()
-  if (trimmed === '') return null
+  if (trimmed === "") return null
   const parsed = Number(trimmed)
   return Number.isFinite(parsed) ? parsed : null
 }
@@ -52,6 +52,6 @@ export function useBpCalculator() {
     setPulse,
     result,
     /** `true` mientras no hay valores suficientes para clasificar. */
-    isEmpty: result === null,
+    isEmpty: result === null
   }
 }

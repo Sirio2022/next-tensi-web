@@ -1,5 +1,7 @@
-'use client'
+"use client"
 
+import { LoginForm } from "@/components/auth/login-form"
+import { RegisterForm } from "@/components/auth/register-form"
 import {
   createContext,
   useCallback,
@@ -9,12 +11,10 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
-} from 'react'
-import { LoginForm } from '@/components/auth/login-form'
-import { RegisterForm } from '@/components/auth/register-form'
+  type ReactNode
+} from "react"
 
-export type AuthModalMode = 'login' | 'register'
+export type AuthModalMode = "login" | "register"
 
 interface AuthModalsContextValue {
   /** Abre el modal de login. */
@@ -33,7 +33,7 @@ const AuthModalsContext = createContext<AuthModalsContextValue | null>(null)
 export function useAuthModals(): AuthModalsContextValue {
   const context = useContext(AuthModalsContext)
   if (!context) {
-    throw new Error('useAuthModals debe usarse dentro de un AuthModalsProvider')
+    throw new Error("useAuthModals debe usarse dentro de un AuthModalsProvider")
   }
   return context
 }
@@ -42,16 +42,18 @@ export function useAuthModals(): AuthModalsContextValue {
  * Provee los modales de login y registro de la landing. Monta los mismos
  * `LoginForm`/`RegisterForm` de la SPEC 01 (cero duplicación de formularios).
  */
-export function AuthModalsProvider({ children }: Readonly<{ children: ReactNode }>) {
+export function AuthModalsProvider({
+  children
+}: Readonly<{ children: ReactNode }>) {
   const [mode, setMode] = useState<AuthModalMode | null>(null)
 
-  const openLogin = useCallback(() => setMode('login'), [])
-  const openRegister = useCallback(() => setMode('register'), [])
+  const openLogin = useCallback(() => setMode("login"), [])
+  const openRegister = useCallback(() => setMode("register"), [])
   const close = useCallback(() => setMode(null), [])
 
   const value = useMemo<AuthModalsContextValue>(
     () => ({ openLogin, openRegister, close, mode }),
-    [openLogin, openRegister, close, mode],
+    [openLogin, openRegister, close, mode]
   )
 
   return (
@@ -59,7 +61,7 @@ export function AuthModalsProvider({ children }: Readonly<{ children: ReactNode 
       {children}
 
       <Modal
-        open={mode === 'login'}
+        open={mode === "login"}
         onClose={close}
         title="Iniciar Sesión"
         description="Accede a tu historial y registro de mediciones"
@@ -68,7 +70,7 @@ export function AuthModalsProvider({ children }: Readonly<{ children: ReactNode 
       </Modal>
 
       <Modal
-        open={mode === 'register'}
+        open={mode === "register"}
         onClose={close}
         title="Crear Cuenta Gratis"
         description="Comienza a controlar tu salud cardiovascular con Tensi"
@@ -88,20 +90,26 @@ interface ModalProps {
 }
 
 const FOCUSABLE_SELECTOR = [
-  'a[href]',
-  'button:not([disabled])',
-  'textarea:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
-  '[tabindex]:not([tabindex="-1"])',
-].join(',')
+  "a[href]",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])'
+].join(",")
 
 /**
  * Modal base con overlay y panel. Cierra por Escape, click en el backdrop y
  * botón de cierre; al abrir mueve el foco al panel y lo atrapa con Tab, bloquea
  * el scroll del fondo y al cerrar restaura el foco al elemento que lo abrió.
  */
-function Modal({ open, onClose, title, description, children }: Readonly<ModalProps>) {
+function Modal({
+  open,
+  onClose,
+  title,
+  description,
+  children
+}: Readonly<ModalProps>) {
   const titleId = useId()
   const descriptionId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
@@ -113,18 +121,20 @@ function Modal({ open, onClose, title, description, children }: Readonly<ModalPr
     previouslyFocused.current = document.activeElement as HTMLElement | null
     const panel = panelRef.current
     const focusables = () =>
-      panel ? Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)) : []
+      panel
+        ? Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
+        : []
 
     ;(focusables()[0] ?? panel)?.focus()
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         event.preventDefault()
         onClose()
         return
       }
 
-      if (event.key !== 'Tab' || !panel) return
+      if (event.key !== "Tab" || !panel) return
 
       const items = focusables()
       if (items.length === 0) {
@@ -134,7 +144,7 @@ function Modal({ open, onClose, title, description, children }: Readonly<ModalPr
       }
 
       const first = items[0]
-      const last = items[items.length - 1]
+      const last = items.at(-1)!
       const active = document.activeElement
 
       if (event.shiftKey) {
@@ -148,12 +158,12 @@ function Modal({ open, onClose, title, description, children }: Readonly<ModalPr
       }
     }
 
-    document.addEventListener('keydown', onKeyDown)
+    document.addEventListener("keydown", onKeyDown)
     const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = "hidden"
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown)
+      document.removeEventListener("keydown", onKeyDown)
       document.body.style.overflow = previousOverflow
       previouslyFocused.current?.focus()
     }
@@ -183,8 +193,19 @@ function Modal({ open, onClose, title, description, children }: Readonly<ModalPr
           aria-label="Cerrar"
           className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
         >
-          <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="size-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 

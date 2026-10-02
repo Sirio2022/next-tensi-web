@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link"
 
 /** Header compartido de las pantallas de auth (logo + toggle de tema del mockup). */
 export function AuthHeader() {
@@ -35,7 +35,13 @@ export function AuthHeader() {
           aria-label="Cambiar tema"
           title="Cambiar tema"
         >
-          <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg
+            className="size-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"

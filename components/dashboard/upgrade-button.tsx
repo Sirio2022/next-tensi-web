@@ -1,13 +1,13 @@
-'use client'
+"use client"
 
-import { Button } from '@/components/ui/button'
-import type { Plan } from '@/lib/auth/types'
+import { Button } from "@/components/ui/button"
+import type { Plan } from "@/lib/auth/types"
 
 /** Desplaza el viewport al banner de upgrade. */
 function scrollToUpgradeBanner() {
   document
-    .getElementById('upgrade')
-    ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    .getElementById("upgrade")
+    ?.scrollIntoView({ behavior: "smooth", block: "start" })
 }
 
 interface UpgradeButtonProps {
@@ -19,7 +19,7 @@ interface UpgradeButtonProps {
  * hay nada que mejorar (la spec de Premium reutiliza este mismo componente).
  */
 export function UpgradeButton({ plan }: Readonly<UpgradeButtonProps>) {
-  if (plan === 'PREMIUM') return null
+  if (plan === "PREMIUM") return null
 
   return (
     <span className="hidden sm:inline-flex">

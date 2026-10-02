@@ -20,14 +20,14 @@ export class ApiError extends Error {
 
   constructor(message: string, status: number, details?: string | string[]) {
     super(message)
-    this.name = 'ApiError'
+    this.name = "ApiError"
     this.status = status
     this.details = details
   }
 }
 
 export interface HttpRequestOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
   body?: unknown
   /**
    * Headers adicionales para la request. En server-side se usa para reenviar

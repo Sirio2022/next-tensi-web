@@ -10,25 +10,25 @@
 
 La base está bien: las fronteras Server/Client son correctas y mínimas en su intención (2 Server Components puros, 6 Client Components con interactividad real), las `key` son estables, no hay anti-patrones legacy (`forwardRef`, `defaultProps`, refs string, `React.FC`, `any`, `dangerouslySetInnerHTML`), y los dos providers memoizan su `value` con justificación real.
 
-| Severidad | Nº | Aplicados | Solo recomendación |
-| --------- | -- | --------- | ------------------ |
-| Alta      | 0  | 0         | 0                  |
-| Media     | 3  | 1         | 2                  |
-| Baja      | 10 | 5         | 5                  |
-| **Total** | **13** | **6** | **7** |
+| Severidad | Nº     | Aplicados | Solo recomendación |
+| --------- | ------ | --------- | ------------------ |
+| Alta      | 0      | 0         | 0                  |
+| Media     | 3      | 1         | 2                  |
+| Baja      | 10     | 5         | 5                  |
+| **Total** | **13** | **6**     | **7**              |
 
 Conteo por archivo:
 
-| Archivo | Tipo de módulo | Hallazgos | Peor severidad |
-| ------- | -------------- | --------- | -------------- |
-| `components/landing/hero.tsx` | Client Component | 2 | Media |
-| `components/landing/features.tsx` | Server Component | **0** | — |
-| `components/landing/cta.tsx` | Client Component | 1 | Baja |
-| `components/landing/bp-calculator.tsx` | Client Component | 2 | Baja |
-| `components/site/site-header.tsx` | Client Component | 1 | Baja |
-| `components/site/site-footer.tsx` | Server Component | 3 | Baja |
-| `components/site/toast.tsx` | Client Component (provider) | 2 | Media |
-| `components/site/auth-modals.tsx` | Client Component (provider) | 2 | Media |
+| Archivo                                | Tipo de módulo              | Hallazgos | Peor severidad |
+| -------------------------------------- | --------------------------- | --------- | -------------- |
+| `components/landing/hero.tsx`          | Client Component            | 2         | Media          |
+| `components/landing/features.tsx`      | Server Component            | **0**     | —              |
+| `components/landing/cta.tsx`           | Client Component            | 1         | Baja           |
+| `components/landing/bp-calculator.tsx` | Client Component            | 2         | Baja           |
+| `components/site/site-header.tsx`      | Client Component            | 1         | Baja           |
+| `components/site/site-footer.tsx`      | Server Component            | 3         | Baja           |
+| `components/site/toast.tsx`            | Client Component (provider) | 2         | Media          |
+| `components/site/auth-modals.tsx`      | Client Component (provider) | 2         | Media          |
 
 > `components/landing/features.tsx` **no tiene problemas**: es Server Component (sin `"use client"`), 100 % estático, sin listas ni estado, y todos sus SVG decorativos llevan `aria-hidden="true"` (`features.tsx:13,31,47`).
 
@@ -40,21 +40,21 @@ Conteo por archivo:
 
 - **Ubicación:** `components/site/toast.tsx:53` (antes del cambio).
 - **Problema:** `showToast` agendaba `window.setTimeout(() => dismiss(id), TOAST_DURATION_MS)` sin guardar el id ni cancelarlo. Todo toast deja un callback vivo hasta 3 s después de que el provider se desmonte, y no hay forma de cancelarlos en bloque.
-- **Evidencia:** la doc oficial de React (Context7, `/react/react`, *"useDebouncedCallback – useRef-based timeout with useEffect cleanup"*, `react-reconciler/src/__tests__/useRef-test.internal.js`) define el patrón canónico: guardar el timeout en un `useRef` y `clearTimeout` en el cleanup del `useEffect`. React 19 ya no avisa de `setState` tras desmontar, pero el callback sigue ejecutándose.
+- **Evidencia:** la doc oficial de React (Context7, `/react/react`, _"useDebouncedCallback – useRef-based timeout with useEffect cleanup"_, `react-reconciler/src/__tests__/useRef-test.internal.js`) define el patrón canónico: guardar el timeout en un `useRef` y `clearTimeout` en el cleanup del `useEffect`. React 19 ya no avisa de `setState` tras desmontar, pero el callback sigue ejecutándose.
 - **Corrección aplicada:** `timers = useRef(new Set<number>())` + un `useEffect(() => { … clearTimeout … }, [])` de limpieza; cada timer se elimina del set al dispararse. Sin cambios de API ni de UI; sigue autodescartándose a los 3 s igual que el mockup (`references/01-landing/index.html:753-760`).
 
 #### 2. `auth-modals.tsx` — `mode` dentro del `value` del contexto · **RECOMENDACIÓN (no aplicada)**
 
 - **Ubicación:** `components/site/auth-modals.tsx:52-55`.
 - **Problema:** `value` incluye `mode`, así que cada `openLogin`/`openRegister`/`close` produce un objeto nuevo y **re-renderiza todo el subárbol consumidor**. Pero ninguno de los consumidores lee `mode`: `Hero` (`hero.tsx:10`) y `SiteHeader` (`site-header.tsx:19`) solo destructuran `openLogin`/`openRegister`, y `Cta` (`cta.tsx:7`) solo `openRegister`. En esta pantalla eso significa re-renderizar hero + header + CTA (y su markup estático, que es la mayor parte del JS de la landing) al abrir un modal.
-- **Evidencia:** Context7 `/react/react`, *"Provider value change detection and propagation"* (`packages/react-reconciler/src/ReactFiberNewContext.js`): `propagateParentContextChanges` compara `oldProps.value` con `Object.is` y marca a todos los consumidores del contexto para re-render. Al recrear el objeto, la comparación falla siempre.
+- **Evidencia:** Context7 `/react/react`, _"Provider value change detection and propagation"_ (`packages/react-reconciler/src/ReactFiberNewContext.js`): `propagateParentContextChanges` compara `oldProps.value` con `Object.is` y marca a todos los consumidores del contexto para re-render. Al recrear el objeto, la comparación falla siempre.
 - **Recomendación:** separar el contexto en dos (acciones estables vs. estado `mode`) o dejar `mode` fuera del `value` y exponerlo solo donde se use el `<Modal>` interno. **No aplicado** porque cambia la API pública de `useAuthModals()` (`AuthModalsContextValue`), fuera del alcance permitido.
 
 #### 3. `hero.tsx` — frontera cliente más alta de lo necesario · **RECOMENDACIÓN (no aplicada)**
 
 - **Ubicación:** `components/landing/hero.tsx:1` (`'use client'` en todo el archivo).
 - **Problema:** el Hero es Client Component por dos botones (`hero.tsx:30-47`), pero ~80 de sus 100 líneas son markup estático (badge, `h1`, párrafo y la tarjeta mock del dashboard con tres métricas y el SVG de tendencia). Todo eso entra en el bundle de cliente sin necesitar interactividad.
-- **Evidencia:** doc local `node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md:188` — *"To reduce the size of your client JavaScript bundles, add `'use client'` to specific interactive components instead of marking large parts of your UI as Client Components"*; confirmado en Context7 `/vercel/next.js`, *"Reducing client bundle size — place 'use client' at leaf-level interactive components"* (`docs/01-app/01-getting-started/05-server-and-client-components.mdx`).
+- **Evidencia:** doc local `node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md:188` — _"To reduce the size of your client JavaScript bundles, add `'use client'` to specific interactive components instead of marking large parts of your UI as Client Components"_; confirmado en Context7 `/vercel/next.js`, _"Reducing client bundle size — place 'use client' at leaf-level interactive components"_ (`docs/01-app/01-getting-started/05-server-and-client-components.mdx`).
 - **Recomendación:** extraer un componente cliente mínimo (p. ej. `components/landing/hero-cta.tsx` con los dos botones) y dejar `Hero` como Server Component. **No aplicado**: requiere crear archivos nuevos y cambia el module graph; se deja a decisión de arquitectura.
 
 ### Baja
@@ -120,26 +120,26 @@ Conteo por archivo:
 
 ## Cambios aplicados
 
-| Archivo | Cambio | Línea final |
-| ------- | ------ | ----------- |
-| `components/site/toast.tsx` | `useRef<Set<number>>` de timers + `useEffect` de cleanup y borrado del timer al dispararse | 44-54, 65-69 |
-| `components/landing/hero.tsx` | `motion-reduce:animate-none` en el dot con `animate-ping` | 16 |
-| `components/landing/bp-calculator.tsx` | eliminado el `useId()`/`id` del panel de resultado sin referencias | 109, 178 |
-| `components/landing/bp-calculator.tsx` | `aria-atomic="true"` en la región live del resultado | 180 |
-| `components/site/site-header.tsx` | CTA y login de la barra usan `handleLogin`/`handleRegister` (cierran el menú móvil) | 63, 70 |
-| `components/site/auth-modals.tsx` | `?.focus?.()` → `?.focus()` | 158 |
+| Archivo                                | Cambio                                                                                     | Línea final  |
+| -------------------------------------- | ------------------------------------------------------------------------------------------ | ------------ |
+| `components/site/toast.tsx`            | `useRef<Set<number>>` de timers + `useEffect` de cleanup y borrado del timer al dispararse | 44-54, 65-69 |
+| `components/landing/hero.tsx`          | `motion-reduce:animate-none` en el dot con `animate-ping`                                  | 16           |
+| `components/landing/bp-calculator.tsx` | eliminado el `useId()`/`id` del panel de resultado sin referencias                         | 109, 178     |
+| `components/landing/bp-calculator.tsx` | `aria-atomic="true"` en la región live del resultado                                       | 180          |
+| `components/site/site-header.tsx`      | CTA y login de la barra usan `handleLogin`/`handleRegister` (cierran el menú móvil)        | 63, 70       |
+| `components/site/auth-modals.tsx`      | `?.focus?.()` → `?.focus()`                                                                | 158          |
 
 `git diff` sobre los archivos del alcance (los demás diffs en el worktree son cambios de otros archivos, ajenos a esta revisión).
 
 ## Verificación ejecutada
 
-| Comprobación | Comando / evidencia | Resultado |
-| ------------ | ------------------- | --------- |
-| ESLint | `pnpm lint` | exit 0 |
-| TypeScript estricto | `pnpm exec tsc --noEmit` | exit 0 |
-| Build de producción | `pnpm build` | ✓ 10/10 páginas, `/` prerenderizada estática |
-| `useId` muerto sin consumidores | `grep -rn "ids.result\|resultBox" .playwright-mcp` | sin coincidencias |
-| Fronteras `'use client'` | `grep -l "'use client'" components/...` + `app/page.tsx` | `features.tsx` y `site-footer.tsx` sin directiva (Server Components) |
+| Comprobación                    | Comando / evidencia                                      | Resultado                                                            |
+| ------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------- |
+| ESLint                          | `pnpm lint`                                              | exit 0                                                               |
+| TypeScript estricto             | `pnpm exec tsc --noEmit`                                 | exit 0                                                               |
+| Build de producción             | `pnpm build`                                             | ✓ 10/10 páginas, `/` prerenderizada estática                         |
+| `useId` muerto sin consumidores | `grep -rn "ids.result\|resultBox" .playwright-mcp`       | sin coincidencias                                                    |
+| Fronteras `'use client'`        | `grep -l "'use client'" components/...` + `app/page.tsx` | `features.tsx` y `site-footer.tsx` sin directiva (Server Components) |
 
 ## No verificable / fuera de alcance
 

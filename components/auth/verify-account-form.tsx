@@ -1,12 +1,12 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import { FormProvider } from 'react-hook-form'
-import { FormField } from '@/components/form/form-field'
-import { CodeField } from '@/components/form/code-field'
-import { SubmitButton } from '@/components/auth/submit-button'
-import { FormError } from '@/components/auth/form-error'
-import { useVerifyForm } from '@/lib/auth/hooks/use-verify-form'
+import { FormError } from "@/components/auth/form-error"
+import { SubmitButton } from "@/components/auth/submit-button"
+import { CodeField } from "@/components/form/code-field"
+import { FormField } from "@/components/form/form-field"
+import { useVerifyForm } from "@/lib/auth/hooks/use-verify-form"
+import Link from "next/link"
+import { FormProvider } from "react-hook-form"
 
 interface VerifyAccountFormProps {
   /** Email precargado desde el query param `email`. */
@@ -15,8 +15,16 @@ interface VerifyAccountFormProps {
 
 /** Formulario de verificación de cuenta: email + código de 6 dígitos. */
 export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
-  const { onSubmit, onResend, isSubmitting, isResending, error, notice, ...form } = useVerifyForm({
-    email,
+  const {
+    onSubmit,
+    onResend,
+    isSubmitting,
+    isResending,
+    error,
+    notice,
+    ...form
+  } = useVerifyForm({
+    email
   })
 
   return (
@@ -33,12 +41,14 @@ export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
 
         <FormError message={error} />
 
-        <SubmitButton isSubmitting={isSubmitting}>Verificar Cuenta</SubmitButton>
+        <SubmitButton isSubmitting={isSubmitting}>
+          Verificar Cuenta
+        </SubmitButton>
       </form>
 
       <div className="mt-6 text-center space-y-2">
         <p className="text-xs text-slate-400">
-          ¿No recibiste el código?{' '}
+          ¿No recibiste el código?{" "}
           <button
             type="button"
             onClick={onResend}
@@ -46,7 +56,7 @@ export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
             aria-busy={isResending}
             className="text-tensi-400 hover:text-tensi-300 font-medium transition-colors disabled:opacity-60"
           >
-            {isResending ? 'Reenviando…' : 'Reenviar código'}
+            {isResending ? "Reenviando…" : "Reenviar código"}
           </button>
         </p>
 
@@ -61,8 +71,19 @@ export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
             href="/login"
             className="text-xs text-slate-400 hover:text-slate-300 transition-colors inline-flex items-center gap-1.5"
           >
-            <svg className="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            <svg
+              className="size-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
             </svg>
             Volver al inicio de sesión
           </Link>

@@ -1,14 +1,14 @@
-import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
-import { BpRangesReference } from '@/components/dashboard/bp-ranges-reference'
-import { EmptyReadingsCard } from '@/components/dashboard/empty-readings-card'
-import { MedicalDisclaimer } from '@/components/dashboard/medical-disclaimer'
-import { UpgradeBanner } from '@/components/dashboard/upgrade-banner'
-import { Button } from '@/components/ui/button'
-import { verifySession } from '@/lib/auth/dal'
+import { BpRangesReference } from "@/components/dashboard/bp-ranges-reference"
+import { EmptyReadingsCard } from "@/components/dashboard/empty-readings-card"
+import { MedicalDisclaimer } from "@/components/dashboard/medical-disclaimer"
+import { UpgradeBanner } from "@/components/dashboard/upgrade-banner"
+import { Button } from "@/components/ui/button"
+import { verifySession } from "@/lib/auth/dal"
+import type { Metadata } from "next"
+import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
-  title: 'Dashboard — Tensi',
+  title: "Dashboard — Tensi"
 }
 
 /**
@@ -21,10 +21,10 @@ export default async function DashboardPage() {
   const user = await verifySession()
 
   if (!user) {
-    redirect('/login')
+    redirect("/login")
   }
 
-  const isFree = user.plan === 'FREE'
+  const isFree = user.plan === "FREE"
 
   return (
     <>

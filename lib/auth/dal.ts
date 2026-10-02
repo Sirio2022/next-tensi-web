@@ -1,8 +1,8 @@
-import "server-only"
 import { createFetchClient } from "@/lib/http/fetch-client"
 import { ApiError } from "@/lib/http/types"
 import { cookies } from "next/headers"
 import { cache } from "react"
+import "server-only"
 import { checkToken } from "./auth.api"
 import type { AuthUser } from "./types"
 

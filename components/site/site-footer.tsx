@@ -31,7 +31,8 @@ export function SiteFooter() {
               <span className="font-extrabold text-base text-white">Tensi</span>
             </div>
             <p className="text-slate-400 text-xs/relaxed max-w-sm">
-              Controla tu presión arterial de forma inteligente y mejora tu salud cardiovascular.
+              Controla tu presión arterial de forma inteligente y mejora tu
+              salud cardiovascular.
             </p>
           </div>
 
@@ -51,7 +52,10 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href="#contacto" className="hover:text-tensi-400 transition-colors">
+                <a
+                  href="#contacto"
+                  className="hover:text-tensi-400 transition-colors"
+                >
                   Contacto
                 </a>
               </li>
@@ -63,21 +67,40 @@ export function SiteFooter() {
               Desarrollado por
             </h2>
             <ul className="space-y-1.5 text-slate-400">
-              <li className="font-medium text-slate-200">Juan Manuel Alvarez</li>
+              <li className="font-medium text-slate-200">
+                Juan Manuel Alvarez
+              </li>
               <li className="flex items-center space-x-1">
-                <svg className="size-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="size-3 text-slate-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
                     d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
                   />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
                 </svg>
                 <span>Medellín, Colombia</span>
               </li>
               <li className="flex items-center space-x-1 pt-1">
-                <svg className="size-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="size-3 text-slate-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -85,7 +108,10 @@ export function SiteFooter() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <a href="mailto:juanmadev@icloud.com" className="text-tensi-400 hover:underline">
+                <a
+                  href="mailto:juanmadev@icloud.com"
+                  className="text-tensi-400 hover:underline"
+                >
                   juanmadev@icloud.com
                 </a>
               </li>
@@ -94,7 +120,9 @@ export function SiteFooter() {
         </div>
 
         <div className="pt-6 border-t border-slate-800/60 text-center sm:text-left">
-          <p className="text-slate-500 text-[11px]">© 2026 Tensi. Todos los derechos reservados.</p>
+          <p className="text-slate-500 text-[11px]">
+            © 2026 Tensi. Todos los derechos reservados.
+          </p>
         </div>
       </div>
     </footer>

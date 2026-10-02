@@ -20,10 +20,10 @@ export function MedicalDisclaimer() {
         />
       </svg>
       <p className="leading-relaxed">
-        <strong className="font-semibold text-amber-300">Aviso Médico:</strong>{' '}
-        Tensi es una herramienta para monitoreo personal de la presión arterial y
-        no sustituye el consejo o diagnóstico médico profesional. Ante cualquier
-        síntoma, consulta siempre con un profesional de la salud.
+        <strong className="font-semibold text-amber-300">Aviso Médico:</strong>{" "}
+        Tensi es una herramienta para monitoreo personal de la presión arterial
+        y no sustituye el consejo o diagnóstico médico profesional. Ante
+        cualquier síntoma, consulta siempre con un profesional de la salud.
       </p>
     </div>
   )

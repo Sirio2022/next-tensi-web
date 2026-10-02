@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link"
 
 /** Marca Tensi del sidebar: logo con gradiente `tensi` + wordmark. */
 export function SidebarBrand() {

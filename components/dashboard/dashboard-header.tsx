@@ -1,7 +1,7 @@
-import type { AuthUser } from '@/lib/auth/types'
-import { PlanBadge } from './plan-badge'
-import { UpgradeButton } from './upgrade-button'
-import { UserProfile } from './user-profile'
+import type { AuthUser } from "@/lib/auth/types"
+import { PlanBadge } from "./plan-badge"
+import { UpgradeButton } from "./upgrade-button"
+import { UserProfile } from "./user-profile"
 
 interface DashboardHeaderProps {
   user: AuthUser

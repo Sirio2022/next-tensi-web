@@ -1,13 +1,13 @@
-import type { BpCategory } from '@/lib/bp/bp-categories'
+import type { BpCategory } from "@/lib/bp/bp-categories"
 
 /** Tonos visuales disponibles para los rangos. */
 export type BpRangeTone =
-  | 'sky'
-  | 'emerald'
-  | 'emerald-soft'
-  | 'amber'
-  | 'orange'
-  | 'rose'
+  | "sky"
+  | "emerald"
+  | "emerald-soft"
+  | "amber"
+  | "orange"
+  | "rose"
 
 export interface BpRangeDisplay {
   label: string
@@ -25,43 +25,43 @@ export interface BpRangeDisplay {
  */
 export const BP_RANGE_DISPLAY: readonly BpRangeDisplay[] = [
   {
-    label: 'Hipotensión',
-    range: '< 90 / 60',
-    tone: 'sky',
+    label: "Hipotensión",
+    range: "< 90 / 60",
+    tone: "sky",
     categories: [
-      'mild_hypotension',
-      'moderate_hypotension',
-      'severe_hypotension',
-    ],
+      "mild_hypotension",
+      "moderate_hypotension",
+      "severe_hypotension"
+    ]
   },
   {
-    label: 'Óptima',
-    range: '< 120 / 80',
-    tone: 'emerald',
-    categories: ['optimal'],
+    label: "Óptima",
+    range: "< 120 / 80",
+    tone: "emerald",
+    categories: ["optimal"]
   },
   {
-    label: 'Normal',
-    range: '120-129 / 80-84',
-    tone: 'emerald-soft',
-    categories: ['normal'],
+    label: "Normal",
+    range: "120-129 / 80-84",
+    tone: "emerald-soft",
+    categories: ["normal"]
   },
   {
-    label: 'Normal Alta',
-    range: '130-139 / 85-89',
-    tone: 'amber',
-    categories: ['high_normal'],
+    label: "Normal Alta",
+    range: "130-139 / 85-89",
+    tone: "amber",
+    categories: ["high_normal"]
   },
   {
-    label: 'Hipertensión 1',
-    range: '140-159 / 90-99',
-    tone: 'orange',
-    categories: ['grade_1_hypertension'],
+    label: "Hipertensión 1",
+    range: "140-159 / 90-99",
+    tone: "orange",
+    categories: ["grade_1_hypertension"]
   },
   {
-    label: 'Hipertensión 2',
-    range: '≥ 160 / 100',
-    tone: 'rose',
-    categories: ['grade_2_hypertension', 'grade_3_hypertension'],
-  },
+    label: "Hipertensión 2",
+    range: "≥ 160 / 100",
+    tone: "rose",
+    categories: ["grade_2_hypertension", "grade_3_hypertension"]
+  }
 ]

@@ -4,7 +4,7 @@ interface LockBadgeProps {
   className?: string
 }
 
-const DEFAULT_LABEL = 'Requiere plan Premium'
+const DEFAULT_LABEL = "Requiere plan Premium"
 
 /**
  * Candado ámbar reutilizable (Análisis, Reportes PDF). Es puramente
@@ -13,7 +13,7 @@ const DEFAULT_LABEL = 'Requiere plan Premium'
  */
 export function LockBadge({
   label = DEFAULT_LABEL,
-  className = '',
+  className = ""
 }: Readonly<LockBadgeProps>) {
   return (
     <span

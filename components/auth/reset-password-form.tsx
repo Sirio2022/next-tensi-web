@@ -1,13 +1,13 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import { FormProvider } from 'react-hook-form'
-import { FormField } from '@/components/form/form-field'
-import { CodeField } from '@/components/form/code-field'
-import { PasswordField } from '@/components/form/password-field'
-import { SubmitButton } from '@/components/auth/submit-button'
-import { FormError } from '@/components/auth/form-error'
-import { useResetForm } from '@/lib/auth/hooks/use-reset-form'
+import { FormError } from "@/components/auth/form-error"
+import { SubmitButton } from "@/components/auth/submit-button"
+import { CodeField } from "@/components/form/code-field"
+import { FormField } from "@/components/form/form-field"
+import { PasswordField } from "@/components/form/password-field"
+import { useResetForm } from "@/lib/auth/hooks/use-reset-form"
+import Link from "next/link"
+import { FormProvider } from "react-hook-form"
 
 interface ResetPasswordFormProps {
   /** Email precargado desde el query param `email`. */
@@ -38,7 +38,9 @@ export function ResetPasswordForm({ email }: Readonly<ResetPasswordFormProps>) {
 
         <FormError message={error} />
 
-        <SubmitButton isSubmitting={isSubmitting}>Cambiar contraseña</SubmitButton>
+        <SubmitButton isSubmitting={isSubmitting}>
+          Cambiar contraseña
+        </SubmitButton>
       </form>
 
       <div className="mt-6 text-center">
@@ -46,8 +48,19 @@ export function ResetPasswordForm({ email }: Readonly<ResetPasswordFormProps>) {
           href="/login"
           className="text-xs text-slate-400 hover:text-slate-300 transition-colors inline-flex items-center gap-1.5"
         >
-          <svg className="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg
+            className="size-3.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           Volver al inicio de sesión
         </Link>

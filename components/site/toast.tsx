@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import {
   createContext,
@@ -8,8 +8,8 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
-} from 'react'
+  type ReactNode
+} from "react"
 
 interface ToastItem {
   id: number
@@ -29,7 +29,7 @@ const TOAST_DURATION_MS = 3000
 export function useToast(): ToastContextValue {
   const context = useContext(ToastContext)
   if (!context) {
-    throw new Error('useToast debe usarse dentro de un ToastProvider')
+    throw new Error("useToast debe usarse dentro de un ToastProvider")
   }
   return context
 }
@@ -68,7 +68,7 @@ export function ToastProvider({ children }: Readonly<{ children: ReactNode }>) {
       }, TOAST_DURATION_MS)
       timers.current.add(timer)
     },
-    [dismiss],
+    [dismiss]
   )
 
   const value = useMemo<ToastContextValue>(() => ({ showToast }), [showToast])

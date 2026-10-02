@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react'
-import type { AuthUser } from '@/lib/auth/types'
-import { DashboardHeader } from './dashboard-header'
-import { DashboardSidebar } from './dashboard-sidebar'
+import type { AuthUser } from "@/lib/auth/types"
+import type { ReactNode } from "react"
+import { DashboardHeader } from "./dashboard-header"
+import { DashboardSidebar } from "./dashboard-sidebar"
 
 interface DashboardShellProps {
   user: AuthUser
@@ -15,7 +15,7 @@ interface DashboardShellProps {
  */
 export function DashboardShell({
   user,
-  children,
+  children
 }: Readonly<DashboardShellProps>) {
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-slate-950 text-slate-100 antialiased md:flex-row">

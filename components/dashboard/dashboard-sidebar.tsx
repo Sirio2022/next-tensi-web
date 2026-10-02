@@ -1,16 +1,19 @@
-'use client'
+"use client"
 
-import { usePathname } from 'next/navigation'
-import { useAuth } from '@/lib/auth/hooks/use-auth'
-import { DASHBOARD_NAV_ITEMS, DASHBOARD_SETTINGS_ITEM } from '@/lib/dashboard/nav'
-import { SidebarBrand } from './sidebar-brand'
-import { SidebarNavItem } from './sidebar-nav-item'
+import { useAuth } from "@/lib/auth/hooks/use-auth"
+import {
+  DASHBOARD_NAV_ITEMS,
+  DASHBOARD_SETTINGS_ITEM
+} from "@/lib/dashboard/nav"
+import { usePathname } from "next/navigation"
+import { SidebarBrand } from "./sidebar-brand"
+import { SidebarNavItem } from "./sidebar-nav-item"
 
 /** Desplaza el viewport al banner de upgrade (los ítems bloqueados apuntan ahí). */
 function scrollToUpgradeBanner() {
   document
-    .getElementById('upgrade')
-    ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    .getElementById("upgrade")
+    ?.scrollIntoView({ behavior: "smooth", block: "start" })
 }
 
 /**
@@ -23,18 +26,21 @@ export function DashboardSidebar() {
   const { logout } = useAuth()
 
   return (
-    <aside className="relative z-20 flex w-full shrink-0 flex-col justify-between border-r border-slate-800/80 bg-slate-950/90 backdrop-blur-xl md:w-64">
+    <aside
+      aria-label="Barra lateral"
+      className="relative z-20 flex w-full shrink-0 flex-col justify-between border-r border-slate-800/80 bg-slate-950/90 backdrop-blur-xl md:w-64"
+    >
       <div>
         <div className="flex h-16 items-center justify-between border-b border-slate-800/60 px-6">
           <SidebarBrand />
         </div>
 
-        <nav className="space-y-1 p-4">
+        <nav aria-label="Navegación principal" className="space-y-1 p-4">
           {DASHBOARD_NAV_ITEMS.map((item) => (
             <SidebarNavItem
               key={item.id}
               item={item}
-              active={item.href !== '#' && pathname === item.href}
+              active={item.href !== "#" && pathname === item.href}
               onLockedSelect={scrollToUpgradeBanner}
             />
           ))}
@@ -65,7 +71,7 @@ export function DashboardSidebar() {
               d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
             />
           </svg>
-          {logout.isPending ? 'Cerrando sesión…' : 'Cerrar Sesión'}
+          {logout.isPending ? "Cerrando sesión…" : "Cerrar Sesión"}
         </button>
       </div>
     </aside>

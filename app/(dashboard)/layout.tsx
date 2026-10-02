@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation'
-import { DashboardShell } from '@/components/dashboard/dashboard-shell'
-import { AuthProvider } from '@/lib/auth/auth-context'
-import { verifySession } from '@/lib/auth/dal'
+import { DashboardShell } from "@/components/dashboard/dashboard-shell"
+import { AuthProvider } from "@/lib/auth/auth-context"
+import { verifySession } from "@/lib/auth/dal"
+import { redirect } from "next/navigation"
 
 /**
  * Layout del área autenticada. Resuelve la sesión en el server, monta el shell
@@ -9,12 +9,12 @@ import { verifySession } from '@/lib/auth/dal'
  * Components lo lean sin volver a pedirlo. Sin sesión válida, redirige a login.
  */
 export default async function DashboardLayout({
-  children,
-}: Readonly<LayoutProps<'/'>>) {
+  children
+}: Readonly<LayoutProps<"/">>) {
   const user = await verifySession()
 
   if (!user) {
-    redirect('/login')
+    redirect("/login")
   }
 
   return (

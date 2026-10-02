@@ -1,24 +1,24 @@
-'use client'
+"use client"
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import * as authApi from '@/lib/auth/auth.api'
-import { useOptionalAuthContext } from '@/lib/auth/auth-context'
+import { useOptionalAuthContext } from "@/lib/auth/auth-context"
+import * as authApi from "@/lib/auth/auth.api"
 import type {
   ForgotInput,
   LoginInput,
   RegisterInput,
   ResetInput,
-  VerifyInput,
-} from '@/lib/auth/schemas'
-import { ApiError } from '@/lib/http/types'
-import type { MessageResponse } from '@/lib/auth/types'
+  VerifyInput
+} from "@/lib/auth/schemas"
+import type { MessageResponse } from "@/lib/auth/types"
+import { ApiError } from "@/lib/http/types"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
 
 /** Mensaje legible para cualquier fallo de una mutación de auth. */
 function toMessage(error: unknown): string {
   if (error instanceof ApiError) return error.message
   if (error instanceof Error) return error.message
-  return 'Ha ocurrido un error inesperado'
+  return "Ha ocurrido un error inesperado"
 }
 
 /**
@@ -32,32 +32,32 @@ export function useAuth() {
   const authContext = useOptionalAuthContext()
 
   const register = useMutation<MessageResponse, unknown, RegisterInput>({
-    mutationFn: (input) => authApi.register(input),
+    mutationFn: (input) => authApi.register(input)
   })
 
   const verify = useMutation<MessageResponse, unknown, VerifyInput>({
-    mutationFn: (input) => authApi.verifyEmail(input),
+    mutationFn: (input) => authApi.verifyEmail(input)
   })
 
   const resend = useMutation<MessageResponse, unknown, string>({
-    mutationFn: (email) => authApi.resendVerificationCode(email),
+    mutationFn: (email) => authApi.resendVerificationCode(email)
   })
 
   const login = useMutation<MessageResponse, unknown, LoginInput>({
     mutationFn: (input) => authApi.login(input),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['auth', 'session'] })
-      router.push('/dashboard')
+      void queryClient.invalidateQueries({ queryKey: ["auth", "session"] })
+      router.push("/dashboard")
       router.refresh()
-    },
+    }
   })
 
   const forgot = useMutation<MessageResponse, unknown, ForgotInput>({
-    mutationFn: (input) => authApi.forgotPassword(input),
+    mutationFn: (input) => authApi.forgotPassword(input)
   })
 
   const reset = useMutation<MessageResponse, unknown, ResetInput>({
-    mutationFn: (input) => authApi.resetPassword(input),
+    mutationFn: (input) => authApi.resetPassword(input)
   })
 
   const logout = useMutation<MessageResponse, unknown, void>({
@@ -65,9 +65,9 @@ export function useAuth() {
     onSuccess: () => {
       authContext?.setUser(null)
       queryClient.clear()
-      router.push('/login')
+      router.push("/login")
       router.refresh()
-    },
+    }
   })
 
   return {
@@ -87,6 +87,6 @@ export function useAuth() {
       login.isPending ||
       forgot.isPending ||
       reset.isPending ||
-      logout.isPending,
+      logout.isPending
   }
 }

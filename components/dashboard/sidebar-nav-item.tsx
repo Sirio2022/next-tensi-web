@@ -1,9 +1,9 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import type { MouseEvent, ReactNode } from 'react'
-import { LockBadge } from '@/components/ui/lock-badge'
-import type { DashboardNavItem, DashboardNavItemId } from '@/lib/dashboard/nav'
+import { LockBadge } from "@/components/ui/lock-badge"
+import type { DashboardNavItem, DashboardNavItemId } from "@/lib/dashboard/nav"
+import Link from "next/link"
+import type { MouseEvent, ReactNode } from "react"
 
 /** Íconos del sidebar por ítem; heredan el color del texto salvo el de Nueva Lectura. */
 const NAV_ICON: Record<DashboardNavItemId, ReactNode> = {
@@ -23,7 +23,7 @@ const NAV_ICON: Record<DashboardNavItemId, ReactNode> = {
       />
     </svg>
   ),
-  'new-reading': (
+  "new-reading": (
     <svg
       className="size-5 text-emerald-400"
       fill="none"
@@ -108,7 +108,7 @@ const NAV_ICON: Record<DashboardNavItemId, ReactNode> = {
         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
       />
     </svg>
-  ),
+  )
 }
 
 interface SidebarNavItemProps {
@@ -126,7 +126,7 @@ interface SidebarNavItemProps {
 export function SidebarNavItem({
   item,
   active = false,
-  onLockedSelect,
+  onLockedSelect
 }: Readonly<SidebarNavItemProps>) {
   const icon = NAV_ICON[item.id]
 
@@ -149,12 +149,12 @@ export function SidebarNavItem({
   return (
     <Link
       href={item.href}
-      aria-current={active ? 'page' : undefined}
-      onClick={item.href === '#' ? preventPlaceholderNavigation : undefined}
+      aria-current={active ? "page" : undefined}
+      onClick={item.href === "#" ? preventPlaceholderNavigation : undefined}
       className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-all focus-visible:ring-2 focus-visible:ring-tensi-400/70 focus-visible:outline-none ${
         active
-          ? 'border border-tensi-500/20 bg-tensi-600/10 font-semibold text-tensi-400'
-          : 'font-medium text-slate-400 hover:bg-slate-900/60 hover:text-slate-100'
+          ? "border border-tensi-500/20 bg-tensi-600/10 font-semibold text-tensi-400"
+          : "font-medium text-slate-400 hover:bg-slate-900/60 hover:text-slate-100"
       }`}
     >
       {icon}

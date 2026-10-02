@@ -1,13 +1,12 @@
-import { BP_RANGE_DISPLAY, type BpRangeTone } from '@/lib/dashboard/bp-ranges'
+import { BP_RANGE_DISPLAY, type BpRangeTone } from "@/lib/dashboard/bp-ranges"
 
 const BP_RANGE_TONE_CLASSES: Record<BpRangeTone, string> = {
-  sky: 'bg-sky-500/10 border-sky-500/20 text-sky-300',
-  emerald: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
-  'emerald-soft':
-    'bg-emerald-500/5 border-emerald-500/10 text-emerald-400',
-  amber: 'bg-amber-500/10 border-amber-500/20 text-amber-300',
-  orange: 'bg-orange-500/10 border-orange-500/20 text-orange-300',
-  rose: 'bg-rose-500/10 border-rose-500/20 text-rose-300',
+  sky: "bg-sky-500/10 border-sky-500/20 text-sky-300",
+  emerald: "bg-emerald-500/10 border-emerald-500/20 text-emerald-300",
+  "emerald-soft": "bg-emerald-500/5 border-emerald-500/10 text-emerald-400",
+  amber: "bg-amber-500/10 border-amber-500/20 text-amber-300",
+  orange: "bg-orange-500/10 border-orange-500/20 text-orange-300",
+  rose: "bg-rose-500/10 border-rose-500/20 text-rose-300"
 }
 
 /** Tabla de referencia educativa de rangos OMS, en la grilla responsive del mockup. */

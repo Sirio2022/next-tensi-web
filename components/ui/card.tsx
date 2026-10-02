@@ -1,11 +1,11 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react"
 
-export type CardTone = 'default' | 'upgrade'
+export type CardTone = "default" | "upgrade"
 
 const CARD_TONE_CLASSES: Record<CardTone, string> = {
-  default: 'bg-slate-900/60 border-slate-800/80',
+  default: "bg-slate-900/60 border-slate-800/80",
   upgrade:
-    'bg-linear-to-br from-indigo-950/80 via-slate-900 to-slate-950 border-indigo-500/30 shadow-2xl',
+    "bg-linear-to-br from-indigo-950/80 via-slate-900 to-slate-950 border-indigo-500/30 shadow-2xl"
 }
 
 interface CardProps {
@@ -22,9 +22,9 @@ interface CardProps {
  */
 export function Card({
   id,
-  tone = 'default',
-  className = '',
-  children,
+  tone = "default",
+  className = "",
+  children
 }: Readonly<CardProps>) {
   return (
     <div

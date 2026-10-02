@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
-import { useAuth } from './use-auth'
-import { forgotSchema, type ForgotInput } from '@/lib/auth/schemas'
+import { forgotSchema, type ForgotInput } from "@/lib/auth/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { useAuth } from "./use-auth"
 
 /**
  * Wiring de React Hook Form para la solicitud de recuperación. Al 200 navega
@@ -16,7 +16,7 @@ export function useForgotForm() {
 
   const form = useForm<ForgotInput>({
     resolver: zodResolver(forgotSchema),
-    defaultValues: { email: '' },
+    defaultValues: { email: "" }
   })
 
   const onSubmit = form.handleSubmit(async (values) => {
@@ -24,7 +24,7 @@ export function useForgotForm() {
       await forgot.mutateAsync(values)
       router.push(`/reset-password?email=${encodeURIComponent(values.email)}`)
     } catch (error) {
-      form.setError('root', { message: toMessage(error) })
+      form.setError("root", { message: toMessage(error) })
     }
   })
 
@@ -32,6 +32,8 @@ export function useForgotForm() {
     ...form,
     onSubmit,
     isSubmitting: forgot.isPending,
-    error: forgot.isError ? toMessage(forgot.error) : form.formState.errors.root?.message,
+    error: forgot.isError
+      ? toMessage(forgot.error)
+      : form.formState.errors.root?.message
   }
 }

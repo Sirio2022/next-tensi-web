@@ -1,4 +1,4 @@
-import type { AuthUser } from '@/lib/auth/types'
+import type { AuthUser } from "@/lib/auth/types"
 
 interface UserProfileProps {
   user: AuthUser
@@ -10,14 +10,14 @@ interface UserProfileProps {
  * sola, sus dos primeros caracteres.
  */
 function getInitials(user: AuthUser): string {
-  const source = user.username.trim() || user.email?.trim() || ''
+  const source = user.username.trim() || user.email?.trim() || ""
   const parts = source.split(/[\s._-]+/).filter(Boolean)
 
   if (parts.length >= 2) {
-    return `${parts[0]?.charAt(0) ?? ''}${parts[1]?.charAt(0) ?? ''}`.toUpperCase()
+    return `${parts[0]?.charAt(0) ?? ""}${parts[1]?.charAt(0) ?? ""}`.toUpperCase()
   }
 
-  return source.slice(0, 2).toUpperCase() || '?'
+  return source.slice(0, 2).toUpperCase() || "?"
 }
 
 /** Bloque de perfil del header: avatar con iniciales, nombre y email. */
