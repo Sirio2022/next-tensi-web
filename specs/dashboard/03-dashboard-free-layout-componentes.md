@@ -105,25 +105,34 @@ export interface BpRangeDisplay {
 
 ## Criterios de aceptación
 
-- [ ] `GET /dashboard` con sesión válida renderiza el shell con sidebar y header según `references/dashboard/01-page/screenshot1.png`.
-- [ ] El sidebar muestra Dashboard (activo), Nueva Lectura, Historial, Análisis y Reportes PDF, más Configuración y Cerrar Sesión en el bloque inferior.
-- [ ] `Análisis` y `Reportes PDF` muestran el candado ámbar; el del dashboard no.
-- [ ] El ítem activo (`Dashboard`) tiene `aria-current="page"` y el tratamiento visual de activo.
-- [ ] El header muestra el título "Panel Principal", el badge "Plan Free", el botón "Mejorar Plan" y el perfil con nombre y email del usuario de la sesión.
-- [ ] El badge de plan se deriva de `user.plan`; con `plan: 'FREE'` muestra "Plan Free" y el botón "Mejorar Plan" visible.
-- [ ] "Mejorar Plan" desplaza la vista al banner de upgrade.
-- [ ] El aviso médico se muestra arriba del contenido.
-- [ ] El estado vacío ("¡Bienvenido a tu control de presión!") y el banner "Desbloquea Tensi Premium" se renderizan siempre en este spec.
-- [ ] "Cerrar Sesión" llama a `POST /api/auth/logout` de la SPEC 01 y navega a `/login`.
-- [ ] La referencia de rangos lista las 6 filas del mockup en el orden y con los colores indicados.
-- [ ] `BP_RANGE_DISPLAY` importa `BpCategory` desde `lib/bp/bp-categories.ts`; no hay rangos numéricos duplicados del backend.
-- [ ] No existen componentes ni secciones de la vista Premium (KPIs, gráfico, últimas lecturas, switcher "Vista Previa") en el código.
-- [ ] Ninguna llamada a la API de Nest se dispara al cargar `/dashboard` (salvo el `check-token` de `verifySession()`).
-- [ ] Usable a 375px y 1440px sin scroll horizontal; el sidebar se apila en móvil y pasa a `md:w-64` desde `md`.
-- [ ] Los componentes no contienen lógica de cálculo ni validaciones; los datos viajan por props.
-- [ ] Todos los componentes declaran sus props con `Readonly<>`.
-- [ ] `pnpm lint` y `pnpm exec tsc --noEmit` pasan.
-- [ ] No hay errores en consola al cargar `/dashboard`.
+- [x] `GET /dashboard` con sesión válida renderiza el shell con sidebar y header según `references/dashboard/01-page/screenshot1.png`.
+- [x] El sidebar muestra Dashboard (activo), Nueva Lectura, Historial, Análisis y Reportes PDF, más Configuración y Cerrar Sesión en el bloque inferior.
+- [x] `Análisis` y `Reportes PDF` muestran el candado ámbar; el del dashboard no.
+- [x] El ítem activo (`Dashboard`) tiene `aria-current="page"` y el tratamiento visual de activo.
+- [x] El header muestra el título "Panel Principal", el badge "Plan Free", el botón "Mejorar Plan" y el perfil con nombre y email del usuario de la sesión.
+- [x] El badge de plan se deriva de `user.plan`; con `plan: 'FREE'` muestra "Plan Free" y el botón "Mejorar Plan" visible.
+- [x] "Mejorar Plan" desplaza la vista al banner de upgrade.
+- [x] El aviso médico se muestra arriba del contenido.
+- [x] El estado vacío ("¡Bienvenido a tu control de presión!") y el banner "Desbloquea Tensi Premium" se renderizan para el plan Free (única vista implementada en esta spec).
+- [x] "Cerrar Sesión" llama a `POST /api/auth/logout` de la SPEC 01 y navega a `/login`.
+- [x] La referencia de rangos lista las 6 filas del mockup en el orden y con los colores indicados.
+- [x] `BP_RANGE_DISPLAY` importa `BpCategory` desde `lib/bp/bp-categories.ts`; no hay rangos numéricos duplicados del backend.
+- [x] No existen componentes ni secciones de la vista Premium (KPIs, gráfico, últimas lecturas, switcher "Vista Previa") en el código.
+- [x] Ninguna llamada a la API de Nest se dispara al cargar `/dashboard` (salvo el `check-token` de `verifySession()`).
+- [x] Usable a 375px y 1440px sin scroll horizontal; el sidebar se apila en móvil y pasa a `md:w-64` desde `md`.
+- [x] Los componentes no contienen lógica de cálculo ni validaciones; los datos viajan por props.
+- [x] Todos los componentes declaran sus props con `Readonly<>`.
+- [x] `pnpm lint` y `pnpm exec tsc --noEmit` pasan.
+- [x] No hay errores en consola al cargar `/dashboard`.
+
+**Evidencia de verificación (spec-03, verificado con `pnpm dev` + mock de la API Nest que sirve `GET /api/auth/check-token` y `POST /api/auth/logout`, sesión simulada y Playwright a 1440px/375px):**
+
+- Artefactos en `.playwright-mcp/`: `verify-03-dashboard-1440.png`, `verify-03-dashboard-375-full.png`, `verify-03-console.txt`, `verify-03-network-3002.txt` y `verify-03-mock-api.log`.
+- DOM a 1440px: `aria-current="page"` en Dashboard, 2 candados con `aria-label="Requiere plan Premium"` (Análisis y Reportes PDF), `aside` de 256px (`md:w-64`), `scrollWidth === innerWidth` (sin scroll horizontal).
+- DOM a 375px: `aside` a ancho completo apilado sobre el contenido, `scrollWidth === innerWidth` (sin scroll horizontal).
+- Red: el navegador no dispara ninguna request a Nest; el servidor solo llama a `check-token` al cargar. "Mejorar Plan" y el candado de Análisis desplazan a `#upgrade`; "Cerrar Sesión" hace `POST /api/auth/logout` y navega a `/login`.
+- Consola en carga limpia: 0 errores / 0 warnings. `pnpm lint` → 0 errores (1 warning preexistente en `components/site/auth-modals.tsx`); `pnpm exec tsc --noEmit` → sin errores.
+- Nota (fuera de alcance de esta spec): Next.js 16 advierte de `scroll-behavior: smooth` en `<html>` (`app/layout.tsx`); el fix recomendado es añadir `data-scroll-behavior="smooth"` (ver `node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md`). Es un warning, no un error, y es anterior a esta spec.
 
 ## Decisiones
 
@@ -136,7 +145,7 @@ export interface BpRangeDisplay {
 - **No:** usar la categorización de la app (9 categorías / 5 buckets) en la barra de rangos. El mockup muestra 6 filas informativas y esa es su función.
 - **Sí:** candado clicable que desplaza al banner de upgrade. Da salida comercial sin implementar checkout.
 - **Sí:** enlaces del sidebar no implementados quedan como `href="#"` y no navegan.
-- **Sí:** el estado vacío y el banner se renderizan siempre por ahora; la condicionalidad por datos entra en la spec de integración.
+- **Sí:** el estado vacío y el banner se renderizan para el plan Free; la condicionalidad por datos entra en la spec de integración.
 - **Sí:** usuario, nombre y email salen de `AuthUser` (sesión), con iniciales derivadas; no se hardcodea "JM"/"Juan Manuel" del mockup.
 - **No:** drawer/hamburguesa en móvil. Se reproduce el sidebar apilado del mockup.
 - **No:** toggle de tema. La paleta oscura es el tema por defecto.
