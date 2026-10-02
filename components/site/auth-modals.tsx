@@ -1,5 +1,7 @@
-'use client'
+"use client"
 
+import { LoginForm } from "@/components/auth/login-form"
+import { RegisterForm } from "@/components/auth/register-form"
 import {
   createContext,
   useCallback,
@@ -9,31 +11,27 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
-} from 'react'
-import { LoginForm } from '@/components/auth/login-form'
-import { RegisterForm } from '@/components/auth/register-form'
+  type ReactNode
+} from "react"
 
-export type AuthModalMode = 'login' | 'register'
+export type AuthModalMode = "login" | "register"
 
-interface AuthModalsContextValue {
+interface AuthModalsActions {
   /** Abre el modal de login. */
   openLogin: () => void
   /** Abre el modal de registro. */
   openRegister: () => void
   /** Cierra el modal activo. */
   close: () => void
-  /** Modal actualmente activo, o `null` si no hay ninguno. */
-  mode: AuthModalMode | null
 }
 
-const AuthModalsContext = createContext<AuthModalsContextValue | null>(null)
+const AuthModalsContext = createContext<AuthModalsActions | null>(null)
 
-/** Acceso al estado de los modales de auth desde cualquier cliente. */
-export function useAuthModals(): AuthModalsContextValue {
+/** Acceso a las acciones de los modales de auth desde cualquier cliente. */
+export function useAuthModals(): AuthModalsActions {
   const context = useContext(AuthModalsContext)
   if (!context) {
-    throw new Error('useAuthModals debe usarse dentro de un AuthModalsProvider')
+    throw new Error("useAuthModals debe usarse dentro de un AuthModalsProvider")
   }
   return context
 }
@@ -41,25 +39,32 @@ export function useAuthModals(): AuthModalsContextValue {
 /**
  * Provee los modales de login y registro de la landing. Monta los mismos
  * `LoginForm`/`RegisterForm` de la SPEC 01 (cero duplicación de formularios).
+ *
+ * El contexto expone solo las **acciones** (estables) y el `mode` vive en el
+ * estado local del provider, para que abrir un modal no re-renderice a los
+ * consumidores que solo tienen acceso a las acciones (`Hero`, `SiteHeader`,
+ * `Cta`).
  */
-export function AuthModalsProvider({ children }: { children: ReactNode }) {
+export function AuthModalsProvider({
+  children
+}: Readonly<{ children: ReactNode }>) {
   const [mode, setMode] = useState<AuthModalMode | null>(null)
 
-  const openLogin = useCallback(() => setMode('login'), [])
-  const openRegister = useCallback(() => setMode('register'), [])
+  const openLogin = useCallback(() => setMode("login"), [])
+  const openRegister = useCallback(() => setMode("register"), [])
   const close = useCallback(() => setMode(null), [])
 
-  const value = useMemo<AuthModalsContextValue>(
-    () => ({ openLogin, openRegister, close, mode }),
-    [openLogin, openRegister, close, mode],
+  const actions = useMemo<AuthModalsActions>(
+    () => ({ openLogin, openRegister, close }),
+    [openLogin, openRegister, close]
   )
 
   return (
-    <AuthModalsContext.Provider value={value}>
+    <AuthModalsContext.Provider value={actions}>
       {children}
 
       <Modal
-        open={mode === 'login'}
+        open={mode === "login"}
         onClose={close}
         title="Iniciar Sesión"
         description="Accede a tu historial y registro de mediciones"
@@ -68,7 +73,7 @@ export function AuthModalsProvider({ children }: { children: ReactNode }) {
       </Modal>
 
       <Modal
-        open={mode === 'register'}
+        open={mode === "register"}
         onClose={close}
         title="Crear Cuenta Gratis"
         description="Comienza a controlar tu salud cardiovascular con Tensi"
@@ -87,104 +92,78 @@ interface ModalProps {
   children: ReactNode
 }
 
-const FOCUSABLE_SELECTOR = [
-  'a[href]',
-  'button:not([disabled])',
-  'textarea:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
-  '[tabindex]:not([tabindex="-1"])',
-].join(',')
-
 /**
- * Modal base con overlay y panel. Cierra por Escape, click en el backdrop y
- * botón de cierre; al abrir mueve el foco al panel y lo atrapa con Tab, bloquea
- * el scroll del fondo y al cerrar restaura el foco al elemento que lo abrió.
+ * Modal base construido sobre el elemento nativo `<dialog>`. `showModal()` ya
+ * aporta el focus trap, el cierre con Escape y la capa superior (`::backdrop`),
+ * así que solo manejamos el cierre por backdrop, el bloqueo del scroll y la
+ * restauración del foco al cerrar.
  */
-function Modal({ open, onClose, title, description, children }: ModalProps) {
+function Modal({
+  open,
+  onClose,
+  title,
+  description,
+  children
+}: Readonly<ModalProps>) {
   const titleId = useId()
   const descriptionId = useId()
-  const panelRef = useRef<HTMLDivElement>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null)
   const previouslyFocused = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    if (!open) return
+    const dialog = dialogRef.current
+    if (!dialog || !open) return
 
     previouslyFocused.current = document.activeElement as HTMLElement | null
-    const panel = panelRef.current
-    const focusables = () =>
-      panel ? Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)) : []
+    if (!dialog.open) dialog.showModal()
 
-    ;(focusables()[0] ?? panel)?.focus()
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault()
-        onClose()
-        return
-      }
-
-      if (event.key !== 'Tab' || !panel) return
-
-      const items = focusables()
-      if (items.length === 0) {
-        event.preventDefault()
-        panel.focus()
-        return
-      }
-
-      const first = items[0]
-      const last = items[items.length - 1]
-      const active = document.activeElement
-
-      if (event.shiftKey) {
-        if (active === first || !panel.contains(active)) {
-          event.preventDefault()
-          last.focus()
-        }
-      } else if (active === last || !panel.contains(active)) {
-        event.preventDefault()
-        first.focus()
-      }
-    }
-
-    document.addEventListener('keydown', onKeyDown)
     const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = "hidden"
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown)
       document.body.style.overflow = previousOverflow
       previouslyFocused.current?.focus()
     }
-  }, [open, onClose])
+  }, [open])
 
   if (!open) return null
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+    <dialog
+      ref={dialogRef}
+      // El elemento nativo cierra con Escape disparando `cancel`; evitamos su
+      // cierre por defecto y dejamos que el estado del provider lo desmonte.
+      onCancel={(event) => {
+        event.preventDefault()
+        onClose()
+      }}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+      className="m-0 flex size-full max-h-none max-w-none items-center justify-center border-0 bg-transparent p-4 backdrop:bg-black/75 backdrop:backdrop-blur-sm"
     >
-      <div
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
-        tabIndex={-1}
-        className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-2xl outline-none"
-      >
+      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-2xl">
         <button
           type="button"
           onClick={onClose}
           aria-label="Cerrar"
           className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="size-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
@@ -197,6 +176,6 @@ function Modal({ open, onClose, title, description, children }: ModalProps) {
 
         {children}
       </div>
-    </div>
+    </dialog>
   )
 }

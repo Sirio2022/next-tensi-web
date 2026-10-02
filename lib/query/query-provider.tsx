@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import type { ReactNode } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import type { ReactNode } from "react"
 
 function makeQueryClient() {
   return new QueryClient({
@@ -9,9 +9,9 @@ function makeQueryClient() {
       queries: {
         staleTime: 60_000,
         retry: 1,
-        refetchOnWindowFocus: false,
-      },
-    },
+        refetchOnWindowFocus: false
+      }
+    }
   })
 }
 
@@ -24,12 +24,16 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined
 
 function getQueryClient(): QueryClient {
-  if (typeof window === 'undefined') return makeQueryClient()
+  if (typeof window === "undefined") return makeQueryClient()
   browserQueryClient ??= makeQueryClient()
   return browserQueryClient
 }
 
 /** Client boundary que monta el `QueryClient` de TanStack Query. */
-export function QueryProvider({ children }: { children: ReactNode }) {
-  return <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>
+export function QueryProvider({ children }: Readonly<{ children: ReactNode }>) {
+  return (
+    <QueryClientProvider client={getQueryClient()}>
+      {children}
+    </QueryClientProvider>
+  )
 }

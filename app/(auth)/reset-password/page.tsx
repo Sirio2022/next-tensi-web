@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'Restablecer contraseña — Tensi',
 }
 
-export default async function ResetPasswordPage({ searchParams }: PageProps<'/reset-password'>) {
+export default async function ResetPasswordPage({ searchParams }: Readonly<PageProps<'/reset-password'>>) {
   const params = await searchParams
   const email = typeof params.email === 'string' ? params.email : undefined
 
@@ -13,14 +13,14 @@ export default async function ResetPasswordPage({ searchParams }: PageProps<'/re
     <div className="relative rounded-2xl bg-slate-900/60 border border-slate-800/80 p-8 shadow-2xl backdrop-blur-xl hover:border-slate-700/80 transition-all duration-300">
       <div
         aria-hidden="true"
-        className="absolute -inset-px rounded-2xl bg-gradient-to-b from-tensi-500/10 via-transparent to-transparent pointer-events-none"
+        className="absolute -inset-px rounded-2xl bg-linear-to-b from-tensi-500/10 via-transparent to-transparent pointer-events-none"
       />
 
       <div className="relative z-10">
         <h1 className="text-2xl font-bold text-center text-white mb-2 tracking-tight">
           Restablecer Contraseña
         </h1>
-        <p className="text-xs text-slate-400 text-center mb-6 leading-relaxed">
+        <p className="text-xs/relaxed text-slate-400 text-center mb-6">
           Ingresa el código que te enviamos junto con tu nueva contraseña.
         </p>
         <ResetPasswordForm email={email} />

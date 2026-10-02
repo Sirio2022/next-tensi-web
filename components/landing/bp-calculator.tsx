@@ -197,7 +197,7 @@ export function BpCalculator() {
               <>
                 <div className="flex items-center space-x-3 min-w-0">
                   <div
-                    className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center ${bucketStyle.icon}`}
+                    className={`size-10 shrink-0 rounded-lg flex items-center justify-center ${bucketStyle.icon}`}
                   >
                     <BucketIcon bucket={result.bucket} />
                   </div>
@@ -206,7 +206,7 @@ export function BpCalculator() {
                       Categoría estimada:
                     </div>
                     <div
-                      className={`text-base font-extrabold leading-snug ${bucketStyle.title}`}
+                      className={`text-base/snug font-extrabold ${bucketStyle.title}`}
                     >
                       {CATEGORY_LABELS[result.category]}
                     </div>
@@ -220,9 +220,9 @@ export function BpCalculator() {
               </>
             ) : (
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
+                <div className="size-10 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
                   <svg
-                    className="w-6 h-6"
+                    className="size-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

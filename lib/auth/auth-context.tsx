@@ -1,7 +1,13 @@
-'use client'
+"use client"
 
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
-import type { AuthUser } from './types'
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  type ReactNode
+} from "react"
+import type { AuthUser } from "./types"
 
 interface AuthContextValue {
   user: AuthUser | null
@@ -21,7 +27,10 @@ interface AuthProviderProps {
  * `initialUser` calculado en el server. No se usa Zustand; Next recomienda
  * React Context para este caso.
  */
-export function AuthProvider({ initialUser, children }: AuthProviderProps) {
+export function AuthProvider({
+  initialUser,
+  children
+}: Readonly<AuthProviderProps>) {
   const [user, setUser] = useState<AuthUser | null>(initialUser)
 
   // El valor del contexto se memoiza para que los consumidores no se
@@ -36,7 +45,7 @@ export function useAuthContext(): AuthContextValue {
   const context = useContext(AuthContext)
 
   if (!context) {
-    throw new Error('useAuthContext debe usarse dentro de un <AuthProvider>')
+    throw new Error("useAuthContext debe usarse dentro de un <AuthProvider>")
   }
 
   return context

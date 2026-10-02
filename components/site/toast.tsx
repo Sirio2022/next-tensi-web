@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import {
   createContext,
@@ -8,8 +8,8 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
-} from 'react'
+  type ReactNode
+} from "react"
 
 interface ToastItem {
   id: number
@@ -29,7 +29,7 @@ const TOAST_DURATION_MS = 3000
 export function useToast(): ToastContextValue {
   const context = useContext(ToastContext)
   if (!context) {
-    throw new Error('useToast debe usarse dentro de un ToastProvider')
+    throw new Error("useToast debe usarse dentro de un ToastProvider")
   }
   return context
 }
@@ -38,7 +38,7 @@ export function useToast(): ToastContextValue {
  * Provee el feedback de la landing (toast de éxito). Se monta a nivel global
  * en `app/layout.tsx` para sobrevivir a la navegación tras un registro.
  */
-export function ToastProvider({ children }: { children: ReactNode }) {
+export function ToastProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [toasts, setToasts] = useState<ToastItem[]>([])
   const nextId = useRef(0)
   const timers = useRef(new Set<number>())
@@ -68,7 +68,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       }, TOAST_DURATION_MS)
       timers.current.add(timer)
     },
-    [dismiss],
+    [dismiss]
   )
 
   const value = useMemo<ToastContextValue>(() => ({ showToast }), [showToast])
@@ -79,7 +79,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
       <div
         aria-live="polite"
-        className="pointer-events-none fixed bottom-6 right-6 z-[60] flex flex-col space-y-2"
+        className="pointer-events-none fixed bottom-6 right-6 z-60 flex flex-col space-y-2"
       >
         {toasts.map((toast) => (
           <div
@@ -87,7 +87,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             className="pointer-events-auto flex items-center space-x-2 rounded-xl border border-tensi-500/40 bg-slate-900 px-4 py-3 text-xs text-white shadow-xl animate-[toast-in_0.3s_ease-out]"
           >
             <svg
-              className="w-4 h-4 shrink-0 text-tensi-400"
+              className="size-4 shrink-0 text-tensi-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

@@ -1,7 +1,12 @@
-'use client'
+"use client"
 
-import { useId } from 'react'
-import { useFormContext, type FieldError, type FieldValues, type Path } from 'react-hook-form'
+import { useId } from "react"
+import {
+  useFormContext,
+  type FieldError,
+  type FieldValues,
+  type Path
+} from "react-hook-form"
 
 interface FormFieldProps<T extends FieldValues> {
   name: Path<T>
@@ -10,13 +15,13 @@ interface FormFieldProps<T extends FieldValues> {
   placeholder?: string
   autoComplete?: string
   disabled?: boolean
-  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode']
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"]
   maxLength?: number
 }
 
 function errorMessage(error: FieldError | undefined): string | undefined {
   if (!error) return undefined
-  return error.message || 'Este campo no es válido'
+  return error.message || "Este campo no es válido"
 }
 
 /**
@@ -26,17 +31,17 @@ function errorMessage(error: FieldError | undefined): string | undefined {
 export function FormField<T extends FieldValues>({
   name,
   label,
-  type = 'text',
+  type = "text",
   placeholder,
   autoComplete,
   disabled,
   inputMode,
-  maxLength,
-}: FormFieldProps<T>) {
+  maxLength
+}: Readonly<FormFieldProps<T>>) {
   const id = useId()
   const {
     register,
-    formState: { errors },
+    formState: { errors }
   } = useFormContext<T>()
 
   const message = errorMessage(errors[name] as FieldError | undefined)

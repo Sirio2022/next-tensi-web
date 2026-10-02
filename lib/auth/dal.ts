@@ -1,11 +1,10 @@
-import 'server-only'
-
-import { cache } from 'react'
-import { cookies } from 'next/headers'
-import { checkToken } from './auth.api'
-import { createFetchClient } from '@/lib/http/fetch-client'
-import { ApiError } from '@/lib/http/types'
-import type { AuthUser } from './types'
+import { createFetchClient } from "@/lib/http/fetch-client"
+import { ApiError } from "@/lib/http/types"
+import { cookies } from "next/headers"
+import { cache } from "react"
+import "server-only"
+import { checkToken } from "./auth.api"
+import type { AuthUser } from "./types"
 
 /**
  * DAL server-only del flujo de auth. `verifySession()` reenvía la cookie
@@ -23,13 +22,16 @@ export const verifySession = cache(async (): Promise<AuthUser | null> => {
 
   // Cliente server-side: `fetch` de Next no propaga la cookie entrante por
   // defecto, así que se reenvía explícitamente el header `Cookie`.
-  const httpServer = createFetchClient(() => ({ Cookie: cookie }))
+  const sessionClient = createFetchClient(() => ({ Cookie: cookie }))
 
   try {
-    const { user } = await checkToken(httpServer)
+    const { user } = await checkToken(sessionClient)
     return user
   } catch (error) {
-    if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
+    if (
+      error instanceof ApiError &&
+      (error.status === 401 || error.status === 403)
+    ) {
       return null
     }
     throw error

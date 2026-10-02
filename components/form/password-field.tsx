@@ -1,7 +1,12 @@
-'use client'
+"use client"
 
-import { useId, useState } from 'react'
-import { useFormContext, type FieldError, type FieldValues, type Path } from 'react-hook-form'
+import { useId, useState } from "react"
+import {
+  useFormContext,
+  type FieldError,
+  type FieldValues,
+  type Path
+} from "react-hook-form"
 
 interface PasswordFieldProps<T extends FieldValues> {
   name: Path<T>
@@ -18,17 +23,18 @@ export function PasswordField<T extends FieldValues>({
   name,
   label,
   placeholder,
-  autoComplete,
-}: PasswordFieldProps<T>) {
+  autoComplete
+}: Readonly<PasswordFieldProps<T>>) {
   const id = useId()
   const [visible, setVisible] = useState(false)
   const {
     register,
-    formState: { errors },
+    formState: { errors }
   } = useFormContext<T>()
 
   const error = errors[name] as FieldError | undefined
-  const message = error?.message || (error ? 'Este campo no es válido' : undefined)
+  const message =
+    error?.message || (error ? "Este campo no es válido" : undefined)
   const errorId = `${id}-error`
 
   return (
@@ -42,7 +48,7 @@ export function PasswordField<T extends FieldValues>({
       <div className="relative">
         <input
           id={id}
-          type={visible ? 'text' : 'password'}
+          type={visible ? "text" : "password"}
           placeholder={placeholder}
           autoComplete={autoComplete}
           aria-invalid={message ? true : undefined}
@@ -54,11 +60,17 @@ export function PasswordField<T extends FieldValues>({
           type="button"
           onClick={() => setVisible((value) => !value)}
           aria-pressed={visible}
-          aria-label={visible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+          aria-label={visible ? "Ocultar contraseña" : "Mostrar contraseña"}
           className="absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 hover:text-white transition-colors"
         >
           {visible ? (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg
+              className="size-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -67,8 +79,19 @@ export function PasswordField<T extends FieldValues>({
               />
             </svg>
           ) : (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg
+              className="size-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
