@@ -81,7 +81,7 @@
   >
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       <div
-        class="absolute -top-32 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] hero-glow pointer-events-none"
+        class="absolute -top-32 left-1/2 -translate-x-1/2 w-250 h-150 hero-glow pointer-events-none"
       ></div>
       <div
         class="absolute top-[35%] -left-48 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none"
@@ -99,7 +99,7 @@
       >
         <a href="#" class="flex items-center space-x-3 group">
           <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-all duration-300"
+            class="w-10 h-10 rounded-xl bg-linear-to-tr from-cyan-500 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-all duration-300"
           >
             <i
               data-lucide="heart-pulse"
@@ -140,7 +140,7 @@
           </button>
           <button
             onclick="openModal('registerModal')"
-            class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full shadow-lg shadow-cyan-500/20 transition-all hover:scale-[1.02] flex items-center space-x-2"
+            class="bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full shadow-lg shadow-cyan-500/20 transition-all hover:scale-[1.02] flex items-center space-x-2"
           >
             <span>Comenzar Gratis</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -149,7 +149,7 @@
       </div>
     </header>
 
-    <main class="relative z-10 flex-grow">
+    <main class="relative z-10 grow">
       <section class="relative pt-12 pb-16 md:pt-20 md:pb-28">
         <div
           class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
@@ -183,7 +183,7 @@
           >
             <button
               onclick="openModal('registerModal')"
-              class="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold px-8 py-3.5 rounded-full shadow-xl shadow-cyan-500/25 transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
+              class="w-full sm:w-auto bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold px-8 py-3.5 rounded-full shadow-xl shadow-cyan-500/25 transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
             >
               <span>Comenzar Gratis</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -199,7 +199,7 @@
 
           <div class="mt-14 max-w-4xl mx-auto relative">
             <div
-              class="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-indigo-500 to-violet-500 rounded-3xl blur-2xl opacity-20"
+              class="absolute -inset-1 bg-linear-to-r from-cyan-500 via-indigo-500 to-violet-500 rounded-3xl blur-2xl opacity-20"
             ></div>
 
             <div
@@ -369,8 +369,11 @@
           >
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2"
-                  >Sistólica (SYS mmHg)</label
+                <label
+                  class="block text-xs font-semibold text-slate-300 mb-2"
+                  for="inputSys"
+                >
+                  Sistólica (SYS mmHg)</label
                 >
                 <input
                   id="inputSys"
@@ -383,8 +386,11 @@
                 />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2"
-                  >Diastólica (DIA mmHg)</label
+                <label
+                  class="block text-xs font-semibold text-slate-300 mb-2"
+                  for="inputDia"
+                >
+                  Diastólica (DIA mmHg)</label
                 >
                 <input
                   id="inputDia"
@@ -397,7 +403,9 @@
                 />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2"
+                <label
+                  class="block text-xs font-semibold text-slate-300 mb-2"
+                  for="inputPulse"
                   >Pulso (BPM)</label
                 >
                 <input
@@ -467,7 +475,7 @@
             <div class="mt-8 relative z-10">
               <button
                 onclick="openModal('registerModal')"
-                class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm px-8 py-3.5 rounded-full shadow-lg shadow-cyan-500/30 transition-all hover:scale-105"
+                class="bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm px-8 py-3.5 rounded-full shadow-lg shadow-cyan-500/30 transition-all hover:scale-105"
               >
                 Crear Cuenta Gratis
               </button>
@@ -486,7 +494,7 @@
           <div class="md:col-span-2">
             <div class="flex items-center space-x-2.5 mb-3">
               <div
-                class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-violet-500 flex items-center justify-center text-white font-bold"
+                class="w-8 h-8 rounded-lg bg-linear-to-tr from-cyan-500 to-violet-500 flex items-center justify-center text-white font-bold"
               >
                 <i data-lucide="heart-pulse" class="w-5 h-5"></i>
               </div>
@@ -560,7 +568,7 @@
     <!-- Modal Login -->
     <div
       id="loginModal"
-      class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
     >
       <div
         class="glass-panel bg-slate-900 rounded-2xl max-w-md w-full p-6 border border-slate-700 shadow-2xl relative"
@@ -578,10 +586,13 @@
 
         <form onsubmit="handleAuth(event, 'Sesión iniciada')" class="space-y-4">
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1"
+            <label
+              class="block text-xs font-medium text-slate-300 mb-1"
+              for="inputEmail"
               >Correo Electrónico</label
             >
             <input
+              id="inputEmail"
               type="email"
               required
               placeholder="tu@email.com"
@@ -589,10 +600,13 @@
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1"
+            <label
+              class="block text-xs font-medium text-slate-300 mb-1"
+              for="inputPassword"
               >Contraseña</label
             >
             <input
+              id="inputPassword"
               type="password"
               required
               placeholder="••••••••"
@@ -612,7 +626,7 @@
     <!-- Modal Registro -->
     <div
       id="registerModal"
-      class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
     >
       <div
         class="glass-panel bg-slate-900 rounded-2xl max-w-md w-full p-6 border border-slate-700 shadow-2xl relative"
@@ -633,10 +647,13 @@
           class="space-y-4"
         >
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1"
+            <label
+              class="block text-xs font-medium text-slate-300 mb-1"
+              for="inputName"
               >Nombre Completo</label
             >
             <input
+              id="inputName"
               type="text"
               required
               placeholder="Juan Pérez"
@@ -644,10 +661,13 @@
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1"
+            <label
+              class="block text-xs font-medium text-slate-300 mb-1"
+              for="inputEmailRegister"
               >Correo Electrónico</label
             >
             <input
+              id="inputEmailRegister"
               type="email"
               required
               placeholder="tu@email.com"
@@ -655,10 +675,13 @@
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1"
+            <label
+              class="block text-xs font-medium text-slate-300 mb-1"
+              for="inputPasswordRegister"
               >Contraseña</label
             >
             <input
+              id="inputPasswordRegister"
               type="password"
               required
               placeholder="••••••••"
@@ -667,7 +690,7 @@
           </div>
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-cyan-500/20 text-sm"
+            class="w-full bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-cyan-500/20 text-sm"
           >
             Comenzar Ahora
           </button>
@@ -700,8 +723,8 @@
       }
 
       function calculateBP() {
-        const sys = parseInt(document.getElementById("inputSys").value) || 120
-        const dia = parseInt(document.getElementById("inputDia").value) || 80
+        const sys = Number(document.getElementById("inputSys").value) || 120
+        const dia = Number(document.getElementById("inputDia").value) || 80
 
         const categoryEl = document.getElementById("resultCategory")
         const boxEl = document.getElementById("resultBox")
