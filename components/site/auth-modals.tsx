@@ -2,6 +2,7 @@
 
 import { LoginForm } from "@/components/auth/login-form"
 import { RegisterForm } from "@/components/auth/register-form"
+import { X } from "lucide-react"
 import {
   createContext,
   useCallback,
@@ -151,20 +152,7 @@ function Modal({
           aria-label="Cerrar"
           className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
         >
-          <svg
-            className="size-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <X className="size-5" />
         </button>
 
         <h2 id={titleId} className="text-xl font-bold text-white mb-1">

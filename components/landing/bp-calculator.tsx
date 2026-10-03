@@ -2,6 +2,7 @@
 
 import type { BpCategory, BpVisualBucket } from "@/lib/bp/bp-categories"
 import { useBpCalculator } from "@/lib/bp/hooks/use-bp-calculator"
+import { ArrowDown, CircleCheck, Info, TriangleAlert } from "lucide-react"
 import { useId } from "react"
 
 const CATEGORY_LABELS: Record<BpCategory, string> = {
@@ -62,52 +63,19 @@ const BUCKET_STYLES: Record<BpVisualBucket, BucketStyle> = {
   }
 }
 
-/** Icono decorativo por bucket; el color lo aporta el contenedor. */
+/** Icono por bucket; el color lo aporta el contenedor. */
 function BucketIcon({ bucket }: Readonly<{ bucket: BpVisualBucket }>) {
-  const common = {
-    className: "w-6 h-6",
-    fill: "none",
-    stroke: "currentColor",
-    viewBox: "0 0 24 24",
-    "aria-hidden": true
-  } as const
+  const className = "size-6"
 
   if (bucket === "saludable") {
-    return (
-      <svg {...common}>
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    )
+    return <CircleCheck className={className} />
   }
 
   if (bucket === "presion_baja") {
-    return (
-      <svg {...common}>
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 14l-7 7m0 0l-7-7m7 7V3"
-        />
-      </svg>
-    )
+    return <ArrowDown className={className} />
   }
 
-  return (
-    <svg {...common}>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-      />
-    </svg>
-  )
+  return <TriangleAlert className={className} />
 }
 
 const INPUT_CLASSES =
@@ -221,20 +189,7 @@ export function BpCalculator() {
             ) : (
               <div className="flex items-center space-x-3">
                 <div className="size-10 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
-                  <svg
-                    className="size-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                  <Info className="size-6" />
                 </div>
                 <div>
                   <div className="text-xs text-slate-400">

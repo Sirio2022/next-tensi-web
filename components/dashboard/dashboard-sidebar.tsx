@@ -6,6 +6,7 @@ import {
   DASHBOARD_SETTINGS_ITEM
 } from "@/lib/dashboard/nav"
 import { scrollToUpgradeBanner } from "@/lib/dashboard/scroll-to-upgrade"
+import { LogOut } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { SidebarBrand } from "./sidebar-brand"
 import { SidebarNavItem } from "./sidebar-nav-item"
@@ -63,20 +64,7 @@ export function DashboardSidebar() {
           aria-busy={logout.isPending}
           className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-rose-400 transition-all hover:bg-rose-500/10 focus-visible:ring-2 focus-visible:ring-rose-400/70 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <svg
-            className="size-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
+          <LogOut className="size-5" />
           {logout.isPending ? "Cerrando sesión…" : "Cerrar Sesión"}
         </button>
       </div>

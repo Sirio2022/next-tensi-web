@@ -10,6 +10,7 @@ import {
   useState,
   type ReactNode
 } from "react"
+import { CircleCheck, X } from "lucide-react"
 
 interface ToastItem {
   id: number
@@ -65,20 +66,7 @@ function Toast({
       onBlur={() => setPaused(false)}
       className="pointer-events-auto flex items-center space-x-2 rounded-xl border border-tensi-500/40 bg-slate-900 px-4 py-3 text-xs text-white shadow-xl animate-toast-in motion-reduce:animate-none"
     >
-      <svg
-        className="size-4 shrink-0 text-tensi-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
+      <CircleCheck className="size-4 shrink-0 text-tensi-400" />
       <span>{message}</span>
       <button
         type="button"
@@ -86,20 +74,7 @@ function Toast({
         aria-label="Cerrar notificación"
         className="ml-1 shrink-0 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tensi-400"
       >
-        <svg
-          className="size-3.5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        <X className="size-3.5" />
       </button>
     </div>
   )

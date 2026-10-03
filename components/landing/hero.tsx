@@ -1,6 +1,7 @@
 "use client"
 
 import { useAuthModals } from "@/components/site/auth-modals"
+import { ArrowRight } from "lucide-react"
 
 /**
  * Hero de la landing: titular, CTAs que abren los modales y la tarjeta mock del
@@ -35,20 +36,7 @@ export function Hero() {
             className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-linear-to-r from-tensi-500 to-blue-600 hover:from-tensi-400 hover:to-blue-500 text-white font-semibold px-8 py-3.5 rounded-full shadow-xl shadow-tensi-500/25 transition-all duration-300 hover:scale-105"
           >
             <span>Comenzar Gratis</span>
-            <svg
-              className="size-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              />
-            </svg>
+            <ArrowRight className="size-4" />
           </button>
 
           <button

@@ -5,6 +5,7 @@ import { SubmitButton } from "@/components/auth/submit-button"
 import { CodeField } from "@/components/form/code-field"
 import { FormField } from "@/components/form/form-field"
 import { useVerifyForm } from "@/lib/auth/hooks/use-verify-form"
+import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { FormProvider } from "react-hook-form"
 
@@ -71,20 +72,7 @@ export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
             href="/login"
             className="text-xs text-slate-400 hover:text-slate-300 transition-colors inline-flex items-center gap-1.5"
           >
-            <svg
-              className="size-3.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
+            <ArrowLeft className="size-3.5" />
             Volver al inicio de sesión
           </Link>
         </p>

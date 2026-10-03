@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { scrollToUpgradeBanner } from "@/lib/dashboard/scroll-to-upgrade"
 import type { Plan } from "@/lib/auth/types"
+import { Zap } from "lucide-react"
 
 interface UpgradeButtonProps {
   plan: Plan
@@ -18,20 +19,7 @@ export function UpgradeButton({ plan }: Readonly<UpgradeButtonProps>) {
   return (
     <span className="hidden sm:inline-flex">
       <Button tone="amber" size="sm" onClick={scrollToUpgradeBanner}>
-        <svg
-          className="size-3.5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 10V3L4 14h7v7l9-11h-7z"
-          />
-        </svg>
+        <Zap className="size-3.5" />
         Mejorar Plan
       </Button>
     </span>

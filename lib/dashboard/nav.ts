@@ -44,7 +44,7 @@ export const DASHBOARD_NAV_ITEMS: readonly Readonly<DashboardNavItem>[] = [
   {
     id: "new-reading",
     label: "Nueva Lectura",
-    href: "#",
+    href: "/dashboard/new-reading",
     requiresPremium: false
   },
   {

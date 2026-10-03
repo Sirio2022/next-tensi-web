@@ -16,7 +16,7 @@
 
 **In:**
 
-- Ruta `app/(dashboard)/new-reading/page.tsx` (Server Component) con el título centrado "Agregar Nueva Lectura"; hereda el shell de `(dashboard)` (sidebar + header) **sin cambios de color**.
+- Ruta `app/(dashboard)/dashboard/new-reading/page.tsx` (Server Component) con el título centrado "Agregar Nueva Lectura"; hereda el shell de `(dashboard)` (sidebar + header) **sin cambios de color**.
 - Actualizar `lib/dashboard/nav.ts`: `new-reading.href = "/dashboard/new-reading"`.
 - Actualizar `app/(dashboard)/dashboard/page.tsx`: el CTA navega a la nueva ruta con `next/link`.
 - `components/dashboard/new-reading-form.tsx` (Client Component) con estado local: las tres métricas, chips, notas, fecha/hora de solo lectura y submit no-op.
@@ -81,7 +81,7 @@ export const READING_CONTEXT_TAGS: readonly string[]
 6. Crear `components/dashboard/new-reading-form.tsx` (client): estado de las tres métricas, tags, notas y la fecha/hora de solo lectura; `onSubmit` con `preventDefault`, sin persistir.
 7. Crear `components/dashboard/ai-analysis-card.tsx`: bloque estático con 8/10 restantes, 65%, declaración "NORMAL" y CTA Premium; copy sin `**` literales.
 8. Extraer las clases de `components/ui/button.tsx` y crear `components/ui/button-link.tsx` (renderiza `next/link` con las mismas clases).
-9. Crear `app/(dashboard)/new-reading/page.tsx` (Server Component, `metadata.title = "Nueva Lectura"`) que compone el formulario y la tarjeta IA centrados en `max-w-2xl`.
+9. Crear `app/(dashboard)/dashboard/new-reading/page.tsx` (Server Component, `metadata.title = "Nueva Lectura"`) que compone el formulario y la tarjeta IA centrados en `max-w-2xl`.
 10. Actualizar `lib/dashboard/nav.ts`: `new-reading.href = "/dashboard/new-reading"`.
 11. Actualizar `app/(dashboard)/dashboard/page.tsx`: el CTA "Registrar Nueva Lectura" navega con `button-link.tsx` a la nueva ruta.
 12. Repasar responsive y accesibilidad a 375px/1440px: sin scroll horizontal, foco visible, labels asociados.
