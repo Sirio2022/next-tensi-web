@@ -123,12 +123,12 @@ export const READING_CONTEXT_TAGS: readonly string[]
 
 ## Riesgos
 
-| Riesgo                                                              | Mitigación                                                                      |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| El botón "Mejorar Plan" del header apunta a `#upgrade`, ausente aquí | Es un no-op inocuo; se documenta y se resuelve cuando exista flujo de upgrade    |
-| `lucide-react` con React 19 / Server Components                      | Verificar `pnpm build` tras instalar; importar íconos nombrados                  |
-| La migración masiva de íconos cambia tamaños o alineación            | Revisar cada pantalla en Playwright (375/1440) contra las capturas previas       |
-| El Client Component suma bundle a una ruta sin datos                 | Mantener la interactividad acotada al formulario; la tarjeta IA queda en server  |
+| Riesgo                                                               | Mitigación                                                                      |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| El botón "Mejorar Plan" del header apunta a `#upgrade`, ausente aquí | Es un no-op inocuo; se documenta y se resuelve cuando exista flujo de upgrade   |
+| `lucide-react` con React 19 / Server Components                      | Verificar `pnpm build` tras instalar; importar íconos nombrados                 |
+| La migración masiva de íconos cambia tamaños o alineación            | Revisar cada pantalla en Playwright (375/1440) contra las capturas previas      |
+| El Client Component suma bundle a una ruta sin datos                 | Mantener la interactividad acotada al formulario; la tarjeta IA queda en server |
 | `aria-pressed` en chips puede leerse como toggle de formulario       | `type="button"` explícito y `aria-label` del grupo                              |
 
 ## Qué **no** entra en esta spec
