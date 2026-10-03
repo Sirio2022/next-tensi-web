@@ -1,6 +1,6 @@
 # SPEC 08 — Nueva Lectura Free: pantalla visual e interactiva
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 03, SPEC 06, SPEC 07
 > **Date:** 2026-10-03
 > **Objective:** Implementar la pantalla visual de "Nueva Lectura" (plan Free) de `references/dashboard/02-new-reading/free` sobre el shell autenticado existente, con interacción local y sin persistencia ni API.
