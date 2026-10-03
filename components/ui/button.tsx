@@ -17,6 +17,27 @@ const BUTTON_SIZE_CLASSES: Record<ButtonSize, string> = {
   md: "px-5 py-3 text-sm"
 }
 
+const BUTTON_BASE_CLASSES =
+  "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tensi-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60"
+
+interface ButtonClassesOptions {
+  tone?: ButtonTone
+  size?: ButtonSize
+  className?: string
+}
+
+/**
+ * Compone las clases del botón. Las comparten `Button` (elemento nativo) y
+ * `ButtonLink` (navegación), para que ambos se vean idénticos.
+ */
+export function buttonClasses({
+  tone = "primary",
+  size = "md",
+  className = ""
+}: Readonly<ButtonClassesOptions> = {}): string {
+  return `${BUTTON_BASE_CLASSES} ${BUTTON_SIZE_CLASSES[size]} ${BUTTON_TONE_CLASSES[tone]} ${className}`.trim()
+}
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tone?: ButtonTone
   size?: ButtonSize
@@ -44,7 +65,7 @@ export function Button({
     <button
       ref={ref}
       type={type}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tensi-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60 ${BUTTON_SIZE_CLASSES[size]} ${BUTTON_TONE_CLASSES[tone]} ${className}`}
+      className={buttonClasses({ tone, size, className })}
       {...rest}
     >
       {children}

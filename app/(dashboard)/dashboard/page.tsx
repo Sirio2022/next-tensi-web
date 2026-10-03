@@ -2,8 +2,9 @@ import { BpRangesReference } from "@/components/dashboard/bp-ranges-reference"
 import { EmptyReadingsCard } from "@/components/dashboard/empty-readings-card"
 import { MedicalDisclaimer } from "@/components/dashboard/medical-disclaimer"
 import { UpgradeBanner } from "@/components/dashboard/upgrade-banner"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button-link"
 import { verifySession } from "@/lib/auth/dal"
+import { Plus } from "lucide-react"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
@@ -40,23 +41,10 @@ export default async function DashboardPage() {
           </p>
         </div>
 
-        <Button>
-          <svg
-            className="size-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
+        <ButtonLink href="/dashboard/new-reading">
+          <Plus className="size-4" />
           Registrar Nueva Lectura
-        </Button>
+        </ButtonLink>
       </div>
 
       {isFree ? (

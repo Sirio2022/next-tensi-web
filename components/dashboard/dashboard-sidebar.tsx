@@ -3,12 +3,38 @@
 import { useLogout } from "@/lib/auth/hooks/use-logout"
 import {
   DASHBOARD_NAV_ITEMS,
-  DASHBOARD_SETTINGS_ITEM
+  DASHBOARD_SETTINGS_ITEM,
+  type DashboardNavItemId
 } from "@/lib/dashboard/nav"
 import { scrollToUpgradeBanner } from "@/lib/dashboard/scroll-to-upgrade"
+import { LogOut } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { SidebarBrand } from "./sidebar-brand"
 import { SidebarNavItem } from "./sidebar-nav-item"
+
+/**
+ * Devuelve el ítem activo como el que mejor prefija el pathname (el más
+ * específico), de modo que en `/dashboard/new-reading` solo se marque "Nueva
+ * Lectura" y no también su ítem padre "Dashboard".
+ */
+function getActiveNavId(pathname: string): DashboardNavItemId | undefined {
+  let activeId: DashboardNavItemId | undefined
+  let activeHrefLength = -1
+
+  for (const item of DASHBOARD_NAV_ITEMS) {
+    if (item.href === "#") continue
+
+    const matches =
+      pathname === item.href || pathname.startsWith(`${item.href}/`)
+
+    if (matches && item.href.length > activeHrefLength) {
+      activeId = item.id
+      activeHrefLength = item.href.length
+    }
+  }
+
+  return activeId
+}
 
 /**
  * Sidebar del área autenticada: marca, navegación principal y bloque inferior
@@ -18,6 +44,7 @@ import { SidebarNavItem } from "./sidebar-nav-item"
  */
 export function DashboardSidebar() {
   const pathname = usePathname()
+  const activeNavId = getActiveNavId(pathname)
   const { logout } = useLogout()
 
   return (
@@ -42,11 +69,7 @@ export function DashboardSidebar() {
               <SidebarNavItem
                 key={item.id}
                 item={item}
-                active={
-                  item.href !== "#" &&
-                  (pathname === item.href ||
-                    pathname.startsWith(`${item.href}/`))
-                }
+                active={activeNavId === item.id}
               />
             )
           )}
@@ -63,20 +86,7 @@ export function DashboardSidebar() {
           aria-busy={logout.isPending}
           className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-rose-400 transition-all hover:bg-rose-500/10 focus-visible:ring-2 focus-visible:ring-rose-400/70 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <svg
-            className="size-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
+          <LogOut className="size-5" />
           {logout.isPending ? "Cerrando sesión…" : "Cerrar Sesión"}
         </button>
       </div>

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Zap } from "lucide-react"
 
 /**
  * Estado vacío del plan Free: bienvenida y CTA para la primera medición.
@@ -15,20 +16,7 @@ export function EmptyReadingsCard() {
 
       <div className="relative z-10 mx-auto max-w-md space-y-4">
         <div className="mx-auto flex size-16 items-center justify-center rounded-2xl border border-tensi-500/20 bg-tensi-500/10 text-tensi-400 shadow-inner">
-          <svg
-            className="size-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13 10V3L4 14h7v7l9-11h-7z"
-            />
-          </svg>
+          <Zap className="size-8" />
         </div>
 
         <h2 className="text-xl font-bold tracking-tight text-white">
