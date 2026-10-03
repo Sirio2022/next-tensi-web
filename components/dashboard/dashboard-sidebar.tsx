@@ -3,13 +3,38 @@
 import { useLogout } from "@/lib/auth/hooks/use-logout"
 import {
   DASHBOARD_NAV_ITEMS,
-  DASHBOARD_SETTINGS_ITEM
+  DASHBOARD_SETTINGS_ITEM,
+  type DashboardNavItemId
 } from "@/lib/dashboard/nav"
 import { scrollToUpgradeBanner } from "@/lib/dashboard/scroll-to-upgrade"
 import { LogOut } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { SidebarBrand } from "./sidebar-brand"
 import { SidebarNavItem } from "./sidebar-nav-item"
+
+/**
+ * Devuelve el ítem activo como el que mejor prefija el pathname (el más
+ * específico), de modo que en `/dashboard/new-reading` solo se marque "Nueva
+ * Lectura" y no también su ítem padre "Dashboard".
+ */
+function getActiveNavId(pathname: string): DashboardNavItemId | undefined {
+  let activeId: DashboardNavItemId | undefined
+  let activeHrefLength = -1
+
+  for (const item of DASHBOARD_NAV_ITEMS) {
+    if (item.href === "#") continue
+
+    const matches =
+      pathname === item.href || pathname.startsWith(`${item.href}/`)
+
+    if (matches && item.href.length > activeHrefLength) {
+      activeId = item.id
+      activeHrefLength = item.href.length
+    }
+  }
+
+  return activeId
+}
 
 /**
  * Sidebar del área autenticada: marca, navegación principal y bloque inferior
@@ -19,6 +44,7 @@ import { SidebarNavItem } from "./sidebar-nav-item"
  */
 export function DashboardSidebar() {
   const pathname = usePathname()
+  const activeNavId = getActiveNavId(pathname)
   const { logout } = useLogout()
 
   return (
@@ -43,11 +69,7 @@ export function DashboardSidebar() {
               <SidebarNavItem
                 key={item.id}
                 item={item}
-                active={
-                  item.href !== "#" &&
-                  (pathname === item.href ||
-                    pathname.startsWith(`${item.href}/`))
-                }
+                active={activeNavId === item.id}
               />
             )
           )}

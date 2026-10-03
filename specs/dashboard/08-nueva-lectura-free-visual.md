@@ -88,23 +88,31 @@ export const READING_CONTEXT_TAGS: readonly string[]
 
 ## Criterios de aceptación
 
-- [ ] `GET /dashboard/new-reading` con sesión válida renderiza la pantalla según `references/dashboard/02-new-reading/free/screenshot1.png`.
-- [ ] La pantalla reutiliza el shell de `(dashboard)`; sidebar y header conservan sus colores actuales.
-- [ ] "Nueva Lectura" aparece activo con tokens `tensi` y `aria-current="page"`.
-- [ ] El ítem "Nueva Lectura" del sidebar y el CTA del dashboard navegan a `/dashboard/new-reading`.
-- [ ] Las tres tarjetas muestran 120 mmHg, 80 mmHg y 70 BPM con rangos 70–200, 40–130 y 40–180.
-- [ ] Al mover cada slider, el número mostrado se actualiza.
-- [ ] El campo Pulso muestra `BPM` (se corrige el `mmHg` del mockup).
-- [ ] Los 11 chips de contexto alternan selección (multiselección) y exponen `aria-pressed`.
-- [ ] El input de Notas y el de fecha/hora (solo lectura, formato del mockup) se renderizan.
-- [ ] El botón "Agregar Lectura" no envía, no navega ni muta estado.
-- [ ] La tarjeta "Análisis IA con OpenAI GPT-OSS" es estática y muestra 8/10, 65% y "NORMAL", sin `**` literales ni el typo `Premium:**`.
-- [ ] `lucide-react` está instalado y los íconos genéricos de UI lo consumen; los SVG de marca e ilustraciones se conservan.
-- [ ] No hay etiquetas `<a>`; toda la navegación usa `next/link`.
-- [ ] Todos los componentes declaran props con `Readonly<>`; `better-tailwindcss/enforce-canonical-classes` pasa.
-- [ ] No se dispara ninguna petición a la API Nest al cargar la ruta.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] Usable a 375px y 1440px sin scroll horizontal y sin errores en consola.
+> Verificado con Playwright (`.playwright-mcp/08-verify-new-reading-1440.png`, `.playwright-mcp/08-verify-new-reading-375.png`) y `pnpm lint` / `pnpm exec tsc --noEmit` / `pnpm build` (todos en verde).
+
+- [x] `GET /dashboard/new-reading` con sesión válida renderiza la pantalla según `references/dashboard/02-new-reading/free/screenshot1.png`. (Screenshot 1440 vs. mockup: layout coincide.)
+- [x] La pantalla reutiliza el shell de `(dashboard)`; sidebar y header conservan sus colores actuales. (`git diff` del shell: sin cambios de color.)
+- [x] "Nueva Lectura" aparece activo con tokens `tensi` y `aria-current="page"`. (DOM: `aria-current="page"` + `border-tensi-500/20 bg-tensi-600/10 text-tensi-400`. Requirió corregir `dashboard-sidebar.tsx`, ver Nota de corrección.)
+- [x] El ítem "Nueva Lectura" del sidebar y el CTA del dashboard navegan a `/dashboard/new-reading`. (CTA y sidebar verificados por clic.)
+- [x] Las tres tarjetas muestran 120 mmHg, 80 mmHg y 70 BPM con rangos 70–200, 40–130 y 40–180. (DOM: `min`/`max`/`value` y outputs 120/80/70.)
+- [x] Al mover cada slider, el número mostrado se actualiza. (150/95/120 → outputs 150/95/120.)
+- [x] El campo Pulso muestra `BPM` (se corrige el `mmHg` del mockup).
+- [x] Los 11 chips de contexto alternan selección (multiselección) y exponen `aria-pressed`. (11 chips; `aria-pressed` alterna `true`/`false`.)
+- [x] El input de Notas y el de fecha/hora (solo lectura, formato del mockup) se renderizan. (placeholder "Notas adicionales (opcional)"; datetime `readOnly` `01/10/2026, 09:38 a.m.`.)
+- [x] El botón "Agregar Lectura" no envía, no navega ni muta estado. (Tras clic: URL y estado de notas/systolic sin cambios.)
+- [x] La tarjeta "Análisis IA con OpenAI GPT-OSS" es estática y muestra 8/10, 65% y "NORMAL", sin `**` literales ni el typo `Premium:**`.
+- [x] `lucide-react` está instalado y los íconos genéricos de UI lo consumen; los SVG de marca e ilustraciones se conservan. (`package.json` → `lucide-react`; `<svg>` restantes = marca/ilustraciones.)
+- [x] No hay etiquetas `<a>`; toda la navegación usa `next/link`.
+- [x] Todos los componentes declaran props con `Readonly<>`; `better-tailwindcss/enforce-canonical-classes` pasa. (`pnpm lint` exit 0.)
+- [x] No se dispara ninguna petición adicional a la API Nest desde la pantalla (más allá del `check-token` de sesión del shell, preexistente y fuera del alcance de esta spec). (Recursos de red a `:3002` al cargar la ruta: `[]`.)
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan. (Los tres en verde; `/dashboard/new-reading` aparece en el árbol de rutas.)
+- [x] Usable a 375px y 1440px sin scroll horizontal y sin errores en consola. (375px: `docScrollWidth=375`; consola: 0 errores/warnings.)
+
+### Nota de corrección — `components/dashboard/dashboard-sidebar.tsx`
+
+La lógica de activo usaba `pathname.startsWith(`${item.href}/`)`, por lo que en `/dashboard/new-reading` se marcaba **también** "Dashboard" con `aria-current="page"` (dos ítems activos). Se reemplazó por un helper `getActiveNavId()` que resuelve el activo por **prefijo más específico** (longest-prefix). Re-verificado por DOM: solo "Nueva Lectura" queda activo.
+
+> Estado de la spec: se mantiene `Aprobado`. El agente `spec-verifier` no modifica el estado (`Draft`/`Approved`/`Implemented`); esa decisión corresponde al humano.
 
 ## Decisiones
 
