@@ -50,7 +50,7 @@ La API solo devuelve **JSON**. El filtro `AllExceptionsFilter` normaliza todas l
 
 Evidencia (prod, `COOKIE_SECURE=true`, `X-Forwarded-Proto: https`):
 
-```
+```text
 Set-Cookie: tensi_token=…; Max-Age=86400; Path=/; HttpOnly; Secure; SameSite=Lax
 ```
 
@@ -88,7 +88,7 @@ Caso corregido en esta spec (`resend-verification-code` usaba un tipo inline sin
 
 Evidencia (`curl -sI /api/auth/check-token`):
 
-```
+```text
 Content-Security-Policy: default-src 'none';frame-ancestors 'none'
 Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Resource-Policy: same-origin

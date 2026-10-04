@@ -73,20 +73,20 @@ No hay modelos de base de datos ni tipos de dominio nuevos.
 
 ## Criterios de aceptación
 
-- [ ] `curl -sI http://localhost:3000/` muestra `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY` y `Referrer-Policy`.
-- [ ] La respuesta del front incluye `Content-Security-Policy-Report-Only` con `object-src 'none'`, `base-uri 'self'` y `frame-ancestors 'none'`.
-- [ ] Con `CSP_ENFORCE=true`, la cabecera pasa a `Content-Security-Policy` y login → dashboard funciona sin violaciones en consola.
-- [ ] `pnpm lint` en el front falla si se introduce un `dangerouslySetInnerHTML` (regla `react/no-danger`), y pasa en el estado normal.
-- [ ] Un dato de usuario con payload (`<img src=x onerror=alert(1)>`) enviado como username/email se renderiza como texto y **no** ejecuta nada (Playwright, sin `dialog`).
-- [ ] Un mensaje de error de la API con HTML se muestra como texto en el formulario, sin inyección.
-- [ ] `curl -sI` de un endpoint de la API devuelve las cabeceras de Helmet (`X-Content-Type-Options: nosniff`, `X-Frame-Options`/`frame-ancestors`, `Referrer-Policy`, HSTS).
-- [ ] Con `NODE_ENV=production`, `GET /api` (Swagger) no se sirve; en dev sigue disponible.
-- [ ] `GET /api/auth/check-token` con solo `Authorization: Bearer` devuelve 401; con la cookie devuelve 200.
-- [ ] Con `NODE_ENV=production` y sin `COOKIE_SECURE=true`, el arranque de la API falla con mensaje explícito.
-- [ ] `POST /api/auth/resend-verification-code` con un email inválido devuelve 400.
-- [ ] `pnpm audit` (front y back) no reporta vulnerabilidades altas/críticas sin justificar.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan en el front; `pnpm build` y `pnpm lint` pasan en la API.
-- [ ] Existe `docs/security/01-auditoria-xss.md` con hallazgos, reglas y evidencia, siguiendo la convención de `docs/react/` y `docs/a11y/`.
+- [x] `curl -sI http://localhost:3000/` muestra `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY` y `Referrer-Policy`. — _Verificado: dev server en modo default → `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`._
+- [x] La respuesta del front incluye `Content-Security-Policy-Report-Only` con `object-src 'none'`, `base-uri 'self'` y `frame-ancestors 'none'`. — _Verificado: sin `CSP_ENFORCE` la cabecera es `Content-Security-Policy-Report-Only` e incluye `object-src 'none'; base-uri 'self'; frame-ancestors 'none'`._
+- [x] Con `CSP_ENFORCE=true`, la cabecera pasa a `Content-Security-Policy` y login → dashboard funciona sin violaciones en consola. — _Verificado: cabecera pasa a `Content-Security-Policy`; Playwright (login → `/dashboard`) sin errores de consola ni violaciones CSP._
+- [x] `pnpm lint` en el front falla si se introduce un `dangerouslySetInnerHTML` (regla `react/no-danger`), y pasa en el estado normal. — _Verificado: probe temporal → `error Dangerous property 'dangerouslySetInnerHTML' found react/no-danger`; `pnpm lint` limpio tras eliminar el probe._
+- [x] Un dato de usuario con payload (`<img src=x onerror=alert(1)>`) enviado como username/email se renderiza como texto y **no** ejecuta nada (Playwright, sin `dialog`). — _Verificado: usuario con `username` = payload, login → dashboard; payload en `body.innerText`, HTML escapado (`&lt;img …&gt;`), `img` count = 0, `dialogs = []`. Evidencia: `.playwright-mcp/xss-dashboard.png`._
+- [x] Un mensaje de error de la API con HTML se muestra como texto en el formulario, sin inyección. — _Verificado: intercepción de la respuesta de login con `message` = `<img src=x onerror=alert("api-error")> fatal`; se muestra escapado en `[role=alert]`, `img` count = 0, `dialogs = []`. Evidencia: `.playwright-mcp/xss-api-error.png`._
+- [x] `curl -sI` de un endpoint de la API devuelve las cabeceras de Helmet (`X-Content-Type-Options: nosniff`, `X-Frame-Options`/`frame-ancestors`, `Referrer-Policy`, HSTS). — _Verificado: `Content-Security-Policy: default-src 'none';frame-ancestors 'none'`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, `Strict-Transport-Security: max-age=31536000; includeSubDomains`, `Cross-Origin-Resource-Policy: same-origin`._
+- [x] Con `NODE_ENV=production`, `GET /api` (Swagger) no se sirve; en dev sigue disponible. — _Verificado: prod → `/api` y `/api-json` 404; dev → 200 en ambos._
+- [x] `GET /api/auth/check-token` con solo `Authorization: Bearer` devuelve 401; con la cookie devuelve 200. — _Verificado: `Authorization: Bearer faketoken` → 401; login real (Set-Cookie `HttpOnly; SameSite=Lax`) → cookie → 200._
+- [x] Con `NODE_ENV=production` y sin `COOKIE_SECURE=true`, el arranque de la API falla con mensaje explícito. — _Verificado: proceso sale con `Error: COOKIE_SECURE debe ser "true" cuando NODE_ENV=production: la cookie del JWT solo puede viajar por HTTPS.`_
+- [x] `POST /api/auth/resend-verification-code` con un email inválido devuelve 400. — _Verificado: email inválido → 400; sin email → 400; campo extra (whitelist) → 400._
+- [x] `pnpm audit` (front y back) no reporta vulnerabilidades altas/críticas sin justificar. — _Verificado: front `No known vulnerabilities found`; back 2 moderadas (transitivas `express>qs`, sin altas/críticas), documentadas en `docs/security/02-auditoria-back.md`._
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan en el front; `pnpm build` y `pnpm lint` pasan en la API. — _Verificado: front lint/tsc/build exit 0 (11 rutas); back lint/build exit 0._
+- [x] Existe `docs/security/01-auditoria-xss.md` con hallazgos, reglas y evidencia, siguiendo la convención de `docs/react/` y `docs/a11y/`. — _Verificado: existe `docs/security/01-auditoria-xss.md` (front) y `docs/security/02-auditoria-back.md` (API)._
 
 ## Decisiones
 
