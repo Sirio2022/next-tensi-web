@@ -1,6 +1,6 @@
 # SPEC 09 — Endurecimiento frente a XSS (front y back)
 
-> **Status:** Aprobado
+> **Status:** Implemented
 > **Depends on:** SPEC 01, SPEC 05
 > **Date:** 2026-10-04
 > **Objective:** Auditar y endurecer `next-tensi-web` y `nest-tensi-api` frente a XSS (CSP, headers de seguridad, higiene de render y validación), verificando que el JWT sigue viviendo solo en cookie httpOnly y sin reabrir una vía que lo exponga a JS.
