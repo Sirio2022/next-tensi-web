@@ -23,9 +23,11 @@ const cspDirectives = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' https://fonts.gstatic.com",
-  `connect-src 'self'${apiOrigin ? ` ${apiOrigin}` : ""}${
+  [
+    "connect-src 'self'",
+    apiOrigin ? ` ${apiOrigin}` : "",
     isDev ? " ws://localhost:* ws://127.0.0.1:*" : ""
-  }`,
+  ].join(""),
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
