@@ -1,6 +1,6 @@
 # SPEC 10 — Registro de mediciones, análisis IA, gráficas e historial (plan Free)
 
-> **Status:** Aprobado
+> **Status:** Implemented
 > **Depends on:** SPEC 01, SPEC 03, SPEC 06, SPEC 08
 > **Date:** 2026-10-04
 > **Objective:** Integrar el registro real de mediciones y el historial del plan Free contra la API Nest existente (sin cambios en el back), con validación en el front, análisis IA real, alerta de emergencia, gráficas en el dashboard y pantalla de Historial.

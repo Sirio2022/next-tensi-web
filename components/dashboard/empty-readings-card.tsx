@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button-link"
 import { Card } from "@/components/ui/card"
 import { Zap } from "lucide-react"
 
 /**
  * Estado vacío del plan Free: bienvenida y CTA para la primera medición.
- * El CTA aún no tiene acción (la integración entra en otra spec).
+ * El CTA navega a Nueva Lectura.
  */
 export function EmptyReadingsCard() {
   return (
@@ -28,12 +28,9 @@ export function EmptyReadingsCard() {
         </p>
 
         <div className="pt-2">
-          <Button tone="gradient" disabled>
+          <ButtonLink href="/dashboard/new-reading" tone="gradient">
             Agregar mi primera medición
-          </Button>
-          <p className="mt-2 text-[10px] text-slate-500">
-            Disponible cuando se habilite el registro de mediciones.
-          </p>
+          </ButtonLink>
         </div>
       </div>
     </Card>
