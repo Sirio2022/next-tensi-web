@@ -1,6 +1,6 @@
 # SPEC 13 — Correcciones del análisis Premium: tarjeta IA y gráficas
 
-> **Status:** Implemented
+> **Status:** Verified
 > **Depends on:** SPEC 06, SPEC 11, SPEC 12
 > **Date:** 2026-10-05
 > **Objective:** Quitar el banner de venta de la tarjeta de Análisis IA cuando el usuario es Premium y hacer que las barras de "Evolución por categoría" y "Promedio por periodo" de `/dashboard/analytics` se rendericen correctamente.
@@ -47,17 +47,17 @@ Todo el trabajo es en `next-tensi-web`. Cada paso deja el sistema funcional.
 
 ## Criterios de aceptación
 
-- [ ] Como PREMIUM, tras guardar una medición la tarjeta de Análisis IA no muestra el texto "Premium: análisis más profundos…" ni el botón Upgrade.
-- [ ] Como PREMIUM, la tarjeta muestra un badge "PREMIUM" con icono corona.
-- [ ] Como FREE, la tarjeta conserva el banner, el botón Upgrade y el CTA "Mejorar a Premium" en el error de cuota.
-- [ ] `AiAnalysisCard` recibe `isPremium` desde `verifySession()` sin llamadas de red nuevas más allá del `check-token` memoizado por `cache()`.
-- [ ] `/dashboard/analytics` (PREMIUM) muestra "Evolución por categoría" con barras visibles para los 16 meses y 7 categorías, sin el mensaje "Todavía no hay meses…".
-- [ ] La tabla `sr-only` de "Evolución por categoría" muestra los mismos conteos que las barras.
-- [ ] "Promedio por periodo" se dibuja con líneas (continua sistólica / discontinua diastólica) y es legible en Semanal (61 puntos), Mensual y Anual.
-- [ ] Ninguna gráfica depende solo del color (línea discontinua, leyenda y tablas textuales).
-- [ ] `/dashboard/new-reading` y `/dashboard/analytics` son usables a 375 px y 1440 px sin scroll horizontal y sin errores de consola.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] `git -C ../nest-tensi-api status --short` limpio (el back no se toca).
+- [x] Como PREMIUM, tras guardar una medición la tarjeta de Análisis IA no muestra el texto "Premium: análisis más profundos…" ni el botón Upgrade.
+- [x] Como PREMIUM, la tarjeta muestra un badge "PREMIUM" con icono corona.
+- [x] Como FREE, la tarjeta conserva el banner, el botón Upgrade y el CTA "Mejorar a Premium" en el error de cuota.
+- [x] `AiAnalysisCard` recibe `isPremium` desde `verifySession()` sin llamadas de red nuevas más allá del `check-token` memoizado por `cache()`.
+- [x] `/dashboard/analytics` (PREMIUM) muestra "Evolución por categoría" con barras visibles para los 16 meses y 7 categorías, sin el mensaje "Todavía no hay meses…".
+- [x] La tabla `sr-only` de "Evolución por categoría" muestra los mismos conteos que las barras.
+- [x] "Promedio por periodo" se dibuja con líneas (continua sistólica / discontinua diastólica) y es legible en Semanal (61 puntos), Mensual y Anual.
+- [x] Ninguna gráfica depende solo del color (línea discontinua, leyenda y tablas textuales).
+- [x] `/dashboard/new-reading` y `/dashboard/analytics` son usables a 375 px y 1440 px sin scroll horizontal y sin errores de consola.
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- [x] `git -C ../nest-tensi-api status --short` limpio (el back no se toca).
 
 ## Decisiones
 

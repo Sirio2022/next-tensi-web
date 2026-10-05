@@ -33,14 +33,17 @@ export function DashboardSidebar({ plan }: Readonly<DashboardSidebarProps>) {
   return (
     <aside
       aria-label="Barra lateral"
-      className="relative z-20 flex w-full shrink-0 flex-col justify-between border-r border-slate-800/80 bg-slate-950/90 backdrop-blur-xl md:w-64"
+      className="relative z-20 flex w-full shrink-0 flex-col justify-between border-r border-slate-800/80 bg-slate-950/90 backdrop-blur-xl md:h-screen md:w-64"
     >
-      <div>
-        <div className="flex h-16 items-center justify-between border-b border-slate-800/60 px-6">
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-slate-800/60 px-6">
           <SidebarBrand />
         </div>
 
-        <nav aria-label="Navegación principal" className="space-y-1 p-4">
+        <nav
+          aria-label="Navegación principal"
+          className="flex-1 space-y-1 overflow-y-auto p-4"
+        >
           {DASHBOARD_NAV_ITEMS.map((item) => {
             const state = getNavItemState(item, plan)
 
@@ -63,7 +66,7 @@ export function DashboardSidebar({ plan }: Readonly<DashboardSidebarProps>) {
         </nav>
       </div>
 
-      <div className="space-y-1 border-t border-slate-800/60 p-4">
+      <div className="shrink-0 space-y-1 border-t border-slate-800/60 p-4">
         {/* Configuración sigue siendo un marcador (`href="#"`): placeholder. */}
         <SidebarNavItem item={DASHBOARD_SETTINGS_ITEM} state="placeholder" />
 
