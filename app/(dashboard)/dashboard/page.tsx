@@ -12,6 +12,7 @@ import { getReadingsForSession } from "@/lib/readings/dal"
 import { Plus } from "lucide-react"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
+import type { ReactNode } from "react"
 
 export const metadata: Metadata = {
   title: "Dashboard"
@@ -37,6 +38,29 @@ export default async function DashboardPage() {
   const meta = response?.meta ?? null
   const hasReadings = (meta?.total ?? 0) > 0
   const lastReading = readings[0]
+  let dashboardContent: ReactNode
+
+  if (!isFree) {
+    dashboardContent = <BpRangesReference />
+  } else if (hasReadings && meta) {
+    dashboardContent = (
+      <>
+        {lastReading ? <LastReadingCard reading={lastReading} /> : null}
+        <ReadingsTrendChart readings={readings} />
+        <ReadingsLimitCard meta={meta} />
+        <PremiumAnalyticsTeaser />
+        <UpgradeBanner />
+        <BpRangesReference />
+      </>
+    )
+  } else {
+    dashboardContent = (
+      <>
+        <EmptyReadingsCard />
+        <UpgradeBanner />
+      </>
+    )
+  }
 
   return (
     <>
@@ -58,25 +82,7 @@ export default async function DashboardPage() {
         </ButtonLink>
       </div>
 
-      {isFree ? (
-        hasReadings && meta ? (
-          <>
-            {lastReading ? <LastReadingCard reading={lastReading} /> : null}
-            <ReadingsTrendChart readings={readings} />
-            <ReadingsLimitCard meta={meta} />
-            <PremiumAnalyticsTeaser />
-            <UpgradeBanner />
-            <BpRangesReference />
-          </>
-        ) : (
-          <>
-            <EmptyReadingsCard />
-            <UpgradeBanner />
-          </>
-        )
-      ) : (
-        <BpRangesReference />
-      )}
+      {dashboardContent}
     </>
   )
 }
