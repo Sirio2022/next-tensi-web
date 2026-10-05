@@ -30,9 +30,9 @@ export type FreeDashboardNavItem = DashboardNavItemBase & {
 /**
  * Navegación principal del sidebar, en el orden del mockup.
  *
- * Salvo `dashboard`, las pantallas aún no existen: sus enlaces quedan como
- * marcadores (`#`) y no navegan (ver SPEC 03, fuera de alcance). `analytics` y
- * `reports` además están bloqueadas para el plan Free (`requiresPremium`).
+ * `analytics` y `reports` aún no existen y además están bloqueadas para el plan
+ * Free (`requiresPremium`): se renderizan como botón que lleva al banner de
+ * upgrade. El resto navega a su ruta real.
  */
 export const DASHBOARD_NAV_ITEMS: readonly Readonly<DashboardNavItem>[] = [
   {
@@ -50,7 +50,7 @@ export const DASHBOARD_NAV_ITEMS: readonly Readonly<DashboardNavItem>[] = [
   {
     id: "history",
     label: "Historial",
-    href: "#",
+    href: "/dashboard/history",
     requiresPremium: false
   },
   {

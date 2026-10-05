@@ -1,9 +1,14 @@
 import { BpRangesReference } from "@/components/dashboard/bp-ranges-reference"
 import { EmptyReadingsCard } from "@/components/dashboard/empty-readings-card"
+import { LastReadingCard } from "@/components/dashboard/last-reading-card"
 import { MedicalDisclaimer } from "@/components/dashboard/medical-disclaimer"
+import { PremiumAnalyticsTeaser } from "@/components/dashboard/premium-analytics-teaser"
+import { ReadingsLimitCard } from "@/components/dashboard/readings-limit-card"
+import { ReadingsTrendChart } from "@/components/dashboard/readings-trend-chart"
 import { UpgradeBanner } from "@/components/dashboard/upgrade-banner"
 import { ButtonLink } from "@/components/ui/button-link"
 import { verifySession } from "@/lib/auth/dal"
+import { getReadingsForSession } from "@/lib/readings/dal"
 import { Plus } from "lucide-react"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
@@ -13,10 +18,11 @@ export const metadata: Metadata = {
 }
 
 /**
- * Página del dashboard (Server Component). Compone el contenido del plan Free:
- * aviso médico, título + CTA, estado vacío, banner de upgrade y referencia de
- * rangos. Sin datos dinámicos todavía: con plan Free el estado vacío y el banner
- * se muestran siempre (la vista Premium entra en su propia spec).
+ * Dashboard del plan Free (Server Component). Lee las lecturas con
+ * `getReadingsForSession()` (cookie reenviada, memoizado): sin lecturas muestra
+ * el estado vacío; con lecturas, la KPI de última medición, la gráfica real de
+ * las lecturas visibles, el contador del límite Free y el gancho Premium. Todo
+ * lo calcula el back; el front solo presenta.
  */
 export default async function DashboardPage() {
   const user = await verifySession()
@@ -26,6 +32,11 @@ export default async function DashboardPage() {
   }
 
   const isFree = user.plan === "FREE"
+  const response = isFree ? await getReadingsForSession() : null
+  const readings = response?.data ?? []
+  const meta = response?.meta ?? null
+  const hasReadings = (meta?.total ?? 0) > 0
+  const lastReading = readings[0]
 
   return (
     <>
@@ -48,13 +59,24 @@ export default async function DashboardPage() {
       </div>
 
       {isFree ? (
-        <>
-          <EmptyReadingsCard />
-          <UpgradeBanner />
-        </>
-      ) : null}
-
-      <BpRangesReference />
+        hasReadings && meta ? (
+          <>
+            {lastReading ? <LastReadingCard reading={lastReading} /> : null}
+            <ReadingsTrendChart readings={readings} />
+            <ReadingsLimitCard meta={meta} />
+            <PremiumAnalyticsTeaser />
+            <UpgradeBanner />
+            <BpRangesReference />
+          </>
+        ) : (
+          <>
+            <EmptyReadingsCard />
+            <UpgradeBanner />
+          </>
+        )
+      ) : (
+        <BpRangesReference />
+      )}
     </>
   )
 }

@@ -1,4 +1,3 @@
-import { AiAnalysisCard } from "@/components/dashboard/ai-analysis-card"
 import { NewReadingForm } from "@/components/dashboard/new-reading-form"
 import type { Metadata } from "next"
 
@@ -8,8 +7,8 @@ export const metadata: Metadata = {
 
 /**
  * Pantalla de Nueva Lectura (plan Free). Server Component: hereda el shell de
- * `(dashboard)` (sidebar + header) y solo compone el formulario visual y la
- * tarjeta de Análisis IA. No lee datos ni llama a la API.
+ * `(dashboard)` (sidebar + header) y compone el formulario real, que a su vez
+ * muestra el análisis IA y la alerta de emergencia tras guardar.
  */
 export default function NewReadingPage() {
   return (
@@ -19,8 +18,6 @@ export default function NewReadingPage() {
       </h1>
 
       <NewReadingForm />
-
-      <AiAnalysisCard />
     </div>
   )
 }
