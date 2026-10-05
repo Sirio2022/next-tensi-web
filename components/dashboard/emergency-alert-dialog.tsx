@@ -3,12 +3,19 @@
 import { Button } from "@/components/ui/button"
 import type { EmergencyAssessment } from "@/lib/readings/types"
 import { AlertTriangle } from "lucide-react"
-import { useEffect, useId, useRef } from "react"
+import { useEffect, useId, useRef, type RefObject } from "react"
 
 interface EmergencyAlertDialogProps {
   assessment: EmergencyAssessment
   open: boolean
   onClose: () => void
+  /**
+   * Elemento al que devolver el foco al cerrar. Necesario cuando el disparador
+   * (`submit`) queda `disabled` durante el envío: al deshabilitarse, el
+   * navegador mueve el foco a `body` y `document.activeElement` deja de ser útil
+   * como origen. Si se omite, se usa el último elemento enfocado antes de abrir.
+   */
+  returnFocusRef?: RefObject<HTMLElement | null>
 }
 
 /**
@@ -20,7 +27,8 @@ interface EmergencyAlertDialogProps {
 export function EmergencyAlertDialog({
   assessment,
   open,
-  onClose
+  onClose,
+  returnFocusRef
 }: Readonly<EmergencyAlertDialogProps>) {
   const titleId = useId()
   const bodyId = useId()
@@ -32,13 +40,18 @@ export function EmergencyAlertDialog({
     if (!dialog || !open) return
 
     previouslyFocused.current = document.activeElement as HTMLElement | null
+    // Capturamos el nodo aquí (el submit sigue montado al abrir el diálogo):
+    // durante `isPending` el botón se deshabilita y el navegador manda el foco
+    // a `body`, así que leerlo en el cleanup no sería fiable.
+    const returnFocusTarget = returnFocusRef?.current ?? null
     if (!dialog.open) dialog.showModal()
 
     return () => {
       if (dialog.open) dialog.close()
-      previouslyFocused.current?.focus()
+      const target = returnFocusTarget ?? previouslyFocused.current
+      target?.focus()
     }
-  }, [open])
+  }, [open, returnFocusRef])
 
   if (!open) return null
 

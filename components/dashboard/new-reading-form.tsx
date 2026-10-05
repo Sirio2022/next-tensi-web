@@ -20,7 +20,7 @@ import type {
 } from "@/lib/readings/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CheckCircle2, TriangleAlert } from "lucide-react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { AiAnalysisCard } from "./ai-analysis-card"
 import { ContextChips } from "./context-chips"
@@ -55,6 +55,7 @@ function isCrisis(severity: EmergencySeverity): boolean {
 export function NewReadingForm() {
   const [displayedAt] = useState(() => new Date())
   const [isDialogOpen, setDialogOpen] = useState(false)
+  const submitRef = useRef<HTMLButtonElement>(null)
   const { mutateAsync, isPending } = useCreateReading()
 
   const {
@@ -196,6 +197,7 @@ export function NewReadingForm() {
         ) : null}
 
         <Button
+          ref={submitRef}
           type="submit"
           tone="primary"
           disabled={isPending}
@@ -251,6 +253,7 @@ export function NewReadingForm() {
           assessment={result.emergencyAssessment}
           open={isDialogOpen}
           onClose={() => setDialogOpen(false)}
+          returnFocusRef={submitRef}
         />
       ) : null}
     </div>

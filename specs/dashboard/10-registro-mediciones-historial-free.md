@@ -182,30 +182,30 @@ Todo el trabajo es en `next-tensi-web`.
 
 ## Criterios de aceptación
 
-- [ ] `pnpm add recharts` deja la dependencia en `package.json` y `pnpm build` compila con React 19.
-- [ ] `POST /api/bp-readings` con sesión válida crea la lectura y esta aparece después en `GET /api/bp-readings`. (Playwright: submit → red real 201 → recarga del dashboard con la nueva lectura.)
-- [ ] Un submit inválido (p. ej. sistólica ≤ diastólica o fuera de rango) no dispara ninguna request a `:3002` y muestra el error de zod bajo el campo.
-- [ ] La fecha/hora se muestra en solo lectura con el "ahora" real y el `timestamp` enviado es ISO (`new Date().toISOString()`).
-- [ ] El textarea de Notas se envía en `notes` y se persiste (visible luego en el Historial).
-- [ ] Los chips seleccionados se envían en `tags`; el back los normaliza (minúsculas, sin tildes) y así se muestran en el Historial.
-- [ ] Tras guardar, la tarjeta de Análisis IA muestra el `insight` real del back con `confidence` formateada y los `patterns`; el `**` se renderiza como negrita y no como texto literal.
-- [ ] Antes del primer submit la tarjeta de IA muestra un estado vacío, no datos del mockup.
-- [ ] Una lectura de crisis abre el diálogo con el `uiMessage` del back (`title`/`body`/`primaryButtonText`); Escape y el botón lo cierran y el foco vuelve al submit.
-- [ ] Una lectura `WARNING` muestra un aviso inline (sin modal).
-- [ ] Al agotar la cuota, la tarjeta muestra el `error` del back y un CTA Premium; en caso contrario **no** inventa un "X/10".
-- [ ] El dashboard, con `meta.total > 0`, muestra la KPI de última medición, la gráfica y el contador `visible/total` sin recalcular nada en el front.
-- [ ] La gráfica usa exclusivamente `systolic`, `diastolic`, `timestamp` y `category` tal como llegan del back; no hay agregaciones ni promedios en el cliente.
-- [ ] Con `meta.requiresUpgrade = true`, el contador y el teaser Premium muestran las lecturas ocultas y el CTA de upgrade.
-- [ ] Con `meta.total === 0`, el dashboard muestra el estado vacío y su CTA navega a `/dashboard/new-reading`.
-- [ ] `/dashboard/history` lista las lecturas visibles con categoría, valores, pulso, tags, notas y fecha; con `requiresUpgrade` muestra el aviso de límite Free + CTA; sin lecturas muestra estado vacío.
-- [ ] El ítem "Historial" del sidebar navega a `/dashboard/history` y queda activo con `aria-current="page"`.
-- [ ] No se llama a ningún endpoint de `/bp-readings/analytics/*` (403 para Free).
-- [ ] La gráfica tiene alternativa textual (caption + `aria-label` + tabla oculta) y no depende solo del color.
-- [ ] Usable a 375px y 1440px sin scroll horizontal y sin errores en consola.
-- [ ] No hay etiquetas `<a>`; todos los enlaces usan `next/link`.
-- [ ] Todos los componentes declaran props con `Readonly<>` y usan clases canónicas de Tailwind.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] `git -C ../nest-tensi-api status --short` no muestra cambios: el back no se toca.
+- [x] `pnpm add recharts` deja la dependencia en `package.json` y `pnpm build` compila con React 19. — `recharts@^3.10.1` en `package.json:19`; `pnpm build` → `BUILD_EXIT:0`.
+- [x] `POST /api/bp-readings` con sesión válida crea la lectura y esta aparece después en `GET /api/bp-readings`. (Playwright: submit → red real 201 → recarga del dashboard con la nueva lectura.) — Playwright: submit 120/80/70 → `POST :3002/api/bp-readings` 201; la lectura aparece en `GET /bp-readings` y en dashboard/historial.
+- [x] Un submit inválido (p. ej. sistólica ≤ diastólica o fuera de rango) no dispara ninguna request a `:3002` y muestra el error de zod bajo el campo. — Playwright 70/80: error "La presión sistólica debe ser mayor que la diastólica" bajo el campo; sin request a `:3002`.
+- [x] La fecha/hora se muestra en solo lectura con el "ahora" real y el `timestamp` enviado es ISO (`new Date().toISOString()`). — Body enviado `timestamp: "2026-10-05T00:08:46.054Z"`; input `#reading-datetime` `readOnly` (`new-reading-form.tsx:184-190`).
+- [x] El textarea de Notas se envía en `notes` y se persiste (visible luego en el Historial). — `notes: "Medicion E2E spec10"` visible en `/dashboard/history`.
+- [x] Los chips seleccionados se envían en `tags`; el back los normaliza (minúsculas, sin tildes) y así se muestran en el Historial. — Enviado "Ejercicio físico" → back devuelve/lista `"ejercicio fisico"`.
+- [x] Tras guardar, la tarjeta de Análisis IA muestra el `insight` real del back con `confidence` formateada y los `patterns`; el `**` se renderiza como negrita y no como texto literal. — `AiAnalysisCard` mostró `85 %` de confianza e `insight` real con 3 `<strong>`; parser propio sin `dangerouslySetInnerHTML` (`ai-insight-text.tsx`).
+- [x] Antes del primer submit la tarjeta de IA muestra un estado vacío, no datos del mockup. — Snapshot: "Aún no hay análisis. Registra tu primera medición…" (`ai-analysis-card.tsx:83-88`).
+- [x] Una lectura de crisis abre el diálogo con el `uiMessage` del back (`title`/`body`/`primaryButtonText`); Escape y el botón lo cierran y el foco vuelve al submit. — 190/120 abrió `<dialog>` "🚨 Alerta: Crisis Hipertensiva"; Escape y botón cierran y el foco vuelve al submit (fix en `emergency-alert-dialog.tsx` + `new-reading-form.tsx`).
+- [x] Una lectura `WARNING` muestra un aviso inline (sin modal). — 165/105: aviso inline (`new-reading-form.tsx:210-223`), `getByRole('alertdialog').count() === 0`.
+- [x] Al agotar la cuota, la tarjeta muestra el `error` del back y un CTA Premium; en caso contrario **no** inventa un "X/10". — Con cuota en 10: muestra `error` del back ("Límite diario alcanzado (10/10)…") + `Análisis IA usados en este ciclo: 10` + CTA Premium; sin cuota inventada (`ai-analysis-card.tsx:64-77`).
+- [x] El dashboard, con `meta.total > 0`, muestra la KPI de última medición, la gráfica y el contador `visible/total` sin recalcular nada en el front. — Dashboard 20/23: `LastReadingCard`, gráfica y `ReadingsLimitCard` desde `meta.visible`/`meta.total`.
+- [x] La gráfica usa exclusivamente `systolic`, `diastolic`, `timestamp` y `category` tal como llegan del back; no hay agregaciones ni promedios en el cliente. — `readings-trend-chart.tsx:56-66` mapea solo esos campos (invertir el orden es presentación, no agregación).
+- [x] Con `meta.requiresUpgrade = true`, el contador y el teaser Premium muestran las lecturas ocultas y el CTA de upgrade. — Con `requiresUpgrade:true`: "3 lecturas ocultas…" + `Ver Premium` en dashboard e historial.
+- [x] Con `meta.total === 0`, el dashboard muestra el estado vacío y su CTA navega a `/dashboard/new-reading`. — Con 0 lecturas: `EmptyReadingsCard` + `ButtonLink href="/dashboard/new-reading"` (`empty-readings-card.tsx:31`).
+- [x] `/dashboard/history` lista las lecturas visibles con categoría, valores, pulso, tags, notas y fecha; con `requiresUpgrade` muestra el aviso de límite Free + CTA; sin lecturas muestra estado vacío. — Verificado: categoría, valores, pulso, tags, notas y fecha; aviso "3 lecturas ocultas…" + CTA.
+- [x] El ítem "Historial" del sidebar navega a `/dashboard/history` y queda activo con `aria-current="page"`. — `nav.ts:53`; Playwright `aria-current="page"` en esa ruta.
+- [x] No se llama a ningún endpoint de `/bp-readings/analytics/*` (403 para Free). — `browser_network_requests` filtrado a `bp-readings/analytics` → 0; grep sin llamadas.
+- [x] La gráfica tiene alternativa textual (caption + `aria-label` + tabla oculta) y no depende solo del color. — `role="img"` + `aria-label`, `figcaption` y `<table class="sr-only">` con `caption` (`readings-trend-chart.tsx:85-173`).
+- [x] Usable a 375px y 1440px sin scroll horizontal y sin errores en consola. — 375 y 1440: `scrollWidth === clientWidth`; 0 errores de consola en navegación limpia.
+- [x] No hay etiquetas `<a>`; todos los enlaces usan `next/link`. — grep `<a` en `app`/`components` → 0; `pnpm lint` (regla anti-`<a>`) pasa.
+- [x] Todos los componentes declaran props con `Readonly<>` y usan clases canónicas de Tailwind. — `pnpm lint` 0 errores/warnings (reglas `react/prefer-read-only-props` y `better-tailwindcss/enforce-canonical-classes`).
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan. — `lint` EXIT 0, `tsc --noEmit` EXIT 0, `build` EXIT 0.
+- [x] `git -C ../nest-tensi-api status --short` no muestra cambios: el back no se toca. — Sin salida (clean).
 
 ## Decisiones
 
