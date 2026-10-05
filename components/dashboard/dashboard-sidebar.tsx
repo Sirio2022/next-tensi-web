@@ -1,23 +1,32 @@
 "use client"
 
 import { useLogout } from "@/lib/auth/hooks/use-logout"
+import type { Plan } from "@/lib/auth/types"
 import { useActiveNavId } from "@/lib/dashboard/hooks/use-active-nav-id"
 import {
   DASHBOARD_NAV_ITEMS,
-  DASHBOARD_SETTINGS_ITEM
+  DASHBOARD_SETTINGS_ITEM,
+  getNavItemState
 } from "@/lib/dashboard/nav"
 import { scrollToUpgradeBanner } from "@/lib/dashboard/scroll-to-upgrade"
 import { LogOut } from "lucide-react"
 import { SidebarBrand } from "./sidebar-brand"
 import { SidebarNavItem } from "./sidebar-nav-item"
 
+interface DashboardSidebarProps {
+  /** Plan del usuario: resuelve qué ítems navegan, son placeholder o van con candado. */
+  plan: Plan
+}
+
 /**
  * Sidebar del área autenticada: marca, navegación principal y bloque inferior
- * (Configuración + Cerrar Sesión). El logout usa `useLogout()`, que llama a
- * `POST /api/auth/logout` y redirige a `/login` sin arrastrar el resto de
- * mutaciones de `useAuth`.
+ * (Configuración + Cerrar Sesión). El estado de cada ítem se resuelve con
+ * `getNavItemState(item, plan)`: Premium navega Análisis y ve Reportes PDF como
+ * placeholder, mientras que Free los mantiene con candado hacia el banner.
+ * El logout usa `useLogout()`, que llama a `POST /api/auth/logout` y redirige a
+ * `/login` sin arrastrar el resto de mutaciones de `useAuth`.
  */
-export function DashboardSidebar() {
+export function DashboardSidebar({ plan }: Readonly<DashboardSidebarProps>) {
   const activeNavId = useActiveNavId()
   const { logout } = useLogout()
 
@@ -32,26 +41,31 @@ export function DashboardSidebar() {
         </div>
 
         <nav aria-label="Navegación principal" className="space-y-1 p-4">
-          {DASHBOARD_NAV_ITEMS.map((item) =>
-            item.requiresPremium ? (
+          {DASHBOARD_NAV_ITEMS.map((item) => {
+            const state = getNavItemState(item, plan)
+
+            return state === "locked" ? (
               <SidebarNavItem
                 key={item.id}
                 item={item}
+                state="locked"
                 onLockedSelect={scrollToUpgradeBanner}
               />
             ) : (
               <SidebarNavItem
                 key={item.id}
                 item={item}
+                state={state}
                 active={activeNavId === item.id}
               />
             )
-          )}
+          })}
         </nav>
       </div>
 
       <div className="space-y-1 border-t border-slate-800/60 p-4">
-        <SidebarNavItem item={DASHBOARD_SETTINGS_ITEM} />
+        {/* Configuración sigue siendo un marcador (`href="#"`): placeholder. */}
+        <SidebarNavItem item={DASHBOARD_SETTINGS_ITEM} state="placeholder" />
 
         <button
           type="button"

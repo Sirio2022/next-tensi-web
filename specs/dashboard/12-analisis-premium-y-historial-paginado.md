@@ -1,6 +1,6 @@
 # SPEC 12 — Análisis Premium, dashboard Premium e Historial paginado
 
-> **Status:** Aproved
+> **Status:** Verificado
 > **Depends on:** SPEC 03, SPEC 06, SPEC 07, SPEC 10, SPEC 11
 > **Date:** 2026-10-05
 > **Objective:** Implementar la pantalla Análisis Premium (resumen, tendencia, promedios por periodo, distribución, stats, emergencias y resumen semanal), rellenar el dashboard Premium (con pico/mínima de 7 días y variación semanal) y paginar el Historial ilimitado, añadiendo al back solo el endpoint de resumen semanal.
@@ -172,26 +172,33 @@ Todo el trabajo es en `next-tensi-web` salvo los pasos 8 y 9, que son en `nest-t
 
 ## Criterios de aceptación
 
-- [ ] `admin@tensi.com` (PREMIUM) ve el ítem **Análisis** sin candado, navega a `/dashboard/analytics` y queda con `aria-current="page"`.
-- [ ] Un usuario FREE ve **Análisis** y **Reportes PDF** con candado; pulsar Análisis hace scroll al banner `#upgrade` y no navega.
-- [ ] Un usuario PREMIUM ve **Reportes PDF** sin candado y sin navegar (placeholder) hasta su spec.
-- [ ] `/dashboard/analytics` con PREMIUM renderiza las 8 secciones con datos reales del back (resumen, resumen semanal, tendencia, promedios por periodo, distribución, evolución por categoría, stats por categoría y emergencias).
-- [ ] Cambiar el selector a 7/30 días actualiza la URL (`?range=`) y la gráfica de tendencia.
-- [ ] Cambiar el toggle a Semanal/Mensual/Anual actualiza la URL (`?period=`) y los promedios mostrados.
-- [ ] Un usuario FREE que abre `/dashboard/analytics` es redirigido a `/dashboard#upgrade` y no se hace ninguna request a `/bp-readings/analytics*`.
-- [ ] El dashboard PREMIUM muestra última medición, pico/mínima de 7 días, promedio semanal con su % de variación, resumen, tendencia a 30 días, últimas lecturas y CTA a Análisis; ya no muestra solo la referencia OMS.
-- [ ] El pico y la mínima corresponden a la lectura de mayor/menor sistólica de los últimos 7 días con su fecha, y `changePercent` compara la sistólica media de los últimos 7 días con los 7 previos (o `null` sin base).
-- [ ] El Historial PREMIUM pagina de 20 en 20 con `?page=` y botones Anterior/Siguiente; con 180 lecturas hay 9 páginas y la última no rompe.
-- [ ] El Historial FREE sigue mostrando hasta 20 lecturas con `ReadingsLimitCard` y sin controles de paginación.
-- [ ] `grep` del front confirma que no hay promedios, categorizaciones ni agregaciones calculadas en el cliente: todo viene de `/analytics*`.
-- [ ] Cada gráfica tiene alternativa textual (`figure` + `figcaption` + `role="img"`/`aria-label` + tabla `sr-only`) y no depende solo del color.
-- [ ] El seed es idempotente: ejecutarlo dos veces deja exactamente 180 lecturas y `admin@tensi.com` en PREMIUM.
-- [ ] `GET /bp-readings/analytics/weekly-summary` devuelve `peak`/`lowest`/`average`/`changePercent` con sesión Premium y responde 403 con Free.
-- [ ] No se llama a `POST /bp-readings/evaluate`, a `GET /bp-readings/by-tags` ni al endpoint de export.
-- [ ] `/dashboard/analytics`, `/dashboard` (Premium) y `/dashboard/history` son usables a 375 px y 1440 px sin scroll horizontal y sin errores de consola.
-- [ ] No hay etiquetas `<a>`; todos los enlaces usan `next/link`; props con `Readonly<>` y clases canónicas (`pnpm lint` limpio).
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] `git -C ../nest-tensi-api status --short` muestra solo el endpoint de resumen semanal y el script de seed; no hay otros cambios.
+- [x] `admin@tensi.com` (PREMIUM) ve el ítem **Análisis** sin candado, navega a `/dashboard/analytics` y queda con `aria-current="page"`.
+- [x] Un usuario FREE ve **Análisis** y **Reportes PDF** con candado; pulsar Análisis hace scroll al banner `#upgrade` y no navega.
+- [x] Un usuario PREMIUM ve **Reportes PDF** sin candado y sin navegar (placeholder) hasta su spec.
+- [x] `/dashboard/analytics` con PREMIUM renderiza las 8 secciones con datos reales del back (resumen, resumen semanal, tendencia, promedios por periodo, distribución, evolución por categoría, stats por categoría y emergencias).
+- [x] Cambiar el selector a 7/30 días actualiza la URL (`?range=`) y la gráfica de tendencia.
+- [x] Cambiar el toggle a Semanal/Mensual/Anual actualiza la URL (`?period=`) y los promedios mostrados.
+- [x] Un usuario FREE que abre `/dashboard/analytics` es redirigido a `/dashboard#upgrade` y no se hace ninguna request a `/bp-readings/analytics*`.
+- [x] El dashboard PREMIUM muestra última medición, pico/mínima de 7 días, promedio semanal con su % de variación, resumen, tendencia a 30 días, últimas lecturas y CTA a Análisis; ya no muestra solo la referencia OMS.
+- [x] El pico y la mínima corresponden a la lectura de mayor/menor sistólica de los últimos 7 días con su fecha, y `changePercent` compara la sistólica media de los últimos 7 días con los 7 previos (o `null` sin base).
+- [x] El Historial PREMIUM pagina de 20 en 20 con `?page=` y botones Anterior/Siguiente; con 180 lecturas hay 9 páginas y la última no rompe.
+- [x] El Historial FREE sigue mostrando hasta 20 lecturas con `ReadingsLimitCard` y sin controles de paginación.
+- [x] `grep` del front confirma que no hay promedios, categorizaciones ni agregaciones calculadas en el cliente: todo viene de `/analytics*`.
+- [x] Cada gráfica tiene alternativa textual (`figure` + `figcaption` + `role="img"`/`aria-label` + tabla `sr-only`) y no depende solo del color.
+- [x] El seed es idempotente: ejecutarlo dos veces deja exactamente 180 lecturas y `admin@tensi.com` en PREMIUM.
+- [x] `GET /bp-readings/analytics/weekly-summary` devuelve `peak`/`lowest`/`average`/`changePercent` con sesión Premium y responde 403 con Free.
+- [x] No se llama a `POST /bp-readings/evaluate`, a `GET /bp-readings/by-tags` ni al endpoint de export.
+- [x] `/dashboard/analytics`, `/dashboard` (Premium) y `/dashboard/history` son usables a 375 px y 1440 px sin scroll horizontal y sin errores de consola.
+- [x] No hay etiquetas `<a>`; todos los enlaces usan `next/link`; props con `Readonly<>` y clases canónicas (`pnpm lint` limpio).
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- [x] `git -C ../nest-tensi-api status --short` muestra solo el endpoint de resumen semanal y el script de seed; no hay otros cambios.
+
+> **Verificación (2026-10-05):** los 20 criterios comprobados contra código, API y UI.
+>
+> - Build/lint: front (`pnpm lint`, `pnpm exec tsc --noEmit`, `pnpm build`) y back (`pnpm build`, `pnpm lint`) limpios.
+> - API: `GET /bp-readings/analytics/weekly-summary` → 200 Premium (`peak`/`lowest`/`average`/`changePercent`) y 403 Free.
+> - Seed: `pnpm seed:premium` idempotente (2 ejecuciones → 180 lecturas y PREMIUM).
+> - Playwright: Premium ve las 8 secciones y los toggles `?range=`/`?period=`; dashboard con KPIs; Historial 9 páginas (`?page=10` redirige a la 9). Free: candados, scroll a `#upgrade`, `/dashboard/analytics` → `/dashboard#upgrade`, Historial 20/25 + `ReadingsLimitCard` sin controles. 375 y 1440 px sin scroll horizontal ni errores de consola.
 
 ## Decisiones
 
