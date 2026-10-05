@@ -2,7 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { ButtonLink } from "@/components/ui/button-link"
-import { READING_METRICS, type ReadingMetricId } from "@/lib/dashboard/reading-form"
+import {
+  READING_METRICS,
+  type ReadingMetricId
+} from "@/lib/dashboard/reading-form"
 import {
   toReadingErrorMessage,
   useCreateReading
@@ -86,8 +89,8 @@ export function NewReadingForm() {
 
       setResult(response)
       setDialogOpen(isCrisis(response.emergencyAssessment.severity))
-    } catch (caught) {
-      setError("root", { message: toReadingErrorMessage(caught) })
+    } catch (error) {
+      setError("root", { message: toReadingErrorMessage(error) })
     }
   })
 
