@@ -54,6 +54,11 @@ export const READING_METRICS: readonly ReadingMetric[] = [
   }
 ]
 
+/** Valor por defecto de una métrica (0 si el id no existe). */
+export function getMetricDefault(id: ReadingMetricId): number {
+  return READING_METRICS.find((metric) => metric.id === id)?.defaultValue ?? 0
+}
+
 /** Chips de contexto del mockup, en su orden. */
 export const READING_CONTEXT_TAGS: readonly string[] = [
   "Ejercicio físico",

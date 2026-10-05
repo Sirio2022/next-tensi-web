@@ -1,4 +1,5 @@
 import type { Route } from "next"
+import type { MouseEvent } from "react"
 
 export type DashboardNavItemId =
   | "dashboard"
@@ -73,4 +74,37 @@ export const DASHBOARD_SETTINGS_ITEM: Readonly<FreeDashboardNavItem> = {
   label: "Configuración",
   href: "#",
   requiresPremium: false
+}
+
+/**
+ * Devuelve el ítem activo como el que mejor prefija el pathname (el más
+ * específico), de modo que en `/dashboard/new-reading` solo se marque "Nueva
+ * Lectura" y no también su ítem padre "Dashboard".
+ */
+export function getActiveNavId(
+  pathname: string
+): DashboardNavItemId | undefined {
+  let activeId: DashboardNavItemId | undefined
+  let activeHrefLength = -1
+
+  for (const item of DASHBOARD_NAV_ITEMS) {
+    if (item.href === "#") continue
+
+    const matches =
+      pathname === item.href || pathname.startsWith(`${item.href}/`)
+
+    if (matches && item.href.length > activeHrefLength) {
+      activeId = item.id
+      activeHrefLength = item.href.length
+    }
+  }
+
+  return activeId
+}
+
+/** Los enlaces aún no implementados existen como marcador, pero no navegan. */
+export function preventPlaceholderNavigation(
+  event: MouseEvent<HTMLAnchorElement>
+): void {
+  event.preventDefault()
 }

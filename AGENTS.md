@@ -54,6 +54,19 @@ App web de **Tensi** (presión arterial / salud cardiovascular). Hoy es en gran 
 - Está forzada por ESLint en `eslint.config.mjs`: `@next/next/no-html-link-for-pages` (`error`) y `no-restricted-syntax` con el selector `JSXOpeningElement[name.name='a']`. `pnpm lint` falla si aparece un `<a>`.
 - Con `typedRoutes` activo, los `href` con ancla (`#…`) son válidos como `Route`: el tipo generado por Next incluye `` `#${string}` `` (y `?${string}`), así que puedes usar el literal directamente (`<Link href="#simulador">`). No hace falta ningún helper.
 
+### Lógica y estado (custom hooks)
+
+- **Ningún componente ni página cliente contiene estado ni lógica.** Todo el estado de React (`useState`, `useEffect`, `useRef`, `useMemo`, `useCallback`, …), el wiring de terceros (React Hook Form, TanStack Query, `next/navigation`) y las derivaciones puras no triviales viven fuera del componente.
+- **Los custom hooks viven en `lib/**/hooks/**`** y exportan `useCamelCase` (archivo `use-kebab.ts`):
+  - `lib/<dominio>/hooks/` — lógica del dominio (p. ej. `lib/readings/hooks/use-new-reading-form.ts`).
+  - `lib/ui/hooks/` — comportamiento de UI genérico (p. ej. `lib/ui/hooks/use-native-dialog.ts`).
+  - `lib/form/hooks/` — campos de formulario (p. ej. `lib/form/hooks/use-form-field.ts`).
+- **Las derivaciones puras van a funciones de `lib/`**, no a hooks artificiales: formateadores (`lib/format/percent.ts`, `lib/readings/format.ts`), parsers (`lib/readings/insight.ts`), resolución de estado (`lib/readings/emergency.ts`, `lib/dashboard/nav.ts`) y cálculo de listas (`lib/dashboard/trend-points.ts`).
+- **Los providers se parten**: un hook de estado (`lib/auth/hooks/use-auth-provider.ts`, `lib/site/hooks/use-toasts.ts`, `lib/site/hooks/use-auth-modals-state.ts`) + un provider presentacional que solo conecta el contexto y renderiza.
+- **Permitido en `app/**` y `components/**`**: `useId` y `useContext`; los `use*` importados de `lib/**/hooks/**`; funciones puras de `lib/`; condicionales de render, `map` con JSX y handlers que solo delegan (`onClick={openRegister}`).
+- **Exención de Server Components**: los Server Components (`layout.tsx`, `page.tsx` y la capa `lib/**/dal.ts`) siguen leyendo y derivando en el servidor, porque no admiten hooks. La regla aplica a los Client Components.
+- Está forzada por ESLint en `eslint.config.mjs`: `no-restricted-imports` (`error`) sobre `app/**`, `components/**` y `lib/**`, salvo el allowlist `lib/**/hooks/**`. `pnpm lint` falla si un componente importa un hook vetado.
+
 ## Comandos
 
 - `pnpm dev` — servidor de desarrollo en <http://localhost:3000>.

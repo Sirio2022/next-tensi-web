@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge"
 import { ButtonLink } from "@/components/ui/button-link"
+import { formatPercent } from "@/lib/format/percent"
 import type { AIInsight } from "@/lib/readings/types"
 import { Bot, Sparkles } from "lucide-react"
 import { AiInsightText } from "./ai-insight-text"
@@ -7,14 +8,6 @@ import { AiInsightText } from "./ai-insight-text"
 interface AiAnalysisCardProps {
   /** Análisis devuelto por el back tras guardar; ausente antes del primer submit. */
   analysis?: AIInsight
-}
-
-/** Ratio 0–1 → porcentaje; el front solo formatea, no calcula. */
-function formatConfidence(confidence: number): string {
-  return new Intl.NumberFormat("es-ES", {
-    style: "percent",
-    maximumFractionDigits: 0
-  }).format(confidence)
 }
 
 /**
@@ -53,7 +46,7 @@ export function AiAnalysisCard({ analysis }: Readonly<AiAnalysisCardProps>) {
             </div>
             <p className="mt-0.5 text-xs text-blue-400">
               {hasInsight
-                ? `${formatConfidence(analysis!.confidence)} de confianza`
+                ? `${formatPercent(analysis!.confidence)} de confianza`
                 : "Interpretación de tus valores"}
             </p>
           </div>
@@ -111,11 +104,11 @@ export function AiAnalysisCard({ analysis }: Readonly<AiAnalysisCardProps>) {
             >
               <div
                 className="h-full rounded-full bg-blue-500"
-                style={{ width: formatConfidence(analysis!.confidence) }}
+                style={{ width: formatPercent(analysis!.confidence) }}
               />
             </div>
             <span className="text-[11px] text-slate-300">
-              {formatConfidence(analysis!.confidence)}
+              {formatPercent(analysis!.confidence)}
             </span>
           </div>
         </div>

@@ -1,17 +1,11 @@
 import { ButtonLink } from "@/components/ui/button-link"
 import { Card } from "@/components/ui/card"
+import { formatPercent } from "@/lib/format/percent"
 import type { ReadingsMeta } from "@/lib/readings/types"
 import { Lock } from "lucide-react"
 
 interface ReadingsLimitCardProps {
   meta: ReadingsMeta
-}
-
-function formatPercent(value: number): string {
-  return new Intl.NumberFormat("es-ES", {
-    style: "percent",
-    maximumFractionDigits: 0
-  }).format(value)
 }
 
 /**
