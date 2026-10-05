@@ -2,12 +2,14 @@ import { Badge } from "@/components/ui/badge"
 import { ButtonLink } from "@/components/ui/button-link"
 import { formatPercent } from "@/lib/format/percent"
 import type { AIInsight } from "@/lib/readings/types"
-import { Bot, Sparkles } from "lucide-react"
+import { Bot, Crown, Sparkles } from "lucide-react"
 import { AiInsightText } from "./ai-insight-text"
 
 interface AiAnalysisCardProps {
   /** Análisis devuelto por el back tras guardar; ausente antes del primer submit. */
   analysis?: AIInsight
+  /** Plan del usuario; en Premium se muestra el badge y se ocultan los CTAs de venta. */
+  isPremium: boolean
 }
 
 /**
@@ -16,8 +18,15 @@ interface AiAnalysisCardProps {
  * `patterns` reales del back. Si el back corta por cuota agotada, muestra su
  * `error` (y `usageCount`, si viene) con un CTA a Premium. Nunca inventa una
  * cuota "X/10".
+ *
+ * `isPremium` decide la presentación: en Premium se muestra un badge con
+ * corona y se ocultan el banner y los CTAs de venta; en Free se conserva el
+ * comportamiento original.
  */
-export function AiAnalysisCard({ analysis }: Readonly<AiAnalysisCardProps>) {
+export function AiAnalysisCard({
+  analysis,
+  isPremium
+}: Readonly<AiAnalysisCardProps>) {
   const hasError = Boolean(analysis?.error)
   const hasInsight = Boolean(analysis?.insight) && !hasError
   const patterns = analysis?.patterns ?? []
@@ -44,11 +53,19 @@ export function AiAnalysisCard({ analysis }: Readonly<AiAnalysisCardProps>) {
                 REAL
               </span>
             </div>
-            <p className="mt-0.5 text-xs text-blue-400">
-              {hasInsight
-                ? `${formatPercent(analysis!.confidence)} de confianza`
-                : "Interpretación de tus valores"}
-            </p>
+            <div className="mt-0.5 flex items-center gap-2">
+              {isPremium ? (
+                <span className="flex shrink-0 items-center gap-1 text-[11px] font-bold text-amber-400">
+                  <Crown className="size-3" aria-hidden />
+                  PREMIUM
+                </span>
+              ) : null}
+              <p className="text-xs text-blue-400">
+                {hasInsight
+                  ? `${formatPercent(analysis!.confidence)} de confianza`
+                  : "Interpretación de tus valores"}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -64,9 +81,11 @@ export function AiAnalysisCard({ analysis }: Readonly<AiAnalysisCardProps>) {
                 Análisis IA usados en este ciclo: {analysis!.usageCount}
               </p>
             ) : null}
-            <ButtonLink href="/dashboard#upgrade" tone="amber" size="sm">
-              Mejorar a Premium
-            </ButtonLink>
+            {isPremium ? null : (
+              <ButtonLink href="/dashboard#upgrade" tone="amber" size="sm">
+                Mejorar a Premium
+              </ButtonLink>
+            )}
           </div>
         ) : hasInsight ? (
           <AiInsightText
@@ -114,22 +133,24 @@ export function AiAnalysisCard({ analysis }: Readonly<AiAnalysisCardProps>) {
         </div>
       ) : null}
 
-      <div className="flex items-center justify-between rounded-xl border border-purple-500/20 bg-linear-to-r from-blue-950/60 to-purple-950/60 p-3">
-        <div className="flex items-center gap-2">
-          <Sparkles className="size-4 text-purple-400" aria-hidden />
-          <span className="text-xs text-slate-300">
-            Premium: análisis más profundos, patrones avanzados, predicciones
-          </span>
+      {isPremium ? null : (
+        <div className="flex items-center justify-between rounded-xl border border-purple-500/20 bg-linear-to-r from-blue-950/60 to-purple-950/60 p-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="size-4 text-purple-400" aria-hidden />
+            <span className="text-xs text-slate-300">
+              Premium: análisis más profundos, patrones avanzados, predicciones
+            </span>
+          </div>
+          <ButtonLink
+            href="/dashboard#upgrade"
+            tone="primary"
+            size="sm"
+            className="shrink-0 bg-purple-600 shadow-purple-600/25 hover:bg-purple-500"
+          >
+            Upgrade
+          </ButtonLink>
         </div>
-        <ButtonLink
-          href="/dashboard#upgrade"
-          tone="primary"
-          size="sm"
-          className="shrink-0 bg-purple-600 shadow-purple-600/25 hover:bg-purple-500"
-        >
-          Upgrade
-        </ButtonLink>
-      </div>
+      )}
     </section>
   )
 }

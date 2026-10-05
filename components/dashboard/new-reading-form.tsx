@@ -12,12 +12,17 @@ import { ReadingInputs } from "./reading-inputs"
 const INPUT_CLASSES =
   "w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 transition-colors focus:border-slate-600 focus:outline-none"
 
+interface NewReadingFormProps {
+  /** Plan del usuario resuelto en el server; decide el pie de la tarjeta IA. */
+  isPremium: boolean
+}
+
 /**
  * Formulario real de Nueva Lectura. El estado y el wiring viven en
  * `useNewReadingForm`; este componente solo renderiza el resultado y muestra el
  * análisis IA, la alerta de emergencia y los enlaces al dashboard/historial.
  */
-export function NewReadingForm() {
+export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
   const {
     displayedAt,
     control,
@@ -147,7 +152,7 @@ export function NewReadingForm() {
         </div>
       ) : null}
 
-      <AiAnalysisCard analysis={result?.analysis} />
+      <AiAnalysisCard analysis={result?.analysis} isPremium={isPremium} />
 
       {result && isDialogOpen ? (
         <EmergencyAlertDialog

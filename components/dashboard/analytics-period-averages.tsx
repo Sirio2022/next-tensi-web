@@ -8,10 +8,10 @@ import type {
 } from "@/lib/readings/analytics-types"
 import type { ReactNode } from "react"
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
   Legend,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -34,7 +34,9 @@ const GRID_COLOR = "#1e293b"
 /**
  * Promedios por periodo (semanal / mensual / anual). Client component (Recharts
  * monta SVG): recibe el periodo activo y los promedios crudos del back y solo
- * los uniforma con `buildAveragePoints()`. Incluye alternativa textual con
+ * los uniforma con `buildAveragePoints()`. Se dibuja con líneas (continua para
+ * la sistólica, discontinua para la diastólica): con 61 puntos semanales las
+ * barras quedaban ilegibles. Incluye alternativa textual con
  * `figure`/`figcaption`/`role="img"` y una tabla `sr-only`.
  */
 export function AnalyticsPeriodAverages({
@@ -44,6 +46,7 @@ export function AnalyticsPeriodAverages({
 }: Readonly<AnalyticsPeriodAveragesProps>) {
   const points = buildAveragePoints(period, averages)
   const label = getPeriodLabel(period)
+  const showDots = points.length <= 30
 
   const header = (
     <div className="flex flex-wrap items-start justify-between gap-3">
@@ -83,7 +86,7 @@ export function AnalyticsPeriodAverages({
       {/* eslint-disable-next-line jsx-a11y/prefer-tag-over-role */}
       <figure role="img" aria-label={description} className="m-0">
         <ResponsiveContainer width="100%" height={260}>
-          <BarChart
+          <LineChart
             data={points}
             margin={{ top: 8, right: 12, bottom: 0, left: -12 }}
           >
@@ -101,7 +104,7 @@ export function AnalyticsPeriodAverages({
               domain={["dataMin - 10", "dataMax + 10"]}
             />
             <Tooltip
-              cursor={{ fill: "#1e293b", fillOpacity: 0.4 }}
+              cursor={{ stroke: "#334155" }}
               contentStyle={{
                 background: "#0f172a",
                 border: "1px solid #1e293b",
@@ -113,25 +116,33 @@ export function AnalyticsPeriodAverages({
               formatter={(value, name) => [`${String(value)} mmHg`, String(name)]}
             />
             <Legend wrapperStyle={{ fontSize: "0.75rem" }} />
-            <Bar
+            <Line
+              type="monotone"
               dataKey="avgSystolic"
               name="Sistólica"
-              fill={SYSTOLIC_COLOR}
-              radius={[4, 4, 0, 0]}
+              stroke={SYSTOLIC_COLOR}
+              strokeWidth={2}
+              dot={showDots ? { r: 3 } : false}
+              activeDot={{ r: 5 }}
               isAnimationActive={false}
             />
-            <Bar
+            <Line
+              type="monotone"
               dataKey="avgDiastolic"
               name="Diastólica"
-              fill={DIASTOLIC_COLOR}
-              radius={[4, 4, 0, 0]}
+              stroke={DIASTOLIC_COLOR}
+              strokeWidth={2}
+              strokeDasharray="5 3"
+              dot={showDots ? { r: 3 } : false}
+              activeDot={{ r: 5 }}
               isAnimationActive={false}
             />
-          </BarChart>
+          </LineChart>
         </ResponsiveContainer>
 
         <figcaption className="mt-3 text-center text-xs text-slate-400">
-          Promedio de sistólica y diastólica por {label.toLowerCase()} en mmHg.
+          Sistólica (línea continua) y diastólica (línea discontinua) en mmHg por{" "}
+          {label.toLowerCase()}.
         </figcaption>
       </figure>
 
