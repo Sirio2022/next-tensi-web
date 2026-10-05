@@ -2,7 +2,8 @@ import { LockBadge } from "@/components/ui/lock-badge"
 import {
   preventPlaceholderNavigation,
   type DashboardNavItem,
-  type DashboardNavItemId
+  type DashboardNavItemId,
+  type DashboardNavItemState
 } from "@/lib/dashboard/nav"
 import {
   ChartColumn,
@@ -32,28 +33,32 @@ interface SidebarNavItemBaseProps {
 }
 
 /**
- * Props del ítem del sidebar como unión discriminada: cuando el ítem es Premium
- * (`requiresPremium: true`), `onLockedSelect` es obligatorio; el tipo impide
+ * Props del ítem del sidebar como unión discriminada sobre `state`: cuando el
+ * ítem está `locked`, `onLockedSelect` es obligatorio; el tipo impide
  * renderizarlo sin handler.
  */
 type SidebarNavItemProps = SidebarNavItemBaseProps &
   (
-    | { item: DashboardNavItem & { requiresPremium: true }; onLockedSelect: () => void }
-    | { item: DashboardNavItem & { requiresPremium?: false }; onLockedSelect?: never }
+    | { state: "locked"; onLockedSelect: () => void }
+    | {
+        state: Exclude<DashboardNavItemState, "locked">
+        onLockedSelect?: never
+      }
   )
 
 /**
- * Ítem del sidebar. Los ítems bloqueados se renderizan como botón (su click
- * lleva al banner de upgrade); los no implementados (`href="#"`) no navegan.
+ * Ítem del sidebar. `locked` se renderiza como botón que lleva al banner de
+ * upgrade; `placeholder` no navega (aún no implementado) y `link` navega.
  */
 export function SidebarNavItem({
   item,
   active = false,
+  state,
   onLockedSelect
 }: Readonly<SidebarNavItemProps>) {
   const icon = NAV_ICON[item.id]
 
-  if (item.requiresPremium) {
+  if (state === "locked") {
     return (
       <button
         type="button"
@@ -73,7 +78,7 @@ export function SidebarNavItem({
     <Link
       href={item.href}
       aria-current={active ? "page" : undefined}
-      onClick={item.href === "#" ? preventPlaceholderNavigation : undefined}
+      onClick={state === "placeholder" ? preventPlaceholderNavigation : undefined}
       className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-all focus-visible:ring-2 focus-visible:ring-tensi-400/70 focus-visible:outline-none ${
         active
           ? "border border-tensi-500/20 bg-tensi-600/10 font-semibold text-tensi-400"

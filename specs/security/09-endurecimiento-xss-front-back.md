@@ -44,9 +44,9 @@ No hay modelos de base de datos ni tipos de dominio nuevos.
 
 1. **Cabeceras de seguridad en `next.config.ts`** con `async headers()` aplicadas a `/:path*`: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`, `Cross-Origin-Opener-Policy: same-origin`.
    _Verificación:_ `curl -sI http://localhost:3000/` muestra todas las cabeceras.
-2. **CSP en modo Report-Only** con: `default-src 'self'; script-src 'self' 'unsafe-inline'` (+ `'unsafe-eval'` solo en dev); `style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' <origen API>; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests` (prod). Enviar como `Content-Security-Policy-Report-Only`.
+2. **CSP en modo Report-Only** con: `default-src 'self'; script-src 'self' 'unsafe-inline'` (+ `'unsafe-eval'` solo en dev); `style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' <origen API>; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'`. Enviar como `Content-Security-Policy-Report-Only`. **`upgrade-insecure-requests` no se incluye en este modo**: el navegador la ignora en Report-Only y registra un error de consola.
    _Verificación:_ la cabecera aparece en la respuesta; la consola no bloquea nada.
-3. **Switch a enforce** con `CSP_ENFORCE=true` (misma lista, cabecera `Content-Security-Policy`).
+3. **Switch a enforce** con `CSP_ENFORCE=true`: misma lista de directivas **más `upgrade-insecure-requests`** (solo en prod), con la cabecera `Content-Security-Policy`. La directiva de upgrade se emite únicamente aquí, porque solo tiene efecto en una política enforce.
    _Verificación:_ con la CSP activa, login → dashboard funciona sin violaciones en consola.
 4. **Prohibir HTML de usuario por lint:** añadir `"react/no-danger": "error"` en `eslint.config.mjs` (el plugin `react` ya está registrado).
    _Verificación:_ `pnpm lint` pasa; un `dangerouslySetInnerHTML` temporal hace fallar el lint.
@@ -76,6 +76,7 @@ No hay modelos de base de datos ni tipos de dominio nuevos.
 - [x] `curl -sI http://localhost:3000/` muestra `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY` y `Referrer-Policy`. — _Verificado: dev server en modo default → `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`._
 - [x] La respuesta del front incluye `Content-Security-Policy-Report-Only` con `object-src 'none'`, `base-uri 'self'` y `frame-ancestors 'none'`. — _Verificado: sin `CSP_ENFORCE` la cabecera es `Content-Security-Policy-Report-Only` e incluye `object-src 'none'; base-uri 'self'; frame-ancestors 'none'`._
 - [x] Con `CSP_ENFORCE=true`, la cabecera pasa a `Content-Security-Policy` y login → dashboard funciona sin violaciones en consola. — _Verificado: cabecera pasa a `Content-Security-Policy`; Playwright (login → `/dashboard`) sin errores de consola ni violaciones CSP._
+- [x] `upgrade-insecure-requests` solo se emite en modo enforce; en Report-Only se omite para no ensuciar la consola. — _Verificado: `curl -sI` en Report-Only (default) devuelve la política sin `upgrade-insecure-requests`; la directiva se añade únicamente con `CSP_ENFORCE=true` y `NODE_ENV !== "development"`._
 - [x] `pnpm lint` en el front falla si se introduce un `dangerouslySetInnerHTML` (regla `react/no-danger`), y pasa en el estado normal. — _Verificado: probe temporal → `error Dangerous property 'dangerouslySetInnerHTML' found react/no-danger`; `pnpm lint` limpio tras eliminar el probe._
 - [x] Un dato de usuario con payload (`<img src=x onerror=alert(1)>`) enviado como username/email se renderiza como texto y **no** ejecuta nada (Playwright, sin `dialog`). — _Verificado: usuario con `username` = payload, login → dashboard; payload en `body.innerText`, HTML escapado (`&lt;img …&gt;`), `img` count = 0, `dialogs = []`. Evidencia: `.playwright-mcp/xss-dashboard.png`._
 - [x] Un mensaje de error de la API con HTML se muestra como texto en el formulario, sin inyección. — _Verificado: intercepción de la respuesta de login con `message` = `<img src=x onerror=alert("api-error")> fatal`; se muestra escapado en `[role=alert]`, `img` count = 0, `dialogs = []`. Evidencia: `.playwright-mcp/xss-api-error.png`._
@@ -93,6 +94,7 @@ No hay modelos de base de datos ni tipos de dominio nuevos.
 - **Sí:** cookie httpOnly como única vía del JWT (ya en SPEC 01); esta spec **no la reimplementa**, la audita y elimina el fallback que la contradice.
 - **Sí:** cabeceras estáticas en `next.config.ts` + Helmet en Nest; sin nonce (no fuerza render dinámico y convive con `proxy.ts`).
 - **Sí:** CSP primero `Report-Only`, luego enforce con `CSP_ENFORCE`, para detectar violaciones antes de bloquear.
+- **Sí:** `upgrade-insecure-requests` se emite solo en modo enforce (y fuera de dev); en Report-Only el navegador la ignora y genera un error de consola, así que se omite.
 - **Sí:** orígenes permitidos: `'self'`, la API (`NEXT_PUBLIC_API_URL`) y Google Fonts (aunque `next/font/google` autohospeda). No hay otros recursos externos hoy.
 - **Sí:** retirar `Authorization: Bearer` del `JwtStrategy`; la cookie es la fuente única.
 - **Sí:** Swagger solo en dev/protegido.

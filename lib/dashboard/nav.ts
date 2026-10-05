@@ -1,3 +1,4 @@
+import type { Plan } from "@/lib/auth/types"
 import type { Route } from "next"
 import type { MouseEvent } from "react"
 
@@ -16,8 +17,9 @@ interface DashboardNavItemBase {
 }
 
 /**
- * Unión discriminada: un ítem con `requiresPremium: true` siempre requiere
- * `onLockedSelect`, de modo que el tipo impide renderizarlo sin handler.
+ * Unión discriminada por `requiresPremium`: `true` para Análisis y Reportes PDF,
+ * que quedan con candado en Free. El estado de render concreto (link,
+ * placeholder o locked) lo decide `getNavItemState(item, plan)`.
  */
 export type DashboardNavItem =
   | (DashboardNavItemBase & { requiresPremium: true })
@@ -31,9 +33,10 @@ export type FreeDashboardNavItem = DashboardNavItemBase & {
 /**
  * Navegación principal del sidebar, en el orden del mockup.
  *
- * `analytics` y `reports` aún no existen y además están bloqueadas para el plan
- * Free (`requiresPremium`): se renderizan como botón que lleva al banner de
- * upgrade. El resto navega a su ruta real.
+ * `analytics` ya navega a su ruta real (`/dashboard/analytics`) pero sigue
+ * bloqueada para el plan Free (`requiresPremium`). `reports` aún no existe:
+ * para Premium es un placeholder sin candado y para Free queda bloqueada. El
+ * estado concreto de cada ítem lo resuelve `getNavItemState(item, plan)`.
  */
 export const DASHBOARD_NAV_ITEMS: readonly Readonly<DashboardNavItem>[] = [
   {
@@ -57,7 +60,7 @@ export const DASHBOARD_NAV_ITEMS: readonly Readonly<DashboardNavItem>[] = [
   {
     id: "analytics",
     label: "Análisis",
-    href: "#",
+    href: "/dashboard/analytics",
     requiresPremium: true
   },
   {
@@ -107,4 +110,19 @@ export function preventPlaceholderNavigation(
   event: MouseEvent<HTMLAnchorElement>
 ): void {
   event.preventDefault()
+}
+
+/**
+ * Estado de render de un ítem del sidebar según el plan: `locked` (candado que
+ * lleva al banner), `placeholder` (existe pero no navega) o `link` (navega).
+ */
+export type DashboardNavItemState = "link" | "placeholder" | "locked"
+
+export function getNavItemState(
+  item: DashboardNavItem,
+  plan: Plan
+): DashboardNavItemState {
+  if (item.requiresPremium && plan === "FREE") return "locked"
+  if (item.href === "#") return "placeholder"
+  return "link"
 }

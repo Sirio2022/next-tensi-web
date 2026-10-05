@@ -2,6 +2,11 @@ import type { NextConfig } from "next"
 
 const isDev = process.env.NODE_ENV === "development"
 
+// `CSP_ENFORCE=true` pasa de Report-Only a enforce. `upgrade-insecure-requests`
+// solo es válida en una política enforce: en Report-Only el navegador la ignora
+// y registra un error, así que se emite únicamente en ese modo.
+const cspEnforcing = process.env.CSP_ENFORCE === "true"
+
 // Origen de la API para `connect-src`, derivado de NEXT_PUBLIC_API_URL.
 const apiOrigin = (() => {
   const url = process.env.NEXT_PUBLIC_API_URL
@@ -32,16 +37,15 @@ const cspDirectives = [
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  ...(isDev ? [] : ["upgrade-insecure-requests"])
+  ...(cspEnforcing && !isDev ? ["upgrade-insecure-requests"] : [])
 ]
 
 const contentSecurityPolicy = cspDirectives.join("; ")
 
-// CSP_ENFORCE=true pasa de Report-Only a enforce (misma lista de directivas).
-const cspHeaderKey =
-  process.env.CSP_ENFORCE === "true"
-    ? "Content-Security-Policy"
-    : "Content-Security-Policy-Report-Only"
+// `CSP_ENFORCE=true` pasa de Report-Only a enforce (misma lista de directivas).
+const cspHeaderKey = cspEnforcing
+  ? "Content-Security-Policy"
+  : "Content-Security-Policy-Report-Only"
 
 // Cabeceras de seguridad estáticas (SPEC 09).
 const securityHeaders = [

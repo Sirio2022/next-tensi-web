@@ -3,10 +3,11 @@
 import { Card } from "@/components/ui/card"
 import {
   buildTrendPoints,
-  type TrendPoint
+  type TrendPoint,
+  type TrendReadingInput
 } from "@/lib/dashboard/trend-points"
 import { getCategoryPresentation } from "@/lib/readings/categories"
-import type { BPReading } from "@/lib/readings/types"
+import type { ReactNode } from "react"
 import {
   CartesianGrid,
   Legend,
@@ -19,7 +20,12 @@ import {
 } from "recharts"
 
 interface ReadingsTrendChartProps {
-  readings: readonly BPReading[]
+  readings: readonly TrendReadingInput[]
+  /** Personaliza el encabezado; por defecto usa el copy del dashboard Free. */
+  title?: string
+  subtitle?: string
+  /** Slot a la derecha del título (p. ej. el selector de rango en Análisis). */
+  actions?: ReactNode
 }
 
 const SYSTOLIC_COLOR = "#fb7185"
@@ -39,23 +45,29 @@ const GRID_COLOR = "#1e293b"
  * y una tabla `sr-only` con los mismos datos da la alternativa textual.
  */
 export function ReadingsTrendChart({
-  readings
+  readings,
+  title = "Evolución de tu presión",
+  subtitle,
+  actions
 }: Readonly<ReadingsTrendChartProps>) {
   const points = buildTrendPoints(readings)
 
   if (points.length === 0) return null
 
+  const hasCategories = points.some((point) => point.category !== undefined)
+
   const description = `Gráfica de evolución de ${points.length} mediciones de presión arterial sistólica y diastólica, en orden cronológico.`
 
   return (
     <Card className="space-y-4 p-6">
-      <div>
-        <h2 className="text-sm font-semibold text-slate-100">
-          Evolución de tu presión
-        </h2>
-        <p className="mt-0.5 text-xs text-slate-400">
-          Últimas {points.length} mediciones registradas
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
+          <p className="mt-0.5 text-xs text-slate-400">
+            {subtitle ?? `Últimas ${points.length} mediciones registradas`}
+          </p>
+        </div>
+        {actions}
       </div>
 
       {/* La gráfica no tiene tag nativo; role="img" + aria-label es el patrón accesible correcto. */}
@@ -91,7 +103,7 @@ export function ReadingsTrendChart({
               itemStyle={{ color: "#cbd5e1" }}
               labelFormatter={(label, payload) => {
                 const point = payload?.[0]?.payload as TrendPoint | undefined
-                if (!point) return label
+                if (!point?.category) return label
                 return `${label} · ${getCategoryPresentation(point.category).label}`
               }}
               formatter={(value, name) => [`${String(value)} mmHg`, String(name)]}
@@ -135,7 +147,7 @@ export function ReadingsTrendChart({
             <th scope="col">Fecha y hora</th>
             <th scope="col">Sistólica (mmHg)</th>
             <th scope="col">Diastólica (mmHg)</th>
-            <th scope="col">Categoría</th>
+            {hasCategories && <th scope="col">Categoría</th>}
           </tr>
         </thead>
         <tbody>
@@ -144,7 +156,13 @@ export function ReadingsTrendChart({
               <th scope="row">{point.label}</th>
               <td>{point.systolic}</td>
               <td>{point.diastolic}</td>
-              <td>{getCategoryPresentation(point.category).label}</td>
+              {hasCategories && (
+                <td>
+                  {point.category
+                    ? getCategoryPresentation(point.category).label
+                    : "—"}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

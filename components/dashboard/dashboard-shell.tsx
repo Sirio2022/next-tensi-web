@@ -32,7 +32,7 @@ export function DashboardShell({
         Saltar al contenido
       </Link>
 
-      <DashboardSidebar />
+      <DashboardSidebar plan={user.plan} />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <DashboardHeader user={user} />

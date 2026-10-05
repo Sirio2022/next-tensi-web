@@ -13,9 +13,20 @@ function client(httpClient?: HttpClient): HttpClient {
   return httpClient ?? http
 }
 
-/** `GET /bp-readings` — lista las lecturas del usuario según su plan. */
-export function getReadings(httpClient?: HttpClient) {
-  return client(httpClient).get<ReadingsResponse>("/bp-readings")
+/** `GET /bp-readings` — lista paginada de lecturas según el plan del usuario. */
+export function getReadings(
+  query?: { skip?: number; limit?: number },
+  httpClient?: HttpClient
+) {
+  const params = new URLSearchParams()
+  if (query?.skip !== undefined) params.set("skip", String(query.skip))
+  if (query?.limit !== undefined) params.set("limit", String(query.limit))
+
+  const search = params.toString()
+
+  return client(httpClient).get<ReadingsResponse>(
+    search ? `/bp-readings?${search}` : "/bp-readings"
+  )
 }
 
 /** `POST /bp-readings` — crea la lectura y devuelve emergencia + análisis IA. */

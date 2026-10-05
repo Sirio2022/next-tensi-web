@@ -15,7 +15,7 @@ import type { ReadingsResponse } from "./types"
  * lo llamen varios componentes.
  */
 export const getReadingsForSession = cache(
-  async (): Promise<ReadingsResponse | null> => {
+  async (skip = 0, limit = 20): Promise<ReadingsResponse | null> => {
     const cookieStore = await cookies()
     const cookie = cookieStore.toString()
 
@@ -26,7 +26,7 @@ export const getReadingsForSession = cache(
     const sessionClient = createFetchClient(() => ({ Cookie: cookie }))
 
     try {
-      return await getReadings(sessionClient)
+      return await getReadings({ skip, limit }, sessionClient)
     } catch (error) {
       if (
         error instanceof ApiError &&
