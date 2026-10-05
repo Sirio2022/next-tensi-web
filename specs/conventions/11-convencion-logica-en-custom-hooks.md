@@ -1,6 +1,6 @@
 # SPEC 11 — Lógica fuera de componentes: todo el estado en custom hooks
 
-> **Status:** Aprobado
+> **Status:** Verificado
 > **Depends on:** SPEC 06, SPEC 07, SPEC 10
 > **Date:** 2026-10-04
 > **Objective:** Establecer, documentar y forzar con ESLint que ningún componente ni página cliente contenga estado o lógica, moviendo todo a custom hooks en `lib/**/hooks/**` y toda derivación pura a módulos de `lib/`.
@@ -99,22 +99,22 @@ Todo el trabajo es en `next-tensi-web`. Cada paso deja el sistema funcional y es
 
 ## Criterios de aceptación
 
-- [ ] `grep -rnE "use(State|Effect|Ref|Reducer|Memo|Callback|LayoutEffect|Pathname|Router|FormContext|Controller|Watch|Mutation|Query)\b" app components` no devuelve llamadas (solo aparecen `useId`/`useContext`).
-- [ ] `eslint.config.mjs` tiene `no-restricted-imports` en `error` para `app/**`, `components/**` y `lib/**` salvo `lib/**/hooks/**`.
-- [ ] Un `useState` de prueba en `components/__tmp_check/` dispara error de ESLint; el archivo temporal se elimina después.
-- [ ] Todos los hooks del refactor viven en `lib/**/hooks/**` y exportan `useCamelCase` (archivos `use-kebab.ts`).
-- [ ] `components/site/toast.tsx`, `components/site/auth-modals.tsx` y `lib/auth/auth-context.tsx` ya no importan hooks vetados; el estado vive en sus hooks de `lib/**/hooks/`.
-- [ ] `form-field.tsx`, `password-field.tsx` y `code-field.tsx` solo renderizan; la lógica vive en `lib/form/hooks/`.
-- [ ] No quedan helpers puros no triviales declarados en `app/**`/`components/**` (`getInitials`, `getActiveNavId`, `formatConfidence`, `formatPercent`, `metricDefault`, `isCrisis`, `parseLine`, `buildTrendPoints`, `preventPlaceholderNavigation`).
-- [ ] Landing: abrir/cerrar los modales de login y registro funciona con botón, Escape y backdrop; el scroll se bloquea y el foco vuelve al disparador.
-- [ ] Auth: el toggle de visibilidad de contraseña y el campo de 6 dígitos (teclear, flechas, Backspace y pegar) funcionan igual que antes.
-- [ ] Dashboard: item activo del sidebar, submit de Nueva Lectura con análisis IA y diálogo de emergencia (Escape y retorno de foco) funcionan.
-- [ ] Dashboard: la gráfica y su tabla `sr-only` siguen renderizando los mismos datos; el tooltip mantiene categoría y valores.
-- [ ] Los tres `error.tsx` siguen registrando el error en consola y `retry` recarga el segmento.
-- [ ] Playwright a 375px y 1440px sin scroll horizontal y sin errores de consola.
-- [ ] `AGENTS.md`, `.opencode/agents/react-best-practices.md` y `.opencode/agents/spec-verifier.md` documentan la convención.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] `git -C ../nest-tensi-api status --short` sigue limpio (el back no se toca).
+- [x] `grep -rnE "use(State|Effect|Ref|Reducer|Memo|Callback|LayoutEffect|Pathname|Router|FormContext|Controller|Watch|Mutation|Query)\b" app components` no devuelve llamadas (solo aparecen `useId`/`useContext`).
+- [x] `eslint.config.mjs` tiene `no-restricted-imports` en `error` para `app/**`, `components/**` y `lib/**` salvo `lib/**/hooks/**`.
+- [x] Un `useState` de prueba en `components/__tmp_check/` dispara error de ESLint; el archivo temporal se elimina después.
+- [x] Todos los hooks del refactor viven en `lib/**/hooks/**` y exportan `useCamelCase` (archivos `use-kebab.ts`).
+- [x] `components/site/toast.tsx`, `components/site/auth-modals.tsx` y `lib/auth/auth-context.tsx` ya no importan hooks vetados; el estado vive en sus hooks de `lib/**/hooks/`.
+- [x] `form-field.tsx`, `password-field.tsx` y `code-field.tsx` solo renderizan; la lógica vive en `lib/form/hooks/`.
+- [x] No quedan helpers puros no triviales declarados en `app/**`/`components/**` (`getInitials`, `getActiveNavId`, `formatConfidence`, `formatPercent`, `metricDefault`, `isCrisis`, `parseLine`, `buildTrendPoints`, `preventPlaceholderNavigation`).
+- [x] Landing: abrir/cerrar los modales de login y registro funciona con botón, Escape y backdrop; el scroll se bloquea y el foco vuelve al disparador.
+- [x] Auth: el toggle de visibilidad de contraseña y el campo de 6 dígitos (teclear, flechas, Backspace y pegar) funcionan igual que antes.
+- [x] Dashboard: item activo del sidebar, submit de Nueva Lectura con análisis IA y diálogo de emergencia (Escape y retorno de foco) funcionan.
+- [x] Dashboard: la gráfica y su tabla `sr-only` siguen renderizando los mismos datos; el tooltip mantiene categoría y valores.
+- [x] Los tres `error.tsx` siguen registrando el error en consola y `retry` recarga el segmento.
+- [x] Playwright a 375px y 1440px sin scroll horizontal y sin errores de consola.
+- [x] `AGENTS.md`, `.opencode/agents/react-best-practices.md` y `.opencode/agents/spec-verifier.md` documentan la convención.
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- [x] `git -C ../nest-tensi-api status --short` sigue limpio (el back no se toca).
 
 ## Decisiones
 
