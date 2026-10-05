@@ -25,6 +25,8 @@ const GRID_COLOR = "#1e293b"
  * Evolución mensual por categoría (barras apiladas). Client component (Recharts
  * monta SVG): recibe los puntos crudos del back y los agrupa por mes con
  * `buildEvolutionSeries()`, limitando las series a las categorías presentes.
+ * Aplana `counts` en cada punto para que Recharts lea el valor en la raíz (con
+ * `dataKey={category.category}`; Recharts no resuelve rutas anidadas).
  * Incluye alternativa textual con `figure`/`figcaption`/`role="img"` y tabla
  * `sr-only`.
  */
@@ -51,6 +53,11 @@ export function AnalyticsCategoryEvolution({
     )
   }
 
+  const chartData = series.points.map(({ label, counts }) => ({
+    label,
+    ...counts
+  }))
+
   const description = `Gráfica de evolución mensual de ${series.points.length} meses con lecturas agrupadas por categoría de presión arterial.`
 
   return (
@@ -69,7 +76,7 @@ export function AnalyticsCategoryEvolution({
       <figure role="img" aria-label={description} className="m-0">
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
-            data={series.points}
+            data={chartData}
             margin={{ top: 8, right: 12, bottom: 0, left: -12 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} />

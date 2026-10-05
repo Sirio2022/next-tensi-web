@@ -1,6 +1,6 @@
 # SPEC 13 — Correcciones del análisis Premium: tarjeta IA y gráficas
 
-> **Status:** Aproved
+> **Status:** Implemented
 > **Depends on:** SPEC 06, SPEC 11, SPEC 12
 > **Date:** 2026-10-05
 > **Objective:** Quitar el banner de venta de la tarjeta de Análisis IA cuando el usuario es Premium y hacer que las barras de "Evolución por categoría" y "Promedio por periodo" de `/dashboard/analytics` se rendericen correctamente.
