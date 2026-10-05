@@ -151,6 +151,22 @@ hallazgo y marca si es un **incumplimiento** o una **mejora recomendada**.
   por ESLint (`no-restricted-syntax` + `@next/next/no-html-link-for-pages`);
   ver `AGENTS.md`.
 
+## Lógica y estado (custom hooks) — SPEC 11
+
+- **Ningún Client Component contiene estado ni lógica**: nada de `useState`,
+  `useEffect`, `useRef`, `useMemo`, `useCallback`, wiring de React Hook Form,
+  TanStack Query ni `next/navigation` dentro de `app/**` o `components/**`.
+- Todo el estado vive en custom hooks de `lib/**/hooks/**`
+  (`lib/<dominio>/hooks/use-kebab.ts`, `lib/ui/hooks/`, `lib/form/hooks/`).
+- Las derivaciones puras no triviales van a funciones de `lib/` (formateadores,
+  parsers, resolución de estado, cálculo de listas), no a hooks artificiales.
+- Los providers se parten en un hook de estado + un provider presentacional.
+- Permitido en componentes: `useId`, `useContext`, los `use*` de
+  `lib/**/hooks/**`, funciones puras de `lib/` y handlers que solo delegan.
+- Exentos: Server Components (`layout.tsx`, `page.tsx`, `lib/**/dal.ts`), que sí
+  derivan en el servidor.
+- Forzado por ESLint (`no-restricted-imports` en `error`); ver `AGENTS.md`.
+
 ## Anti-patrones legacy (o incorrectos)
 
 - Etiquetas `<a>` para navegar en lugar de `next/link` (regla del repo).

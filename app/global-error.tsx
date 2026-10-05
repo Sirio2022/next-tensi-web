@@ -1,7 +1,8 @@
 "use client"
 
 // Los error boundaries deben ser Client Components.
-import { useEffect, type CSSProperties } from "react"
+import { useErrorReport } from "@/lib/errors/hooks/use-error-report"
+import { type CSSProperties } from "react"
 
 interface GlobalErrorProps {
   error: Error & { digest?: string }
@@ -17,10 +18,7 @@ export default function GlobalError({
   error,
   retry
 }: Readonly<GlobalErrorProps>) {
-  useEffect(() => {
-    // Punto de enganche para reportar el error a un servicio externo.
-    console.error(error)
-  }, [error])
+  useErrorReport(error)
 
   return (
     <html lang="es">

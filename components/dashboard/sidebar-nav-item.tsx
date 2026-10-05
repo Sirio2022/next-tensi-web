@@ -1,5 +1,9 @@
 import { LockBadge } from "@/components/ui/lock-badge"
-import type { DashboardNavItem, DashboardNavItemId } from "@/lib/dashboard/nav"
+import {
+  preventPlaceholderNavigation,
+  type DashboardNavItem,
+  type DashboardNavItemId
+} from "@/lib/dashboard/nav"
 import {
   ChartColumn,
   FileText,
@@ -9,7 +13,7 @@ import {
   Settings
 } from "lucide-react"
 import Link from "next/link"
-import type { MouseEvent, ReactNode } from "react"
+import type { ReactNode } from "react"
 
 /** Íconos del sidebar por ítem; heredan el color del texto salvo el de Nueva Lectura. */
 const NAV_ICON: Record<DashboardNavItemId, ReactNode> = {
@@ -80,9 +84,4 @@ export function SidebarNavItem({
       {item.label}
     </Link>
   )
-}
-
-/** Los enlaces aún no implementados existen como marcador, pero no navegan. */
-function preventPlaceholderNavigation(event: MouseEvent<HTMLAnchorElement>) {
-  event.preventDefault()
 }

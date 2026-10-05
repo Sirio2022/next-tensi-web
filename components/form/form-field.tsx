@@ -1,12 +1,7 @@
 "use client"
 
-import { useId } from "react"
-import {
-  useFormContext,
-  type FieldError,
-  type FieldValues,
-  type Path
-} from "react-hook-form"
+import { useFormField } from "@/lib/form/hooks/use-form-field"
+import type { FieldValues, Path } from "react-hook-form"
 
 interface FormFieldProps<T extends FieldValues> {
   name: Path<T>
@@ -17,11 +12,6 @@ interface FormFieldProps<T extends FieldValues> {
   disabled?: boolean
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"]
   maxLength?: number
-}
-
-function errorMessage(error: FieldError | undefined): string | undefined {
-  if (!error) return undefined
-  return error.message || "Este campo no es válido"
 }
 
 /**
@@ -38,14 +28,7 @@ export function FormField<T extends FieldValues>({
   inputMode,
   maxLength
 }: Readonly<FormFieldProps<T>>) {
-  const id = useId()
-  const {
-    register,
-    formState: { errors }
-  } = useFormContext<T>()
-
-  const message = errorMessage(errors[name] as FieldError | undefined)
-  const errorId = `${id}-error`
+  const { id, message, errorId, field } = useFormField<T>(name)
 
   return (
     <div>
@@ -66,7 +49,7 @@ export function FormField<T extends FieldValues>({
         aria-invalid={message ? true : undefined}
         aria-describedby={message ? errorId : undefined}
         className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-500 text-white placeholder-slate-400 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all aria-invalid:border-red-500 disabled:opacity-60"
-        {...register(name)}
+        {...field}
       />
       {message ? (
         <p id={errorId} role="alert" className="mt-2 text-xs text-red-400">

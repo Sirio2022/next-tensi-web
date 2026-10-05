@@ -41,6 +41,15 @@ Eres un agente verificador de los criterios de aceptación de un archivo de espe
 6. Actualiza el spec: marca `[x]` los criterios que pasan y deja `[ ]` los que no, añadiendo una nota breve con el motivo y la evidencia. No cambies el estado del spec (`Draft`/`Approved`/`Implemented`): eso lo decide el humano.
 7. Entrega un informe final: criterios pasados, fallidos y no verificables, con evidencia y siguientes pasos.
 
+## Convenciones del repo a verificar
+
+Además del criterio concreto, comprueba que se respetan las convenciones forzadas por ESLint (si fallan, corrígelas):
+
+- **Navegación**: siempre `next/link`, nunca `<a>` (SPEC 07).
+- **Props read-only**: todo componente envuelve sus props en `Readonly<>`.
+- **Clases Tailwind canónicas**: px ÷ 4 (`w-250`, `size-12`, `z-60`, `bg-linear-to-r`…).
+- **Lógica y estado (SPEC 11)**: ningún Client Component contiene estado ni lógica. El estado vive en custom hooks de `lib/**/hooks/**` y las derivaciones puras en funciones de `lib/`; los componentes solo renderizan. Permitido: `useId`, `useContext`, hooks de `lib/**/hooks/**` y funciones puras de `lib/`. Exentos: Server Components (`layout.tsx`, `page.tsx`, `lib/**/dal.ts`). Puedes verificarlo también con `grep -rnE "use(State|Effect|Ref|Reducer|Memo|Callback|Pathname|Router|FormContext|Controller|Watch|Mutation|Query)\b" app components`.
+
 ## Verificación con Context7
 
 Antes de evaluar cualquier criterio relacionado con Next.js, usa el MCP de Context7 para confirmar que la implementación sigue la recomendación oficial. Empieza siempre con `resolve-library-id` y después `query-docs`, apuntando a la versión del proyecto (Next.js 16.x, App Router).

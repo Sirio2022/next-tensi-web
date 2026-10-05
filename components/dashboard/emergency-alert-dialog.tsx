@@ -1,9 +1,10 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { useNativeDialog } from "@/lib/ui/hooks/use-native-dialog"
 import type { EmergencyAssessment } from "@/lib/readings/types"
 import { AlertTriangle } from "lucide-react"
-import { useEffect, useId, useRef, type RefObject } from "react"
+import { useId, type RefObject } from "react"
 
 interface EmergencyAlertDialogProps {
   assessment: EmergencyAssessment
@@ -32,26 +33,13 @@ export function EmergencyAlertDialog({
 }: Readonly<EmergencyAlertDialogProps>) {
   const titleId = useId()
   const bodyId = useId()
-  const dialogRef = useRef<HTMLDialogElement>(null)
-  const previouslyFocused = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    const dialog = dialogRef.current
-    if (!dialog || !open) return
-
-    previouslyFocused.current = document.activeElement as HTMLElement | null
-    // Capturamos el nodo aquí (el submit sigue montado al abrir el diálogo):
-    // durante `isPending` el botón se deshabilita y el navegador manda el foco
-    // a `body`, así que leerlo en el cleanup no sería fiable.
-    const returnFocusTarget = returnFocusRef?.current ?? null
-    if (!dialog.open) dialog.showModal()
-
-    return () => {
-      if (dialog.open) dialog.close()
-      const target = returnFocusTarget ?? previouslyFocused.current
-      target?.focus()
-    }
-  }, [open, returnFocusRef])
+  const { dialogRef, onCancel } = useNativeDialog({
+    open,
+    onClose,
+    returnFocusRef,
+    // Este diálogo no bloquea el scroll del body (comportamiento previo).
+    lockScroll: false
+  })
 
   if (!open) return null
 
@@ -61,10 +49,7 @@ export function EmergencyAlertDialog({
     <dialog
       ref={dialogRef}
       role="alertdialog"
-      onCancel={(event) => {
-        event.preventDefault()
-        onClose()
-      }}
+      onCancel={onCancel}
       aria-labelledby={titleId}
       aria-describedby={bodyId}
       className="m-0 flex size-full max-h-none max-w-none items-center justify-center border-0 bg-transparent p-4 backdrop:bg-black/75 backdrop:backdrop-blur-sm"

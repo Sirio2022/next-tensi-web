@@ -2,9 +2,9 @@
 
 // Los error boundaries deben ser Client Components.
 import { Card } from "@/components/ui/card"
+import { useErrorReport } from "@/lib/errors/hooks/use-error-report"
 import { TriangleAlert } from "lucide-react"
 import Link from "next/link"
-import { useEffect } from "react"
 
 interface DashboardErrorProps {
   error: Error & { digest?: string }
@@ -20,10 +20,7 @@ export default function DashboardError({
   error,
   retry
 }: Readonly<DashboardErrorProps>) {
-  useEffect(() => {
-    // Punto de enganche para reportar el error a un servicio externo.
-    console.error(error)
-  }, [error])
+  useErrorReport(error)
 
   return (
     <Card className="relative overflow-hidden p-8 text-center">

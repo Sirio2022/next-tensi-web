@@ -2,29 +2,15 @@
 
 import { LoginForm } from "@/components/auth/login-form"
 import { RegisterForm } from "@/components/auth/register-form"
-import { X } from "lucide-react"
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode
-} from "react"
+  useAuthModalsState,
+  type AuthModalsActions
+} from "@/lib/site/hooks/use-auth-modals-state"
+import { useNativeDialog } from "@/lib/ui/hooks/use-native-dialog"
+import { X } from "lucide-react"
+import { createContext, useContext, useId, type ReactNode } from "react"
 
-export type AuthModalMode = "login" | "register"
-
-interface AuthModalsActions {
-  /** Abre el modal de login. */
-  openLogin: () => void
-  /** Abre el modal de registro. */
-  openRegister: () => void
-  /** Cierra el modal activo. */
-  close: () => void
-}
+export type { AuthModalMode } from "@/lib/site/hooks/use-auth-modals-state"
 
 const AuthModalsContext = createContext<AuthModalsActions | null>(null)
 
@@ -42,23 +28,13 @@ export function useAuthModals(): AuthModalsActions {
  * `LoginForm`/`RegisterForm` de la SPEC 01 (cero duplicación de formularios).
  *
  * El contexto expone solo las **acciones** (estables) y el `mode` vive en el
- * estado local del provider, para que abrir un modal no re-renderice a los
- * consumidores que solo tienen acceso a las acciones (`Hero`, `SiteHeader`,
- * `Cta`).
+ * estado del hook, para que abrir un modal no re-renderice a los consumidores
+ * que solo tienen acceso a las acciones (`Hero`, `SiteHeader`, `Cta`).
  */
 export function AuthModalsProvider({
   children
 }: Readonly<{ children: ReactNode }>) {
-  const [mode, setMode] = useState<AuthModalMode | null>(null)
-
-  const openLogin = useCallback(() => setMode("login"), [])
-  const openRegister = useCallback(() => setMode("register"), [])
-  const close = useCallback(() => setMode(null), [])
-
-  const actions = useMemo<AuthModalsActions>(
-    () => ({ openLogin, openRegister, close }),
-    [openLogin, openRegister, close]
-  )
+  const { mode, actions } = useAuthModalsState()
 
   return (
     <AuthModalsContext.Provider value={actions}>
@@ -66,7 +42,7 @@ export function AuthModalsProvider({
 
       <Modal
         open={mode === "login"}
-        onClose={close}
+        onClose={actions.close}
         title="Iniciar Sesión"
         description="Accede a tu historial y registro de mediciones"
       >
@@ -75,7 +51,7 @@ export function AuthModalsProvider({
 
       <Modal
         open={mode === "register"}
-        onClose={close}
+        onClose={actions.close}
         title="Crear Cuenta Gratis"
         description="Comienza a controlar tu salud cardiovascular con Tensi"
       >
@@ -97,7 +73,7 @@ interface ModalProps {
  * Modal base construido sobre el elemento nativo `<dialog>`. `showModal()` ya
  * aporta el focus trap, el cierre con Escape y la capa superior (`::backdrop`),
  * así que solo manejamos el cierre por backdrop, el bloqueo del scroll y la
- * restauración del foco al cerrar.
+ * restauración del foco al cerrar (vía `useNativeDialog`).
  */
 function Modal({
   open,
@@ -108,24 +84,10 @@ function Modal({
 }: Readonly<ModalProps>) {
   const titleId = useId()
   const descriptionId = useId()
-  const dialogRef = useRef<HTMLDialogElement>(null)
-  const previouslyFocused = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    const dialog = dialogRef.current
-    if (!dialog || !open) return
-
-    previouslyFocused.current = document.activeElement as HTMLElement | null
-    if (!dialog.open) dialog.showModal()
-
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-
-    return () => {
-      document.body.style.overflow = previousOverflow
-      previouslyFocused.current?.focus()
-    }
-  }, [open])
+  const { dialogRef, onCancel, onBackdropClick } = useNativeDialog({
+    open,
+    onClose
+  })
 
   if (!open) return null
 
@@ -134,13 +96,8 @@ function Modal({
       ref={dialogRef}
       // El elemento nativo cierra con Escape disparando `cancel`; evitamos su
       // cierre por defecto y dejamos que el estado del provider lo desmonte.
-      onCancel={(event) => {
-        event.preventDefault()
-        onClose()
-      }}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) onClose()
-      }}
+      onCancel={onCancel}
+      onClick={onBackdropClick}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
       className="m-0 flex size-full max-h-none max-w-none items-center justify-center border-0 bg-transparent p-4 backdrop:bg-black/75 backdrop:backdrop-blur-sm"

@@ -1,30 +1,14 @@
 "use client"
 
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode
-} from "react"
+  useToasts,
+  type ToastContextValue
+} from "@/lib/site/hooks/use-toasts"
+import { useToastItem } from "@/lib/ui/hooks/use-toast-item"
 import { CircleCheck, X } from "lucide-react"
-
-interface ToastItem {
-  id: number
-  message: string
-}
-
-interface ToastContextValue {
-  /** Muestra un toast de éxito que se autodescarta. */
-  showToast: (message: string) => void
-}
+import { createContext, useContext, type ReactNode } from "react"
 
 const ToastContext = createContext<ToastContextValue | null>(null)
-
-const TOAST_DURATION_MS = 3000
 
 /** Acceso al sistema de toasts desde cualquier cliente. */
 export function useToast(): ToastContextValue {
@@ -36,9 +20,8 @@ export function useToast(): ToastContextValue {
 }
 
 /**
- * Toast individual. El auto-descarte se pausa con `hover`/`focus` y se puede
- * cerrar a mano (WCAG 2.2.1, Timing Adjustable). El timer vive en el propio
- * componente, así el cleanup del `useEffect` lo cancela al desmontarse.
+ * Toast individual. El auto-descarte (pausable con `hover`/`focus`) vive en
+ * `useToastItem`, cuyo cleanup cancela el timer al desmontarse.
  */
 function Toast({
   id,
@@ -49,21 +32,14 @@ function Toast({
   message: string
   onDismiss: (id: number) => void
 }>) {
-  const [paused, setPaused] = useState(false)
-
-  useEffect(() => {
-    if (paused) return
-
-    const timer = window.setTimeout(() => onDismiss(id), TOAST_DURATION_MS)
-    return () => window.clearTimeout(timer)
-  }, [id, onDismiss, paused])
+  const { pause, resume } = useToastItem(id, onDismiss)
 
   return (
     <div
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
+      onMouseEnter={pause}
+      onMouseLeave={resume}
+      onFocus={pause}
+      onBlur={resume}
       className="pointer-events-auto flex items-center space-x-2 rounded-xl border border-tensi-500/40 bg-slate-900 px-4 py-3 text-xs text-white shadow-xl animate-toast-in motion-reduce:animate-none"
     >
       <CircleCheck className="size-4 shrink-0 text-tensi-400" />
@@ -85,20 +61,7 @@ function Toast({
  * en `app/layout.tsx` para sobrevivir a la navegación tras un registro.
  */
 export function ToastProvider({ children }: Readonly<{ children: ReactNode }>) {
-  const [toasts, setToasts] = useState<ToastItem[]>([])
-  const nextId = useRef(0)
-
-  const dismiss = useCallback((id: number) => {
-    setToasts((current) => current.filter((toast) => toast.id !== id))
-  }, [])
-
-  const showToast = useCallback((message: string) => {
-    const id = nextId.current
-    nextId.current += 1
-    setToasts((current) => [...current, { id, message }])
-  }, [])
-
-  const value = useMemo<ToastContextValue>(() => ({ showToast }), [showToast])
+  const { toasts, dismiss, value } = useToasts()
 
   return (
     <ToastContext.Provider value={value}>

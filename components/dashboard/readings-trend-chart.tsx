@@ -1,9 +1,12 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
+import {
+  buildTrendPoints,
+  type TrendPoint
+} from "@/lib/dashboard/trend-points"
 import { getCategoryPresentation } from "@/lib/readings/categories"
 import type { BPReading } from "@/lib/readings/types"
-import { useMemo } from "react"
 import {
   CartesianGrid,
   Legend,
@@ -19,26 +22,11 @@ interface ReadingsTrendChartProps {
   readings: readonly BPReading[]
 }
 
-interface TrendPoint {
-  id: string
-  label: string
-  systolic: number
-  diastolic: number
-  category: BPReading["category"]
-}
-
 const SYSTOLIC_COLOR = "#fb7185"
 const DIASTOLIC_COLOR = "#38bdf8"
 
 const AXIS_COLOR = "#64748b"
 const GRID_COLOR = "#1e293b"
-
-const dateTimeFormatter = new Intl.DateTimeFormat("es-ES", {
-  day: "2-digit",
-  month: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit"
-})
 
 /**
  * Gráfica de evolución del plan Free. Client component (Recharts monta SVG) que
@@ -53,17 +41,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat("es-ES", {
 export function ReadingsTrendChart({
   readings
 }: Readonly<ReadingsTrendChartProps>) {
-  const points = useMemo<TrendPoint[]>(
-    () =>
-      [...readings].reverse().map((reading) => ({
-        id: reading.id,
-        label: dateTimeFormatter.format(new Date(reading.timestamp)),
-        systolic: reading.systolic,
-        diastolic: reading.diastolic,
-        category: reading.category
-      })),
-    [readings]
-  )
+  const points = buildTrendPoints(readings)
 
   if (points.length === 0) return null
 

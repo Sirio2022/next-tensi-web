@@ -1,21 +1,7 @@
 "use client"
 
-import {
-  useEffect,
-  useId,
-  useRef,
-  type ClipboardEvent,
-  type KeyboardEvent
-} from "react"
-import {
-  useFormContext,
-  useWatch,
-  type FieldError,
-  type FieldValues,
-  type Path
-} from "react-hook-form"
-
-const LENGTH = 6
+import { useCodeField } from "@/lib/form/hooks/use-code-field"
+import type { FieldValues, Path } from "react-hook-form"
 
 interface CodeFieldProps<T extends FieldValues> {
   name: Path<T>
@@ -37,110 +23,17 @@ export function CodeField<T extends FieldValues>({
   disabled = false,
   autoFocus = false
 }: Readonly<CodeFieldProps<T>>) {
-  const baseId = useId()
-  const inputsRef = useRef<Array<HTMLInputElement | null>>([])
-  const didAutoFocusRef = useRef(false)
-
   const {
-    control,
-    setValue,
-    formState: { errors }
-  } = useFormContext<T>()
-
-  // `useWatch` aísla el re-render del campo: solo cambia cuando cambia `name`,
-  // no cuando lo hace el resto del formulario (a diferencia de `watch`).
-  const value = String(useWatch({ control, name }) ?? "")
-  const digits = Array.from(
-    { length: LENGTH },
-    (_, index) => value[index] ?? ""
-  )
-
-  const error = errors[name] as FieldError | undefined
-  const message =
-    error?.message || (error ? "Este campo no es válido" : undefined)
-  const errorId = `${baseId}-error`
-
-  // Enfoca el primer dígito una sola vez: los inputs se re-montan al cambiar
-  // su `key`, así que el atributo `autoFocus` volvería a robar el foco.
-  useEffect(() => {
-    if (!autoFocus || didAutoFocusRef.current) return
-    didAutoFocusRef.current = true
-    inputsRef.current[0]?.focus()
-  }, [autoFocus])
-
-  const commit = (next: string) => {
-    setValue(name, next.slice(0, LENGTH) as never, {
-      // Solo valida al completar los 6 dígitos para no marcar error antes.
-      shouldValidate: next.length === LENGTH,
-      shouldDirty: true
-    })
-  }
-
-  const handleChange = (index: number, raw: string) => {
-    const digit = raw.replace(/\D/g, "").slice(-1)
-    if (!digit && raw !== "") return
-
-    const next = digits.slice()
-    next[index] = digit
-    commit(next.join(""))
-
-    if (digit && index < LENGTH - 1) {
-      inputsRef.current[index + 1]?.focus()
-    }
-  }
-
-  const handleKeyDown = (
-    index: number,
-    event: KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (event.key === "Backspace") {
-      if (digits[index]) {
-        const next = digits.slice()
-        next[index] = ""
-        commit(next.join(""))
-      } else if (index > 0) {
-        const next = digits.slice()
-        next[index - 1] = ""
-        commit(next.join(""))
-        inputsRef.current[index - 1]?.focus()
-      }
-      event.preventDefault()
-      return
-    }
-
-    if (event.key === "ArrowLeft" && index > 0) {
-      inputsRef.current[index - 1]?.focus()
-      event.preventDefault()
-      return
-    }
-
-    if (event.key === "ArrowRight" && index < LENGTH - 1) {
-      inputsRef.current[index + 1]?.focus()
-      event.preventDefault()
-    }
-  }
-
-  const handlePaste = (
-    index: number,
-    event: ClipboardEvent<HTMLInputElement>
-  ) => {
-    const pasted = event.clipboardData.getData("text").replace(/\D/g, "")
-    if (!pasted) return
-
-    event.preventDefault()
-    const next = digits.slice()
-    for (
-      let offset = 0;
-      offset < pasted.length && index + offset < LENGTH;
-      offset += 1
-    ) {
-      next[index + offset] = pasted[offset]
-    }
-    commit(next.join(""))
-
-    const focusIndex = Math.min(index + pasted.length, LENGTH - 1)
-    inputsRef.current[focusIndex]?.focus()
-  }
+    baseId,
+    digits,
+    length,
+    message,
+    errorId,
+    setInputRef,
+    handleChange,
+    handleKeyDown,
+    handlePaste
+  } = useCodeField<T>({ name, autoFocus })
 
   return (
     <fieldset className="min-w-0 w-full">
@@ -152,9 +45,7 @@ export function CodeField<T extends FieldValues>({
           <input
             // El índice es estable: siempre hay 6 posiciones fijas.
             key={index + (digit || "")}
-            ref={(element) => {
-              inputsRef.current[index] = element
-            }}
+            ref={setInputRef(index)}
             id={`${baseId}-${index}`}
             type="text"
             inputMode="numeric"
@@ -165,7 +56,7 @@ export function CodeField<T extends FieldValues>({
             onChange={(event) => handleChange(index, event.target.value)}
             onKeyDown={(event) => handleKeyDown(index, event)}
             onPaste={(event) => handlePaste(index, event)}
-            aria-label={`Dígito ${index + 1} de ${LENGTH}`}
+            aria-label={`Dígito ${index + 1} de ${length}`}
             aria-invalid={message ? true : undefined}
             aria-describedby={message ? errorId : undefined}
             className="min-w-0 flex-1 basis-0 h-12 text-center text-lg font-bold rounded-xl bg-slate-950/80 border border-slate-500 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all aria-invalid:border-red-500 disabled:cursor-not-allowed disabled:opacity-60"

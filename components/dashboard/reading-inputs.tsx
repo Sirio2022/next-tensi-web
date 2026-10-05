@@ -1,20 +1,19 @@
 "use client"
 
+import { useReadingContextField } from "@/lib/dashboard/hooks/use-reading-context-field"
+import { useReadingMetricField } from "@/lib/dashboard/hooks/use-reading-metric-field"
 import {
   READING_METRICS,
   type ReadingMetricId
 } from "@/lib/dashboard/reading-form"
 import type { CreateReadingFormValues } from "@/lib/readings/schemas"
 import type { Control } from "react-hook-form"
-import { useController } from "react-hook-form"
 import { ContextChips } from "./context-chips"
 import { MetricSlider } from "./metric-slider"
 
 interface ReadingInputsProps {
   control: Control<CreateReadingFormValues>
 }
-
-const METRIC_ERROR_ID_PREFIX = "reading-error-"
 
 /** Error de una métrica, anunciado a tecnologías de asistencia. */
 function MetricError({ id, message }: Readonly<{ id: string; message: string }>) {
@@ -30,22 +29,19 @@ function MetricError({ id, message }: Readonly<{ id: string; message: string }>)
 }
 
 /**
- * Tarjeta de una métrica suscrita a su propio campo. Al vivir dentro de este
- * boundary, mover su slider solo re-renderiza este subárbol, no el formulario
- * padre (que compone `AiAnalysisCard`, la alerta de emergencia, etc.).
+ * Tarjeta de una métrica suscrita a su propio campo (`useReadingMetricField`).
+ * Al vivir dentro de este boundary, mover su slider solo re-renderiza este
+ * subárbol, no el formulario padre.
  */
 function ReadingMetricField({
   control,
   metricId
-}: Readonly<{ control: Control<CreateReadingFormValues>; metricId: ReadingMetricId }>) {
-  const { field, fieldState } = useController<CreateReadingFormValues, ReadingMetricId>(
-    {
-      control,
-      name: metricId
-    }
-  )
-  const metric = READING_METRICS.find((candidate) => candidate.id === metricId)
-  const errorId = `${METRIC_ERROR_ID_PREFIX}${metricId}`
+}: Readonly<{
+  control: Control<CreateReadingFormValues>
+  metricId: ReadingMetricId
+}>) {
+  const { metric, value, onValueChange, errorMessage, errorId } =
+    useReadingMetricField(control, metricId)
 
   if (!metric) {
     return null
@@ -55,12 +51,10 @@ function ReadingMetricField({
     <div className="space-y-1">
       <MetricSlider
         metric={metric}
-        value={field.value ?? metric.defaultValue}
-        onValueChange={field.onChange}
+        value={value}
+        onValueChange={onValueChange}
       />
-      {fieldState.error?.message ? (
-        <MetricError id={errorId} message={fieldState.error.message} />
-      ) : null}
+      {errorMessage ? <MetricError id={errorId} message={errorMessage} /> : null}
     </div>
   )
 }
@@ -69,27 +63,16 @@ function ReadingMetricField({
 function ReadingContextField({
   control
 }: Readonly<{ control: Control<CreateReadingFormValues> }>) {
-  const { field } = useController<CreateReadingFormValues, "tags">({
-    control,
-    name: "tags"
-  })
+  const { selected, toggleTag } = useReadingContextField(control)
 
-  const toggleTag = (tag: string) => {
-    const current = field.value ?? []
-    const next = current.includes(tag)
-      ? current.filter((selected) => selected !== tag)
-      : [...current, tag]
-    field.onChange(next)
-  }
-
-  return <ContextChips selected={field.value ?? []} onToggle={toggleTag} />
+  return <ContextChips selected={selected} onToggle={toggleTag} />
 }
 
 /**
  * Boundary de los campos "vivos" del formulario (métricas + chips de contexto).
  * Aísla el estado transitorio de la captura para que cada interacción con los
  * sliders/chips no re-renderice el formulario completo. Recibe el `control` de
- * RHF y se suscribe por campo con `useController`.
+ * RHF y se suscribe por campo con los hooks de `lib/dashboard/hooks`.
  */
 export function ReadingInputs({ control }: Readonly<ReadingInputsProps>) {
   return (

@@ -1,9 +1,8 @@
 "use client"
 
-import { useAuthModals } from "@/components/site/auth-modals"
+import { useSiteHeader } from "@/lib/site/hooks/use-site-header"
 import { ArrowRight, Menu, X } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
 
 const NAV_LINKS = [
   { href: "#caracteristicas", label: "Registra" },
@@ -17,18 +16,8 @@ const NAV_LINKS = [
  * botones que abren los modales de auth a través de `useAuthModals`.
  */
 export function SiteHeader() {
-  const { openLogin, openRegister } = useAuthModals()
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  const handleLogin = () => {
-    setMenuOpen(false)
-    openLogin()
-  }
-
-  const handleRegister = () => {
-    setMenuOpen(false)
-    openRegister()
-  }
+  const { menuOpen, closeMenu, toggleMenu, handleLogin, handleRegister } =
+    useSiteHeader()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
@@ -37,7 +26,7 @@ export function SiteHeader() {
           <Link
             href="/"
             className="flex items-center space-x-3 group"
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             <span className="size-10 rounded-xl bg-linear-to-tr from-tensi-500 via-indigo-500 to-tensi-violet flex items-center justify-center shadow-lg shadow-tensi-500/20 group-hover:scale-105 transition-transform duration-300">
               <svg
@@ -91,7 +80,7 @@ export function SiteHeader() {
 
             <button
               type="button"
-              onClick={() => setMenuOpen((value) => !value)}
+              onClick={toggleMenu}
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
@@ -115,7 +104,7 @@ export function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setMenuOpen(false)}
+                onClick={closeMenu}
                 className="block px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-tensi-400 transition-colors"
               >
                 {link.label}

@@ -1,8 +1,8 @@
 "use client"
 
 // Los error boundaries deben ser Client Components.
+import { useErrorReport } from "@/lib/errors/hooks/use-error-report"
 import Link from "next/link"
-import { useEffect } from "react"
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -15,10 +15,7 @@ interface ErrorProps {
  * los tokens `tensi` del resto de la app.
  */
 export default function Error({ error, retry }: Readonly<ErrorProps>) {
-  useEffect(() => {
-    // Punto de enganche para reportar el error a un servicio externo.
-    console.error(error)
-  }, [error])
+  useErrorReport(error)
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 px-6 py-16 text-slate-100 antialiased">

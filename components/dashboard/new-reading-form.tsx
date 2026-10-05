@@ -2,26 +2,9 @@
 
 import { Button } from "@/components/ui/button"
 import { ButtonLink } from "@/components/ui/button-link"
-import {
-  READING_METRICS,
-  type ReadingMetricId
-} from "@/lib/dashboard/reading-form"
-import {
-  toReadingErrorMessage,
-  useCreateReading
-} from "@/lib/readings/hooks/use-create-reading"
-import {
-  createReadingSchema,
-  type CreateReadingFormValues
-} from "@/lib/readings/schemas"
-import type {
-  CreateReadingResponse,
-  EmergencySeverity
-} from "@/lib/readings/types"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { formatReadingDateTime } from "@/lib/readings/format"
+import { useNewReadingForm } from "@/lib/readings/hooks/use-new-reading-form"
 import { CheckCircle2, TriangleAlert } from "lucide-react"
-import { useId, useRef, useState } from "react"
-import { useForm } from "react-hook-form"
 import { AiAnalysisCard } from "./ai-analysis-card"
 import { EmergencyAlertDialog } from "./emergency-alert-dialog"
 import { ReadingInputs } from "./reading-inputs"
@@ -29,76 +12,27 @@ import { ReadingInputs } from "./reading-inputs"
 const INPUT_CLASSES =
   "w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 transition-colors focus:border-slate-600 focus:outline-none"
 
-const dateTimeFormatter = new Intl.DateTimeFormat("es-ES", {
-  dateStyle: "long",
-  timeStyle: "short"
-})
-
-function metricDefault(id: ReadingMetricId): number {
-  return READING_METRICS.find((metric) => metric.id === id)?.defaultValue ?? 0
-}
-
-function isCrisis(severity: EmergencySeverity): boolean {
-  return severity === "CRISIS_HYPERTENSIVE" || severity === "CRISIS_HYPOTENSIVE"
-}
-
 /**
- * Formulario real de Nueva Lectura. Valida con zod (React Hook Form +
- * `zodResolver`), envía `POST /bp-readings` con `useCreateReading` y, al
- * guardar, muestra el análisis IA del back, la alerta de emergencia y enlaces al
- * dashboard/historial. El `timestamp` se envía como ISO "ahora"; la fecha/hora
- * mostrada es de solo lectura.
+ * Formulario real de Nueva Lectura. El estado y el wiring viven en
+ * `useNewReadingForm`; este componente solo renderiza el resultado y muestra el
+ * análisis IA, la alerta de emergencia y los enlaces al dashboard/historial.
  */
 export function NewReadingForm() {
-  const [displayedAt] = useState(() => new Date())
-  const [isDialogOpen, setDialogOpen] = useState(false)
-  const notesErrorId = useId()
-  const submitRef = useRef<HTMLButtonElement>(null)
-  const { mutateAsync, isPending } = useCreateReading()
-
   const {
+    displayedAt,
     control,
     register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting }
-  } = useForm<CreateReadingFormValues>({
-    resolver: zodResolver(createReadingSchema),
-    defaultValues: {
-      systolic: metricDefault("systolic"),
-      diastolic: metricDefault("diastolic"),
-      pulse: metricDefault("pulse"),
-      notes: "",
-      tags: [],
-      timestamp: undefined
-    }
-  })
-
-  const [result, setResult] = useState<CreateReadingResponse | null>(null)
-
-  const onSubmit = handleSubmit(async (values) => {
-    try {
-      const response = await mutateAsync({
-        systolic: values.systolic,
-        diastolic: values.diastolic,
-        pulse: values.pulse,
-        notes: values.notes?.trim() ? values.notes.trim() : undefined,
-        tags: values.tags?.length ? values.tags : undefined,
-        timestamp: new Date().toISOString()
-      })
-
-      setResult(response)
-      setDialogOpen(isCrisis(response.emergencyAssessment.severity))
-    } catch (error) {
-      setError("root", { message: toReadingErrorMessage(error) })
-    }
-  })
-
-  const severity = result?.emergencyAssessment.severity
-  const showInlineWarning = severity === "WARNING"
-  const submitError = errors.root?.message
-  const notesError = errors.notes?.message
-  const isPendingSubmission = isPending || isSubmitting
+    onSubmit,
+    submitRef,
+    notesErrorId,
+    notesError,
+    submitError,
+    isPendingSubmission,
+    showInlineWarning,
+    result,
+    isDialogOpen,
+    closeDialog
+  } = useNewReadingForm()
 
   return (
     <div className="space-y-6">
@@ -147,7 +81,7 @@ export function NewReadingForm() {
           <input
             id="reading-datetime"
             type="text"
-            value={dateTimeFormatter.format(displayedAt)}
+            value={formatReadingDateTime(displayedAt)}
             readOnly
             className={`${INPUT_CLASSES} text-center`}
           />
@@ -219,7 +153,7 @@ export function NewReadingForm() {
         <EmergencyAlertDialog
           assessment={result.emergencyAssessment}
           open={isDialogOpen}
-          onClose={() => setDialogOpen(false)}
+          onClose={closeDialog}
           returnFocusRef={submitRef}
         />
       ) : null}

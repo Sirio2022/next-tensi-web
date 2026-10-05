@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { parseInsight } from "@/lib/readings/insight"
 
 interface AiInsightTextProps {
   /** Texto del `insight` del back; puede traer `**negritas**`, saltos y emojis. */
@@ -23,38 +23,21 @@ export function AiInsightText({
   return (
     <div className={className}>
       {lines.map((line, index) => (
-        <p key={index}>{parseLine(line)}</p>
+        <p key={index}>
+          {parseInsight(line).map((segment, segmentIndex) =>
+            segment.bold ? (
+              <strong
+                key={segmentIndex}
+                className="font-semibold text-slate-100"
+              >
+                {segment.text}
+              </strong>
+            ) : (
+              segment.text
+            )
+          )}
+        </p>
       ))}
     </div>
   )
-}
-
-/** Divide una línea por `**` y envuelve los tramos impares en `<strong>`. */
-function parseLine(line: string): ReactNode[] {
-  const parts = line.split("**")
-  const hasUnclosedMarker = parts.length % 2 === 0
-  const nodes: ReactNode[] = []
-  const pairedLimit = hasUnclosedMarker ? parts.length - 1 : parts.length
-
-  for (let index = 0; index < pairedLimit; index += 1) {
-    const part = parts[index]
-    if (part.length === 0) continue
-
-    nodes.push(
-      index % 2 === 1 ? (
-        <strong key={index} className="font-semibold text-slate-100">
-          {part}
-        </strong>
-      ) : (
-        part
-      )
-    )
-  }
-
-  // Si el texto traía un `**` sin cerrar, se muestra tal cual en vez de negrita.
-  if (hasUnclosedMarker) {
-    nodes.push(`**${parts[parts.length - 1]}`)
-  }
-
-  return nodes
 }

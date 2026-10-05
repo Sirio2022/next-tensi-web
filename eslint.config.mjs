@@ -53,6 +53,80 @@ const eslintConfig = defineConfig([
       ],
     },
   },
+  {
+    // SPEC 11: ningún componente ni página cliente contiene estado ni lógica.
+    // Todo el estado vive en custom hooks de `lib/**/hooks/**`, que quedan
+    // exentos del allowlist. `useId` y `useContext` siguen permitidos.
+    files: [
+      "app/**/*.{ts,tsx}",
+      "components/**/*.{ts,tsx}",
+      "lib/**/*.{ts,tsx}",
+    ],
+    ignores: ["lib/**/hooks/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "react",
+              importNames: [
+                "useState",
+                "useEffect",
+                "useLayoutEffect",
+                "useRef",
+                "useReducer",
+                "useMemo",
+                "useCallback",
+                "useImperativeHandle",
+                "useSyncExternalStore",
+                "useTransition",
+                "useDeferredValue",
+              ],
+              message:
+                "Mueve el estado/lógica a un custom hook en `lib/**/hooks/**` (SPEC 11).",
+            },
+            {
+              name: "react-hook-form",
+              importNames: [
+                "useForm",
+                "useFormContext",
+                "useController",
+                "useWatch",
+                "useFieldArray",
+                "useFormState",
+              ],
+              message:
+                "Envuelve React Hook Form en un custom hook de `lib/**/hooks/**` (SPEC 11).",
+            },
+            {
+              name: "next/navigation",
+              importNames: [
+                "useRouter",
+                "usePathname",
+                "useSearchParams",
+                "useParams",
+              ],
+              message:
+                "Expón la navegación desde un custom hook de `lib/**/hooks/**` (SPEC 11).",
+            },
+            {
+              name: "@tanstack/react-query",
+              importNames: [
+                "useQuery",
+                "useQueries",
+                "useMutation",
+                "useQueryClient",
+                "useInfiniteQuery",
+              ],
+              message:
+                "Expón los datos desde un custom hook de `lib/**/hooks/**` (SPEC 11).",
+            },
+          ],
+        },
+      ],
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
