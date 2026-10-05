@@ -2,10 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { ButtonLink } from "@/components/ui/button-link"
-import {
-  READING_METRICS,
-  type ReadingMetricId
-} from "@/lib/dashboard/reading-form"
+import { READING_METRICS, type ReadingMetricId } from "@/lib/dashboard/reading-form"
 import {
   toReadingErrorMessage,
   useCreateReading
@@ -20,12 +17,11 @@ import type {
 } from "@/lib/readings/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CheckCircle2, TriangleAlert } from "lucide-react"
-import { useRef, useState } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { useId, useRef, useState } from "react"
+import { useForm } from "react-hook-form"
 import { AiAnalysisCard } from "./ai-analysis-card"
-import { ContextChips } from "./context-chips"
 import { EmergencyAlertDialog } from "./emergency-alert-dialog"
-import { MetricSlider } from "./metric-slider"
+import { ReadingInputs } from "./reading-inputs"
 
 const INPUT_CLASSES =
   "w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 transition-colors focus:border-slate-600 focus:outline-none"
@@ -40,9 +36,7 @@ function metricDefault(id: ReadingMetricId): number {
 }
 
 function isCrisis(severity: EmergencySeverity): boolean {
-  return (
-    severity === "CRISIS_HYPERTENSIVE" || severity === "CRISIS_HYPOTENSIVE"
-  )
+  return severity === "CRISIS_HYPERTENSIVE" || severity === "CRISIS_HYPOTENSIVE"
 }
 
 /**
@@ -55,6 +49,7 @@ function isCrisis(severity: EmergencySeverity): boolean {
 export function NewReadingForm() {
   const [displayedAt] = useState(() => new Date())
   const [isDialogOpen, setDialogOpen] = useState(false)
+  const notesErrorId = useId()
   const submitRef = useRef<HTMLButtonElement>(null)
   const { mutateAsync, isPending } = useCreateReading()
 
@@ -63,7 +58,7 @@ export function NewReadingForm() {
     register,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<CreateReadingFormValues>({
     resolver: zodResolver(createReadingSchema),
     defaultValues: {
@@ -99,64 +94,18 @@ export function NewReadingForm() {
   const severity = result?.emergencyAssessment.severity
   const showInlineWarning = severity === "WARNING"
   const submitError = errors.root?.message
+  const notesError = errors.notes?.message
+  const isPendingSubmission = isPending || isSubmitting
 
   return (
     <div className="space-y-6">
-      <form className="space-y-6" onSubmit={onSubmit} noValidate>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {READING_METRICS.slice(0, 2).map((metric) => (
-            <div key={metric.id} className="space-y-1">
-              <Controller
-                control={control}
-                name={metric.id}
-                render={({ field }) => (
-                  <MetricSlider
-                    metric={metric}
-                    value={field.value ?? metric.defaultValue}
-                    onValueChange={field.onChange}
-                  />
-                )}
-              />
-              {errors[metric.id]?.message ? (
-                <p className="text-center text-xs text-rose-400">
-                  {errors[metric.id]?.message}
-                </p>
-              ) : null}
-            </div>
-          ))}
-        </div>
-
-        {READING_METRICS.slice(2).map((metric) => (
-          <Controller
-            key={metric.id}
-            control={control}
-            name={metric.id}
-            render={({ field }) => (
-              <MetricSlider
-                metric={metric}
-                value={field.value ?? metric.defaultValue}
-                onValueChange={field.onChange}
-              />
-            )}
-          />
-        ))}
-
-        <Controller
-          control={control}
-          name="tags"
-          render={({ field }) => (
-            <ContextChips
-              selected={field.value ?? []}
-              onToggle={(tag) => {
-                const current = field.value ?? []
-                const next = current.includes(tag)
-                  ? current.filter((selected) => selected !== tag)
-                  : [...current, tag]
-                field.onChange(next)
-              }}
-            />
-          )}
-        />
+      <form
+        className="space-y-6"
+        onSubmit={onSubmit}
+        aria-busy={isPendingSubmission}
+        noValidate
+      >
+        <ReadingInputs control={control} />
 
         <div className="space-y-2 text-center">
           <label
@@ -169,9 +118,20 @@ export function NewReadingForm() {
             id="reading-notes"
             rows={3}
             placeholder="Notas adicionales (opcional)"
+            aria-invalid={notesError ? true : undefined}
+            aria-describedby={notesError ? notesErrorId : undefined}
             className={`${INPUT_CLASSES} resize-y`}
             {...register("notes")}
           />
+          {notesError ? (
+            <p
+              id={notesErrorId}
+              role="alert"
+              className="text-center text-xs text-rose-400"
+            >
+              {notesError}
+            </p>
+          ) : null}
         </div>
 
         <div className="space-y-2 text-center">
@@ -200,10 +160,11 @@ export function NewReadingForm() {
           ref={submitRef}
           type="submit"
           tone="primary"
-          disabled={isPending}
+          disabled={isPendingSubmission}
+          aria-busy={isPendingSubmission}
           className="w-full bg-emerald-500 py-3 text-sm font-bold text-slate-950 shadow-emerald-500/20 hover:bg-emerald-400"
         >
-          {isPending ? "Guardando..." : "Agregar Lectura"}
+          {isPendingSubmission ? "Guardando..." : "Agregar Lectura"}
         </Button>
       </form>
 
@@ -212,7 +173,10 @@ export function NewReadingForm() {
           aria-live="polite"
           className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-200/90"
         >
-          <TriangleAlert className="mt-0.5 size-5 shrink-0 text-amber-400" aria-hidden />
+          <TriangleAlert
+            className="mt-0.5 size-5 shrink-0 text-amber-400"
+            aria-hidden
+          />
           <p className="leading-relaxed">
             <strong className="font-semibold text-amber-300">
               {result?.emergencyAssessment.uiMessage.title}
