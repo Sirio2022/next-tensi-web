@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/ui/brand-logo"
 import { Mail, MapPin } from "lucide-react"
 import Link from "next/link"
 
@@ -15,22 +16,7 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2.5 mb-3">
-              <span className="size-8 rounded-lg bg-linear-to-tr from-tensi-400 to-tensi-violet flex items-center justify-center text-white">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </span>
+              <BrandLogo className="size-8" />
               <span className="font-extrabold text-base text-white">Tensi</span>
             </div>
             <p className="text-slate-400 text-xs/relaxed max-w-sm">

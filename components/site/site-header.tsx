@@ -1,8 +1,8 @@
 "use client"
 
 import { useSiteHeader } from "@/lib/site/hooks/use-site-header"
+import { BrandLogo } from "@/components/ui/brand-logo"
 import { ArrowRight, Menu, X } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
 
 const NAV_LINKS = [
@@ -26,10 +26,10 @@ export function SiteHeader() {
         <div className="h-16 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center group"
+            className="flex items-center gap-2.5 group"
             onClick={closeMenu}
           >
-            <Image src="/logo.svg" alt="Tensi Logo" width={72} height={72} />
+            <BrandLogo className="size-10" priority />
 
             <span className="font-extrabold text-xl tracking-tight text-white group-hover:text-tensi-400 transition-colors">
               Tensi

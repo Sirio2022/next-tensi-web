@@ -13,7 +13,7 @@ interface DashboardHeaderProps {
  */
 export function DashboardHeader({ user }: Readonly<DashboardHeaderProps>) {
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-slate-800/60 bg-slate-950/80 px-6 backdrop-blur-xl">
+    <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between border-b border-slate-800/60 bg-slate-950/80 px-6 backdrop-blur-xl md:static">
       <p className="text-sm font-semibold text-slate-200">Panel Principal</p>
 
       <div className="flex items-center gap-4">
