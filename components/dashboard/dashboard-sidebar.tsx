@@ -67,8 +67,11 @@ export function DashboardSidebar({ plan }: Readonly<DashboardSidebarProps>) {
       </div>
 
       <div className="shrink-0 space-y-1 border-t border-slate-800/60 p-4">
-        {/* Configuración sigue siendo un marcador (`href="#"`): placeholder. */}
-        <SidebarNavItem item={DASHBOARD_SETTINGS_ITEM} state="placeholder" />
+        <SidebarNavItem
+          item={DASHBOARD_SETTINGS_ITEM}
+          state={getNavItemState(DASHBOARD_SETTINGS_ITEM, plan)}
+          active={activeNavId === DASHBOARD_SETTINGS_ITEM.id}
+        />
 
         <button
           type="button"

@@ -11,7 +11,12 @@ const email = z
   .min(1, "El correo electrónico es obligatorio")
   .pipe(z.email("Introduce un correo electrónico válido"))
 
-const password = z
+/**
+ * Política de contraseña de la app (mín. 6, 1 mayúscula, 1 minúscula y 1
+ * número). Se exporta para reutilizarla en otros dominios (p. ej. el cambio de
+ * contraseña del perfil) sin duplicar las reglas.
+ */
+export const passwordSchema = z
   .string()
   .min(6, "La contraseña debe tener al menos 6 caracteres")
   .regex(/[A-Z]/, "Debe incluir al menos una mayúscula")
@@ -32,7 +37,7 @@ export const registerSchema = z.object({
     .string()
     .min(3, "El nombre de usuario debe tener al menos 3 caracteres"),
   email,
-  password
+  password: passwordSchema
 })
 
 export const verifySchema = z.object({
@@ -47,7 +52,7 @@ export const forgotSchema = z.object({
 export const resetSchema = z.object({
   email,
   code,
-  newPassword: password
+  newPassword: passwordSchema
 })
 
 export type LoginInput = z.infer<typeof loginSchema>
