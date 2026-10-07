@@ -75,14 +75,15 @@ export const DASHBOARD_NAV_ITEMS: readonly Readonly<DashboardNavItem>[] = [
 export const DASHBOARD_SETTINGS_ITEM: Readonly<FreeDashboardNavItem> = {
   id: "settings",
   label: "Configuración",
-  href: "#",
+  href: "/dashboard/profile",
   requiresPremium: false
 }
 
 /**
  * Devuelve el ítem activo como el que mejor prefija el pathname (el más
  * específico), de modo que en `/dashboard/new-reading` solo se marque "Nueva
- * Lectura" y no también su ítem padre "Dashboard".
+ * Lectura" y no también su ítem padre "Dashboard". Contempla también el ítem de
+ * Configuración, que vive fuera de `DASHBOARD_NAV_ITEMS`.
  */
 export function getActiveNavId(
   pathname: string
@@ -90,7 +91,7 @@ export function getActiveNavId(
   let activeId: DashboardNavItemId | undefined
   let activeHrefLength = -1
 
-  for (const item of DASHBOARD_NAV_ITEMS) {
+  for (const item of [...DASHBOARD_NAV_ITEMS, DASHBOARD_SETTINGS_ITEM]) {
     if (item.href === "#") continue
 
     const matches =
@@ -118,6 +119,18 @@ export function preventPlaceholderNavigation(
  */
 export type DashboardNavItemState = "link" | "placeholder" | "locked"
 
+/**
+ * Un ítem Free nunca queda `locked`, así que esta sobrecarga devuelve un tipo
+ * más estrecho y evita tener que manejar el caso bloqueado en el sidebar.
+ */
+export function getNavItemState(
+  item: FreeDashboardNavItem,
+  plan: Plan
+): Exclude<DashboardNavItemState, "locked">
+export function getNavItemState(
+  item: DashboardNavItem,
+  plan: Plan
+): DashboardNavItemState
 export function getNavItemState(
   item: DashboardNavItem,
   plan: Plan

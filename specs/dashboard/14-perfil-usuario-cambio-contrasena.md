@@ -1,6 +1,6 @@
 # SPEC 14 — Perfil de usuario y cambio de contraseña
 
-> **Status:** Aprobado
+> **Status:** Implemented
 > **Depends on:** SPEC 01, SPEC 03, SPEC 05, SPEC 06, SPEC 07, SPEC 11
 > **Date:** 2026-10-06
 > **Objective:** Implementar la pantalla Perfil (`/dashboard/profile`) con edición de datos personales y avatar, y la pestaña de cambio de contraseña bloqueada para cuentas OAuth, extendiendo `check-token` para exponer el perfil de la sesión.
@@ -148,28 +148,28 @@ El orden deja el sistema funcional en cada paso. Los pasos 1–2 son en `nest-te
 
 ## Criterios de aceptación
 
-- [ ] `GET /auth/check-token` devuelve `birthDate`, `weight`, `height`, `gender`, `medications`, `avatarUrl`, `bio`, `hasPassword` y `providers`, y nunca `password`.
-- [ ] Una cuenta con contraseña local tiene `hasPassword: true` y `providers` vacío o con los proveedores vinculados.
-- [ ] Una cuenta sin contraseña local (OAuth) tiene `hasPassword: false` y `providers` con `google`/`github`.
-- [ ] `/dashboard/profile` con sesión válida renderiza el perfil según `references/dashboard/03-profile/screenshot.png` (cabecera de pestañas + formulario + medicamentos + avatar + "Guardar Cambios").
-- [ ] El ítem "Configuración" del sidebar navega a `/dashboard/profile`, ya no es placeholder y queda con `aria-current="page"`.
-- [ ] El formulario viene pre-rellenado con username, email (deshabilitado), fecha de nacimiento, género, peso y estatura convertida a cm desde metros.
-- [ ] Guardar cambios válidos llama a `PATCH /users/profile`, muestra un toast de éxito y actualiza el nombre/avatar del header sin recargar la página.
-- [ ] Persistir medicamentos con **una sola** medicación por multipart guarda `medications` como array de un elemento.
-- [ ] Seleccionar un chip predefinido lo añade/lo quita de `medications`; el input libre separa por comas y las medicaciones desconocidas aparecen en un grupo "Otros" removible.
-- [ ] Subir una imagen válida (JPG/PNG/WEBP ≤ 1 MB) la envía como `multipart/form-data`, la previsualiza y persiste en `avatarUrl`.
-- [ ] Un archivo inválido (tipo o > 1 MB) se rechaza en el cliente con un mensaje, sin llamar a la API.
-- [ ] La pestaña "Cambiar Contraseña" pide contraseña actual, nueva y confirmación.
-- [ ] Cambiar la contraseña con la actual correcta llama a `POST /users/profiles/update-password`, muestra toast de éxito y limpia el formulario.
-- [ ] Con la actual incorrecta se muestra el error del back (401) sin romper la pantalla.
-- [ ] Con una cuenta `hasPassword: false`, la pestaña de contraseña está bloqueada (no seleccionable) y muestra un mensaje que explica que se gestiona con Google/GitHub.
-- [ ] Las pestañas usan el patrón ARIA (`tablist`/`tab`/`tabpanel`) con `aria-selected`, `aria-controls` y navegación por flechas.
-- [ ] El email no se puede editar y no se envía en `PATCH /users/profile`.
-- [ ] No hay etiquetas `<a>`; todo enlace usa `next/link`; props con `Readonly<>` y clases canónicas (`pnpm lint` limpio).
-- [ ] Ningún componente en `app/**`/`components/**` usa hooks vetados por SPEC 11 (todo vive en `lib/profile/hooks/**`).
-- [ ] `/dashboard/profile` es usable a 375 px y 1440 px sin scroll horizontal y sin errores de consola.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] `git -C ../nest-tensi-api status --short` muestra solo `src/auth/auth.service.ts` y `src/users/dto/update-profile.dto.ts`.
+- [x] `GET /auth/check-token` devuelve `birthDate`, `weight`, `height`, `gender`, `medications`, `avatarUrl`, `bio`, `hasPassword` y `providers`, y nunca `password`. — Evidencia: `src/auth/auth.service.ts:193-210` devuelve exactamente esos campos y no incluye `password`; el front los consume vía mock (`verify-14-mock-api.log`). E2E real contra la API no ejecutable (no hay Postgres levantado).
+- [x] Una cuenta con contraseña local tiene `hasPassword: true` y `providers` vacío o con los proveedores vinculados. — Evidencia: `hasPassword: dbUser.password !== null` y `providers` derivados de `googleId`/`githubId`; mock sin cookie devuelve `hasPassword: true`, `providers: []`.
+- [x] Una cuenta sin contraseña local (OAuth) tiene `hasPassword: false` y `providers` con `google`/`github`. — Evidencia: sesión simulada con cookie `mock-oauth=1` → `hasPassword: false`, `providers: ["google","github"]`.
+- [x] `/dashboard/profile` con sesión válida renderiza el perfil según `references/dashboard/03-profile/screenshot.png` (cabecera de pestañas + formulario + medicamentos + avatar + "Guardar Cambios"). — Evidencia: `.playwright-mcp/verify-14-profile-1440.png` (comparado con el mockup).
+- [x] El ítem "Configuración" del sidebar navega a `/dashboard/profile`, ya no es placeholder y queda con `aria-current="page"`. — Evidencia: click desde `/dashboard` navega a `/dashboard/profile`; el enlace tiene `href="/dashboard/profile"` y `aria-current="page"`.
+- [x] El formulario viene pre-rellenado con username, email (deshabilitado), fecha de nacimiento, género, peso y estatura convertida a cm desde metros. — Evidencia: snapshot `.playwright-mcp/verify-14-snapshot.md` (username, email disabled, `1985-11-19`, "Masculino", 75, `175` cm desde 1.75 m).
+- [x] Guardar cambios válidos llama a `PATCH /users/profile`, muestra un toast de éxito y actualiza el nombre/avatar del header sin recargar la página. — Evidencia: `PATCH /api/users/profile` multipart en `verify-14-mock-api.log`; toast "Perfil actualizado con éxito"; header actualiza nombre y avatar con la URL en `/dashboard/profile` (sin recarga).
+- [x] Persistir medicamentos con **una sola** medicación por multipart guarda `medications` como array de un elemento. — Evidencia: prueba directa del DTO con class-transformer: `{ medications: "Aspirina" }` → `["Aspirina"]`, `isArray: true`, sin errores de validación; `[]`/ausente → `undefined`.
+- [x] Seleccionar un chip predefinido lo añade/lo quita de `medications`; el input libre separa por comas y las medicaciones desconocidas aparecen en un grupo "Otros" removible. — Evidencia: click en "Losartán" lo añade (`aria-pressed`) y en "Enalapril" lo quita; "Omeprazol, Vitamina D" + Enter → chips removibles en "Otros".
+- [x] Subir una imagen válida (JPG/PNG/WEBP ≤ 1 MB) la envía como `multipart/form-data`, la previsualiza y persiste en `avatarUrl`. — Evidencia: preview `blob:` tras elegir PNG; `PATCH` incluye `avatar` (`verify-14-avatar.png`) y el header refleja la nueva `avatarUrl`.
+- [x] Un archivo inválido (tipo o > 1 MB) se rechaza en el cliente con un mensaje, sin llamar a la API. — Evidencia: `.txt` → `role="alert"` "Formato no válido. Usa una imagen JPG, PNG o WEBP." sin preview y sin `PATCH` en el log.
+- [x] La pestaña "Cambiar Contraseña" pide contraseña actual, nueva y confirmación. — Evidencia: labels "Contraseña Actual", "Nueva Contraseña", "Confirmar Nueva Contraseña".
+- [x] Cambiar la contraseña con la actual correcta llama a `POST /users/profiles/update-password`, muestra toast de éxito y limpia el formulario. — Evidencia: `POST` 200 en el log; toast "Contraseña actualizada con éxito"; los tres campos quedan vacíos.
+- [x] Con la actual incorrecta se muestra el error del back (401) sin romper la pantalla. — Evidencia: 401 → `role="alert"` "La contraseña actual es incorrecta"; el formulario sigue montado.
+- [x] Con una cuenta `hasPassword: false`, la pestaña de contraseña está bloqueada (no seleccionable) y muestra un mensaje que explica que se gestiona con Google/GitHub. — Evidencia: pestaña `disabled` + `aria-disabled="true"` + `tabindex="-1"` y nota "Tu cuenta se gestiona con Google/GitHub…".
+- [x] Las pestañas usan el patrón ARIA (`tablist`/`tab`/`tabpanel`) con `aria-selected`, `aria-controls` y navegación por flechas. — Evidencia: `role="tablist"`, tabs con `aria-selected`/`aria-controls`/`tabindex`, panel con `aria-labelledby`; ArrowRight/ArrowLeft cambian pestaña y foco.
+- [x] El email no se puede editar y no se envía en `PATCH /users/profile`. — Evidencia: input `disabled`/`readOnly`; el multipart del `PATCH` no incluye `email`.
+- [x] No hay etiquetas `<a>`; todo enlace usa `next/link`; props con `Readonly<>` y clases canónicas (`pnpm lint` limpio). — Evidencia: `grep -rn "<a[ >]" app components` sin resultados; `pnpm lint` limpio.
+- [x] Ningún componente en `app/**`/`components/**` usa hooks vetados por SPEC 11 (todo vive en `lib/profile/hooks/**`). — Evidencia: `grep -rnE "use(State|Effect|Ref|...)" app components` sin resultados; `pnpm lint` limpio.
+- [x] `/dashboard/profile` es usable a 375 px y 1440 px sin scroll horizontal y sin errores de consola. — Evidencia: `scrollWidth === clientWidth` en 375 y 1440; sin errores de consola en carga limpia (`.playwright-mcp/verify-14-profile-375.png`, `verify-14-profile-1440.png`).
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan. — Evidencia: los tres comandos salen limpios. Se añadió `.playwright-mcp/**` a `globalIgnores` de `eslint.config.mjs` (carpeta generada por el MCP que rompía el lint).
+- [x] `git -C ../nest-tensi-api status --short` muestra solo `src/auth/auth.service.ts` y `src/users/dto/update-profile.dto.ts`. — Evidencia: `git status --short` del back devuelve exactamente esos dos archivos.
 
 ## Decisiones
 

@@ -134,6 +134,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Carpeta generada por el MCP de Playwright (ver AGENTS.md); no es código
+    // de la app y no debe lintarse.
+    ".playwright-mcp/**",
   ]),
 ]);
 

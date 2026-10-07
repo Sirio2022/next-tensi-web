@@ -116,16 +116,24 @@ export function createFetchClient(
     const { method = "GET", body, headers, signal, cache, timeout } = options
     const requestSignal = buildSignal(signal, timeout)
 
+    // `FormData` no se serializa ni fija `Content-Type`: el navegador debe
+    // generar el boundary de `multipart/form-data` por su cuenta.
+    const isFormData = body instanceof FormData
+
     const response = await fetch(`${API_URL}${path}`, {
       method,
       credentials: "include",
       headers: {
         Accept: "application/json",
-        ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+        ...(body !== undefined && !isFormData
+          ? { "Content-Type": "application/json" }
+          : {}),
         ...getHeaders?.(),
         ...headers
       },
-      ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+      ...(body !== undefined
+        ? { body: isFormData ? body : JSON.stringify(body) }
+        : {}),
       ...(requestSignal ? { signal: requestSignal } : {}),
       ...(cache ? { cache } : {})
     })

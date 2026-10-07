@@ -12,11 +12,14 @@ interface FormFieldProps<T extends FieldValues> {
   disabled?: boolean
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"]
   maxLength?: number
+  /** Clases extra para el input (p. ej. `[color-scheme:dark]` en fechas). */
+  className?: string
 }
 
 /**
  * Campo de formulario atado a React Hook Form: resuelve `name`, `value`, `onChange`
  * y `error` desde el contexto del formulario y muestra el mensaje de zod bajo el input.
+ * Los inputs `type="number"` convierten el string del DOM a número (vacío → `undefined`).
  */
 export function FormField<T extends FieldValues>({
   name,
@@ -26,9 +29,12 @@ export function FormField<T extends FieldValues>({
   autoComplete,
   disabled,
   inputMode,
-  maxLength
+  maxLength,
+  className
 }: Readonly<FormFieldProps<T>>) {
-  const { id, message, errorId, field } = useFormField<T>(name)
+  const { id, message, errorId, field } = useFormField<T>(name, {
+    numeric: type === "number"
+  })
 
   return (
     <div>
@@ -48,7 +54,7 @@ export function FormField<T extends FieldValues>({
         maxLength={maxLength}
         aria-invalid={message ? true : undefined}
         aria-describedby={message ? errorId : undefined}
-        className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-500 text-white placeholder-slate-400 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all aria-invalid:border-red-500 disabled:opacity-60"
+        className={`w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-500 text-white placeholder-slate-400 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all aria-invalid:border-red-500 disabled:opacity-60 ${className ?? ""}`}
         {...field}
       />
       {message ? (
