@@ -1,6 +1,6 @@
 # SPEC 16 — Login con Google y GitHub (OAuth)
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 01, SPEC 09
 > **Date:** 2026-10-08
 > **Objective:** Habilitar el login/registro con Google y GitHub desde `/login`, con la API haciendo el OAuth, validando `state`, emitiendo la cookie httpOnly y redirigiendo al front.
@@ -78,28 +78,36 @@ GITHUB_CALLBACK_URL=http://localhost:3002/api/auth/github/callback
 
 Backend:
 
-- [ ] `GET /api/auth/google` responde 302 a Google con `state` y `Set-Cookie: oauth_state=...`.
-- [ ] `GET /api/auth/github` responde 302 a GitHub con `state` y `Set-Cookie: oauth_state=...`.
-- [ ] Un callback con `state` que no coincide con la cookie NO emite `tensi_token` y redirige a `/login?error=oauth`.
-- [ ] Un callback válido (Google) setea `Set-Cookie: tensi_token=...; HttpOnly; SameSite=Lax` y `Location: <front>/dashboard`.
-- [ ] Lo mismo para GitHub.
-- [ ] Primer login social con email nuevo crea un `User` con `confirmed=true` y `googleId`/`githubId` poblado.
-- [ ] Login social con email que ya tiene cuenta local vincula `googleId`/`githubId` al usuario existente (sin crear duplicado).
-- [ ] El callback ya no devuelve el token en el body JSON.
-- [ ] Sin `GOOGLE_*`/`GITHUB_*` configuradas, la ruta falla con un error claro (no 500 opaco).
-- [ ] `pnpm build` y `pnpm lint` de la API pasan.
+- [x] `GET /api/auth/google` responde 302 a Google con `state` y `Set-Cookie: oauth_state=...`.
+- [x] `GET /api/auth/github` responde 302 a GitHub con `state` y `Set-Cookie: oauth_state=...`.
+- [x] Un callback con `state` que no coincide con la cookie NO emite `tensi_token` y redirige a `/login?error=oauth`.
+- [x] Un callback válido (Google) setea `Set-Cookie: tensi_token=...; HttpOnly; SameSite=Lax` y `Location: <front>/dashboard`.
+- [x] Lo mismo para GitHub.
+- [x] Primer login social con email nuevo crea un `User` con `confirmed=true` y `googleId`/`githubId` poblado.
+- [x] Login social con email que ya tiene cuenta local vincula `googleId`/`githubId` al usuario existente (sin crear duplicado).
+- [x] El callback ya no devuelve el token en el body JSON.
+- [x] Sin `GOOGLE_*`/`GITHUB_*` configuradas, la ruta falla con un error claro (no 500 opaco).
+- [x] `pnpm build` y `pnpm lint` de la API pasan.
 
 Frontend:
 
-- [ ] Los botones "Iniciar sesión con Google" y "con GitHub" están habilitados y navegan al endpoint de la API.
-- [ ] `/login?error=oauth` muestra un mensaje de error visible y accesible.
-- [ ] Tras un login social exitoso, el usuario termina en `/dashboard` con sesión válida (`check-token` 200).
-- [ ] `components/auth/login-form.tsx` no contiene estado ni lógica (delega en `use-oauth`).
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- [x] Los botones "Iniciar sesión con Google" y "con GitHub" están habilitados y navegan al endpoint de la API.
+- [x] `/login?error=oauth` muestra un mensaje de error visible y accesible.
+- [x] Tras un login social exitoso, el usuario termina en `/dashboard` con sesión válida (`check-token` 200).
+- [x] `components/auth/login-form.tsx` no contiene estado ni lógica (delega en `use-oauth`).
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
 
 Global:
 
-- [ ] Flujo end-to-end verificado con Playwright (proveedor real, o mock del callback) sin errores de consola.
+- [x] Flujo end-to-end verificado con Playwright (proveedor real, o mock del callback) sin errores de consola.
+
+## Notas de implementación
+
+- **Fix de `strategies/google|github.strategy.ts` (bug pre-existente, necesario):** el mixin de `@nestjs/passport` usa el **valor de retorno** de `validate` (`done(null, validateResult)`) y no el `done` interno. Los strategies llamaban a `done(null, user)` y devolvían `void`, provocando un segundo `done(null, undefined)` → `passport.fail()` → el guard de callback redirigía a `/login?error=oauth`. Ahora `validate` **devuelve** el usuario (`Promise<User>`). Sin este fix el callback válido nunca completaba (se detectó probando en Safari; en Chrome el orden de los `done` dejaba ganar al éxito).
+- **`common/filters/all-exceptions.filter.ts`:** retorno temprano si `response.headersSent`. Los guards de callback redirigen y devuelven `false`, lo que hace que Nest lance `ForbiddenException`; sin este guard el filtro intentaría escribir una segunda respuesta (`ERR_HTTP_HEADERS_SENT`).
+- **`utils/front-origin.ts`:** el helper `getFrontOrigin()` se creó en el paso 3 (no en el 6) porque el guard de callback ya lo necesitaba para el redirect de fallo.
+- **`bp-readings.service.ts`:** fix de lint pre-existente (`no-useless-assignment`) para que `pnpm lint` de la API pase.
+- **CSP (SPEC 09):** durante la verificación en Safari aparece el warning `Content-Security-Policy-Report-Only … will have no effect`. Es de SPEC 09 (la CSP se emite en report-only salvo `CSP_ENFORCE=true`), no lo introduce esta spec y no bloquea el flujo. Queda anotado para SPEC 09.
 
 ## Decisiones
 

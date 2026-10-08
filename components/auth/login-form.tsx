@@ -5,12 +5,14 @@ import { SubmitButton } from "@/components/auth/submit-button"
 import { FormField } from "@/components/form/form-field"
 import { PasswordField } from "@/components/form/password-field"
 import { useLoginForm } from "@/lib/auth/hooks/use-login-form"
+import { useOAuth } from "@/lib/auth/hooks/use-oauth"
 import Link from "next/link"
 import { FormProvider } from "react-hook-form"
 
-/** Formulario de login: email/password + OAuth diferido. */
+/** Formulario de login: email/password + botones OAuth de Google y GitHub. */
 export function LoginForm() {
   const { onSubmit, isSubmitting, error, ...form } = useLoginForm()
+  const { startOAuth } = useOAuth()
 
   return (
     <FormProvider {...form}>
@@ -46,7 +48,10 @@ export function LoginForm() {
       </div>
 
       <div className="space-y-3">
-        <OAuthButton label="Iniciar sesión con Google">
+        <OAuthButton
+          label="Iniciar sesión con Google"
+          onClick={() => startOAuth("google")}
+        >
           <svg className="size-4" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="#4285F4"
@@ -66,7 +71,10 @@ export function LoginForm() {
             />
           </svg>
         </OAuthButton>
-        <OAuthButton label="Iniciar sesión con GitHub">
+        <OAuthButton
+          label="Iniciar sesión con GitHub"
+          onClick={() => startOAuth("github")}
+        >
           <svg
             className="size-4 fill-current text-white"
             viewBox="0 0 24 24"
@@ -104,22 +112,24 @@ export function LoginForm() {
   )
 }
 
-/** Botón OAuth deshabilitado: la spec difiere Google/GitHub a futuro. */
+/** Botón de login social; delega la navegación en `useOAuth`. */
 function OAuthButton({
   label,
+  onClick,
   children
-}: Readonly<{ label: string; children: React.ReactNode }>) {
+}: Readonly<{
+  label: string
+  onClick: () => void
+  children: React.ReactNode
+}>) {
   return (
     <button
       type="button"
-      disabled
-      aria-disabled="true"
-      title="Próximamente"
-      className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-950/60 border border-slate-700 text-slate-400 text-sm font-medium cursor-not-allowed opacity-60"
+      onClick={onClick}
+      className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 text-slate-200 hover:text-white text-sm font-medium transition-all"
     >
       {children}
       {label}
-      <span className="sr-only">(Próximamente)</span>
     </button>
   )
 }
