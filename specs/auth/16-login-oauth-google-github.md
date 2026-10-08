@@ -1,6 +1,6 @@
 # SPEC 16 — Login con Google y GitHub (OAuth)
 
-> **Status:** Borrador
+> **Status:** Aprobado
 > **Depends on:** SPEC 01, SPEC 09
 > **Date:** 2026-10-08
 > **Objective:** Habilitar el login/registro con Google y GitHub desde `/login`, con la API haciendo el OAuth, validando `state`, emitiendo la cookie httpOnly y redirigiendo al front.
@@ -69,10 +69,10 @@ GITHUB_CALLBACK_URL=http://localhost:3002/api/auth/github/callback
 
 **Web — `next-tensi-web`**
 
-8. `lib/auth/hooks/use-oauth.ts` (nuevo): `startOAuth(provider)` compone la URL con `NEXT_PUBLIC_API_URL` y navega con `window.location.assign`. Verificación: clic navega a `:3002/api/auth/google`.
-9. `components/auth/login-form.tsx`: `OAuthButton` pasa de `disabled` a botón real que llama al hook; se retira "Próximamente". Verificación: clic dispara la navegación y `pnpm lint`/`tsc` pasan.
-10. `app/(auth)/login/page.tsx`: leer `searchParams.error` (tipo `PageProps<'/login'>`); si es `"oauth"`, mostrar "No se pudo iniciar sesión con el proveedor. Inténtalo de nuevo." Verificación: `/login?error=oauth` muestra el aviso (Playwright).
-11. `grep` final: sin `disabled` en los botones sociales y sin lógica de navegación dentro del componente.
+1. `lib/auth/hooks/use-oauth.ts` (nuevo): `startOAuth(provider)` compone la URL con `NEXT_PUBLIC_API_URL` y navega con `window.location.assign`. Verificación: clic navega a `:3002/api/auth/google`.
+2. `components/auth/login-form.tsx`: `OAuthButton` pasa de `disabled` a botón real que llama al hook; se retira "Próximamente". Verificación: clic dispara la navegación y `pnpm lint`/`tsc` pasan.
+3. `app/(auth)/login/page.tsx`: leer `searchParams.error` (tipo `PageProps<'/login'>`); si es `"oauth"`, mostrar "No se pudo iniciar sesión con el proveedor. Inténtalo de nuevo." Verificación: `/login?error=oauth` muestra el aviso (Playwright).
+4. `grep` final: sin `disabled` en los botones sociales y sin lógica de navegación dentro del componente.
 
 ## Criterios de aceptación
 
@@ -115,14 +115,14 @@ Global:
 
 ## Riesgos
 
-| Riesgo | Mitigación |
-| --- | --- |
-| Cookie `tensi_token` emitida por `api.dominio` no visible en el dominio web | `COOKIE_DOMAIN` al dominio padre (SPEC 01) |
-| GitHub puede no devolver email (privado) | scope `user:email`; si falta, redirigir a `/login?error=oauth` y documentarlo |
-| El `state` en cookie se pierde si el proveedor tarda >10 min | `Max-Age` de 10 min y mensaje de reintento en `/login?error=oauth` |
-| `username` de fallback duplicado (no es unique en Prisma) | No rompe; hacerlo único sería otra spec |
-| Credenciales/consolas OAuth mal configuradas (callback URL) | Documentar en `.env.template`; el error se ve en la consola del proveedor |
-| Verificar E2E con proveedores reales es manual | Verificar inicio/redirect con curl y el callback con un mock; login real como prueba manual |
+| Riesgo                                                                      | Mitigación                                                                                  |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Cookie `tensi_token` emitida por `api.dominio` no visible en el dominio web | `COOKIE_DOMAIN` al dominio padre (SPEC 01)                                                  |
+| GitHub puede no devolver email (privado)                                    | scope `user:email`; si falta, redirigir a `/login?error=oauth` y documentarlo               |
+| El `state` en cookie se pierde si el proveedor tarda >10 min                | `Max-Age` de 10 min y mensaje de reintento en `/login?error=oauth`                          |
+| `username` de fallback duplicado (no es unique en Prisma)                   | No rompe; hacerlo único sería otra spec                                                     |
+| Credenciales/consolas OAuth mal configuradas (callback URL)                 | Documentar en `.env.template`; el error se ve en la consola del proveedor                   |
+| Verificar E2E con proveedores reales es manual                              | Verificar inicio/redirect con curl y el callback con un mock; login real como prueba manual |
 
 ## Qué **no** entra en esta spec
 
