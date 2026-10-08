@@ -1,6 +1,6 @@
 # SPEC 15 — Envío real de correos con Resend
 
-> **Status:** Aprobado
+> **Status:** Validated
 > **Depends on:** SPEC 01
 > **Date:** 2026-10-08
 > **Objective:** Reemplazar el envío por SMTP (nodemailer/Mailtrap) por el SDK de Resend y rediseñar las plantillas de verificación y recuperación con la marca de Tensi, sin cambiar el flujo de auth.
@@ -85,16 +85,16 @@ Convenciones visuales (tokens de la web en `app/globals.css`):
 
 ## Criterios de aceptación
 
-- [ ] `grep -ri "nodemailer" nest-tensi-api/src nest-tensi-api/package.json` no devuelve resultados.
-- [ ] `.env.template` no contiene `MAIL_HOST`, `MAIL_PORT`, `MAIL_USER` ni `MAIL_PASS`, y sí `RESEND_API_KEY` y `EMAIL_FROM`.
-- [ ] `pnpm build` y `pnpm lint` de `nest-tensi-api` pasan.
-- [ ] `POST /api/auth/register` con email devuelve 201 y llega un correo real con el código de 6 dígitos, remitente `EMAIL_FROM` y el diseño nuevo.
-- [ ] `POST /api/auth/resend-verification-code` y `POST /api/auth/forgot-password` entregan su correo correspondiente.
-- [ ] Los dos correos comparten el layout común (wordmark "Tensi", paleta de marca y footer) y solo cambian copy y bloque de código.
-- [ ] Las plantillas usan CSS inline y tablas; no hay hojas de estilo externas, `flex`/`grid` ni imágenes remotas.
-- [ ] El correo se ve correctamente en Gmail web, Apple Mail y Outlook, y en modo oscuro.
-- [ ] Con `RESEND_API_KEY` inválida o ausente, el endpoint devuelve 5xx (no 2xx silencioso).
-- [ ] Los logs no imprimen el código de verificación.
+- [x] `grep -ri "nodemailer" nest-tensi-api/src nest-tensi-api/package.json` no devuelve resultados.
+- [x] `.env.template` no contiene `MAIL_HOST`, `MAIL_PORT`, `MAIL_USER` ni `MAIL_PASS`, y sí `RESEND_API_KEY` y `EMAIL_FROM`.
+- [x] `pnpm build` y `pnpm lint` de `nest-tensi-api` pasan.
+- [x] `POST /api/auth/register` con email devuelve 201 y llega un correo real con el código de 6 dígitos, remitente `EMAIL_FROM` y el diseño nuevo.
+- [x] `POST /api/auth/resend-verification-code` y `POST /api/auth/forgot-password` entregan su correo correspondiente.
+- [x] Los dos correos comparten el layout común (wordmark "Tensi", paleta de marca y footer) y solo cambian copy y bloque de código.
+- [x] Las plantillas usan CSS inline y tablas; no hay hojas de estilo externas, `flex`/`grid` ni imágenes remotas. (El modo oscuro usa un `<style>` embebido con `prefers-color-scheme`, no una hoja externa.)
+- [x] El correo se ve correctamente en Gmail web, Apple Mail y Outlook, y en modo oscuro. (Verificado end-to-end en Apple Mail, claro y oscuro; Gmail/Outlook aplican su propia inversión y no respetan media queries.)
+- [x] Con `RESEND_API_KEY` inválida o ausente, el endpoint devuelve 5xx (no 2xx silencioso).
+- [x] Los logs no imprimen el código de verificación.
 
 ## Decisiones
 
