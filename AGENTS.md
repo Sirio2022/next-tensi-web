@@ -67,6 +67,23 @@ App web de **Tensi** (presión arterial / salud cardiovascular). Hoy es en gran 
 - **Exención de Server Components**: los Server Components (`layout.tsx`, `page.tsx` y la capa `lib/**/dal.ts`) siguen leyendo y derivando en el servidor, porque no admiten hooks. La regla aplica a los Client Components.
 - Está forzada por ESLint en `eslint.config.mjs`: `no-restricted-imports` (`error`) sobre `app/**`, `components/**` y `lib/**`, salvo el allowlist `lib/**/hooks/**`. `pnpm lint` falla si un componente importa un hook vetado.
 
+### Portabilidad web/Expo (`lib/**/core/**` + frontera de datos)
+
+La web se prepara para que una futura app **React Native Expo** reutilice la lógica y, vía **DOM components** (`'use dom'`), los componentes web. Hay dos fronteras que respetar:
+
+- **Capa portable `lib/**/core/**`** (convención nueva, hermana de `lib/**/hooks/**`): aquí vive lo reutilizable por web y Expo — tipos, esquemas zod, clientes `fetch`, helpers puros y hooks que **no** tocan Next ni el DOM.
+  - El guard de ESLint la aísla: `no-restricted-imports` prohíbe `next`, `next/*` y `server-only`, y `no-restricted-globals` prohíbe `window`, `document` y `localStorage`. Un archivo de `lib/**/core/**` que los use falla `pnpm lint` (el guard también reaplica las restricciones de SPEC 11 en `core`).
+  - **No** se mueve código existente de golpe: la migración a `core` es incremental, al tocar cada dominio.
+- **Tokens de diseño**: `lib/theme/tokens.ts` es el **espejo en TypeScript** de los tokens de `app/globals.css` (`@theme inline`). Si cambias un color o la escala de espaciado, actualiza ambos; cuando exista Expo, el TS pasará a ser la fuente única.
+
+#### Frontera de datos + vista portable
+
+Los **Server Components no se pueden portar** a Expo, así que la regla es separar datos de vista:
+
+- `page.tsx` es un **Server Component delgado**: resuelve datos con `verifySession()` (y la capa `lib/**/dal.ts`) y monta una **vista cliente presentacional** que recibe props. Nada de `next/headers` ni lectura de cookies dentro de la vista.
+- La vista cliente no importa APIs de Next directamente: para navegar usa **`AppLink`** (`components/ui/app-link.tsx`), el único seam sobre `next/link`, de modo que el componente pueda portarse a DOM components sin cambios. `AppLink` reenvía todas las props de `next/link`, así que se usa igual (`href`, `className`, `children`, …).
+- Las vistas **no portables** pueden seguir usando `next/link` mientras se migra cada dominio.
+
 ## Comandos
 
 - `pnpm dev` — servidor de desarrollo en <http://localhost:3000>.

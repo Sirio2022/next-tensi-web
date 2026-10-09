@@ -4,6 +4,9 @@
  * Tokens de diseño unificados de Tensi (landing + auth).
  * La escala `tensi` es la fuente única de color de marca para toda la app;
  * las pantallas de auth usan estos tokens en lugar de mantener su propia paleta.
+ *
+ * Espejo en TypeScript para la app Expo: `lib/theme/tokens.ts` (SPEC 17).
+ * Si cambias un valor aquí, actualiza también ese archivo.
  */
 @theme inline {
   --color-tensi-50: #f0f7ff;

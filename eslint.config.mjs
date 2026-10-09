@@ -3,6 +3,73 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import betterTailwindcss from "eslint-plugin-better-tailwindcss";
 
+// SPEC 11: estado/lógica vetados fuera de `lib/**/hooks/**`.
+const restrictedLogicImports = [
+  {
+    name: "react",
+    importNames: [
+      "useState",
+      "useEffect",
+      "useLayoutEffect",
+      "useRef",
+      "useReducer",
+      "useMemo",
+      "useCallback",
+      "useImperativeHandle",
+      "useSyncExternalStore",
+      "useTransition",
+      "useDeferredValue",
+    ],
+    message:
+      "Mueve el estado/lógica a un custom hook en `lib/**/hooks/**` (SPEC 11).",
+  },
+  {
+    name: "react-hook-form",
+    importNames: [
+      "useForm",
+      "useFormContext",
+      "useController",
+      "useWatch",
+      "useFieldArray",
+      "useFormState",
+    ],
+    message:
+      "Envuelve React Hook Form en un custom hook de `lib/**/hooks/**` (SPEC 11).",
+  },
+  {
+    name: "next/navigation",
+    importNames: [
+      "useRouter",
+      "usePathname",
+      "useSearchParams",
+      "useParams",
+    ],
+    message:
+      "Expón la navegación desde un custom hook de `lib/**/hooks/**` (SPEC 11).",
+  },
+  {
+    name: "@tanstack/react-query",
+    importNames: [
+      "useQuery",
+      "useQueries",
+      "useMutation",
+      "useQueryClient",
+      "useInfiniteQuery",
+    ],
+    message:
+      "Expón los datos desde un custom hook de `lib/**/hooks/**` (SPEC 11).",
+  },
+];
+
+// SPEC 17: el núcleo portable `lib/**/core/**` no puede depender de Next ni del
+// runtime de servidor; se reutiliza tanto en la web como en la futura app Expo.
+const PORTABLE_CORE_MESSAGE =
+  "El núcleo portable `lib/**/core/**` no puede depender de Next ni del runtime de servidor (SPEC 17); mueve este código a la capa web.";
+const portableRestrictedModules = [
+  { name: "next", message: PORTABLE_CORE_MESSAGE },
+  { name: "server-only", message: PORTABLE_CORE_MESSAGE },
+];
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -67,62 +134,47 @@ const eslintConfig = defineConfig([
       "no-restricted-imports": [
         "error",
         {
-          paths: [
+          paths: restrictedLogicImports,
+        },
+      ],
+    },
+  },
+  {
+    // SPEC 17: guard de la capa portable `lib/**/core/**`. Prohíbe acoplarla a
+    // Next (o al runtime de servidor) y usar globals de navegador, para que el
+    // núcleo pueda reutilizarse en la futura app Expo. Al combinarse con el
+    // bloque anterior (que este overridea para estos archivos), se repiten las
+    // restricciones de SPEC 11 para no perderlas en `core`.
+    files: ["lib/**/core/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [...restrictedLogicImports, ...portableRestrictedModules],
+          patterns: [
             {
-              name: "react",
-              importNames: [
-                "useState",
-                "useEffect",
-                "useLayoutEffect",
-                "useRef",
-                "useReducer",
-                "useMemo",
-                "useCallback",
-                "useImperativeHandle",
-                "useSyncExternalStore",
-                "useTransition",
-                "useDeferredValue",
-              ],
-              message:
-                "Mueve el estado/lógica a un custom hook en `lib/**/hooks/**` (SPEC 11).",
-            },
-            {
-              name: "react-hook-form",
-              importNames: [
-                "useForm",
-                "useFormContext",
-                "useController",
-                "useWatch",
-                "useFieldArray",
-                "useFormState",
-              ],
-              message:
-                "Envuelve React Hook Form en un custom hook de `lib/**/hooks/**` (SPEC 11).",
-            },
-            {
-              name: "next/navigation",
-              importNames: [
-                "useRouter",
-                "usePathname",
-                "useSearchParams",
-                "useParams",
-              ],
-              message:
-                "Expón la navegación desde un custom hook de `lib/**/hooks/**` (SPEC 11).",
-            },
-            {
-              name: "@tanstack/react-query",
-              importNames: [
-                "useQuery",
-                "useQueries",
-                "useMutation",
-                "useQueryClient",
-                "useInfiniteQuery",
-              ],
-              message:
-                "Expón los datos desde un custom hook de `lib/**/hooks/**` (SPEC 11).",
+              group: ["next/*"],
+              message: PORTABLE_CORE_MESSAGE,
             },
           ],
+        },
+      ],
+      "no-restricted-globals": [
+        "error",
+        {
+          name: "window",
+          message:
+            "El núcleo portable `lib/**/core/**` no puede usar `window` (SPEC 17); aísla el acceso al DOM en la capa web.",
+        },
+        {
+          name: "document",
+          message:
+            "El núcleo portable `lib/**/core/**` no puede usar `document` (SPEC 17); aísla el acceso al DOM en la capa web.",
+        },
+        {
+          name: "localStorage",
+          message:
+            "El núcleo portable `lib/**/core/**` no puede usar `localStorage` (SPEC 17); aísla la persistencia en la capa web.",
         },
       ],
     },

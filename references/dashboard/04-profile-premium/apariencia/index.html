@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="es" class="h-full bg-slate-950">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración / Apariencia e Interfaz - Tensi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #020617;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 9999px;
+      }
+    </style>
+  </head>
+  <body class="h-full text-slate-100 font-sans antialiased bg-slate-950">
+    <div class="flex h-screen overflow-hidden">
+      <!-- Sidebar Principal de la App -->
+      <aside
+        class="w-64 bg-slate-950 border-r border-slate-800/80 flex flex-col justify-between shrink-0"
+      >
+        <div>
+          <!-- Brand Header -->
+          <div class="p-5 flex items-center gap-3 border-b border-slate-800/60">
+            <div
+              class="size-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-0.5 shadow-lg shadow-blue-500/20"
+            >
+              <div
+                class="size-full bg-slate-950 rounded-[10px] flex items-center justify-center font-bold text-blue-400"
+              >
+                <i data-lucide="activity" class="size-5"></i>
+              </div>
+            </div>
+            <span class="font-bold text-lg text-white tracking-tight"
+              >Blood Pressure Monitor</span
+            >
+          </div>
+
+          <!-- Navegación Principal -->
+          <nav class="p-3 space-y-1.5" aria-label="Navegación principal">
+            <a
+              href="#"
+              class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 rounded-xl transition"
+            >
+              <i data-lucide="layout-dashboard" class="size-5"></i>
+              Dashboard
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 rounded-xl transition"
+            >
+              <i data-lucide="plus-circle" class="size-5 text-emerald-400"></i>
+              Nueva Lectura
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 rounded-xl transition"
+            >
+              <i data-lucide="history" class="size-5"></i>
+              Historial
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 rounded-xl transition"
+            >
+              <i data-lucide="line-chart" class="size-5"></i>
+              Análisis
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 rounded-xl transition"
+            >
+              <i data-lucide="file-text" class="size-5"></i>
+              Reportes
+            </a>
+          </nav>
+        </div>
+
+        <!-- Footer Menu Lateral -->
+        <div class="p-3 border-t border-slate-800/60 space-y-1">
+          <a
+            href="#"
+            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium bg-blue-600/10 text-blue-400 border border-blue-500/20 rounded-xl transition"
+          >
+            <i data-lucide="settings" class="size-5"></i>
+            Configuración
+          </a>
+          <button
+            class="w-full flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-rose-400 hover:bg-rose-500/10 rounded-xl transition"
+          >
+            <i data-lucide="log-out" class="size-5"></i>
+            Cerrar Sesión
+          </button>
+        </div>
+      </aside>
+
+      <!-- ÁREA PRINCIPAL DE CONTENIDO -->
+      <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <!-- Header Superior -->
+        <header
+          class="h-16 px-8 bg-slate-950/80 border-b border-slate-800/80 flex items-center justify-end shrink-0 sticky top-0 backdrop-blur-xl z-10"
+        >
+          <div class="flex items-center gap-4">
+            <button class="text-slate-400 hover:text-white transition">
+              <i data-lucide="bell" class="size-4"></i>
+            </button>
+            <button class="text-slate-400 hover:text-white transition">
+              <i data-lucide="sun" class="size-4"></i>
+            </button>
+            <span
+              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20"
+            >
+              <span class="size-1.5 rounded-full bg-amber-400"></span>
+              Premium
+            </span>
+            <div class="flex items-center gap-3 pl-3 border-l border-slate-800">
+              <div class="text-right hidden sm:block">
+                <p class="text-xs font-semibold text-white leading-none">
+                  Juan Manuel Alvarez Bermudez
+                </p>
+                <p class="text-[10px] text-slate-400 mt-1 leading-none">
+                  juanmadev@icloud.com
+                </p>
+              </div>
+              <div
+                class="size-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center"
+              >
+                JM
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Layout -->
+        <main class="flex-1 p-6 lg:p-8 max-w-6xl mx-auto w-full space-y-6">
+          <!-- Encabezado de Página -->
+          <div>
+            <h1
+              class="text-2xl lg:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5"
+            >
+              <i data-lucide="settings" class="size-7 text-slate-400"></i>
+              Configuración
+            </h1>
+            <p class="text-xs text-slate-400 mt-1">
+              Personaliza tu experiencia y ajusta tus preferencias
+            </p>
+          </div>
+
+          <!-- Contenedor Principal de Configuración -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+            <!-- Columna Izquierda: Sub-sidebar -->
+            <div
+              class="md:col-span-4 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-2 backdrop-blur-xl space-y-1"
+            >
+              <a
+                href="#"
+                class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/40 text-slate-400 hover:text-slate-200 transition"
+              >
+                <i data-lucide="user" class="size-4 mt-0.5 shrink-0"></i>
+                <div>
+                  <p class="text-xs font-semibold leading-none">
+                    Vista General
+                  </p>
+                  <p class="text-[10px] text-slate-500 mt-1">
+                    Resumen de perfil y acceso rápido
+                  </p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/40 text-slate-400 hover:text-slate-200 transition"
+              >
+                <i data-lucide="bell" class="size-4 mt-0.5 shrink-0"></i>
+                <div>
+                  <p class="text-xs font-semibold leading-none">
+                    Notificaciones
+                  </p>
+                  <p class="text-[10px] text-slate-500 mt-1">
+                    Alertas y recordatorios
+                  </p>
+                </div>
+              </a>
+
+              <!-- Activo: Apariencia -->
+              <a
+                href="#"
+                class="flex items-start gap-3 p-3 rounded-xl bg-slate-800/80 border border-slate-700/80 text-white transition"
+              >
+                <i
+                  data-lucide="palette"
+                  class="size-4 text-blue-400 mt-0.5 shrink-0"
+                ></i>
+                <div>
+                  <p class="text-xs font-bold leading-none">Apariencia</p>
+                  <p class="text-[10px] text-slate-400 mt-1">
+                    Tema y personalización
+                  </p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/40 text-slate-400 hover:text-slate-200 transition"
+              >
+                <i
+                  data-lucide="shield-check"
+                  class="size-4 mt-0.5 shrink-0"
+                ></i>
+                <div>
+                  <p class="text-xs font-semibold leading-none">Seguridad</p>
+                  <p class="text-[10px] text-slate-500 mt-1">
+                    Contraseña y privacidad
+                  </p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/40 text-slate-400 hover:text-slate-200 transition"
+              >
+                <i
+                  data-lucide="crown"
+                  class="size-4 text-amber-400 mt-0.5 shrink-0"
+                ></i>
+                <div>
+                  <p
+                    class="text-xs font-semibold leading-none flex items-center gap-1"
+                  >
+                    Mi Plan
+                    <i data-lucide="crown" class="size-3 text-amber-400"></i>
+                  </p>
+                  <p class="text-[10px] text-slate-500 mt-1">
+                    Gestión de suscripción
+                  </p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/40 text-slate-400 hover:text-slate-200 transition"
+              >
+                <i data-lucide="sliders" class="size-4 mt-0.5 shrink-0"></i>
+                <div>
+                  <p class="text-xs font-semibold leading-none">Avanzado</p>
+                  <p class="text-[10px] text-slate-500 mt-1">
+                    Configuraciones técnicas
+                  </p>
+                </div>
+              </a>
+
+              <div class="pt-2 px-1">
+                <div
+                  class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-center"
+                >
+                  <span
+                    class="text-xs font-bold text-amber-400 flex items-center justify-center gap-1.5"
+                  >
+                    <i data-lucide="crown" class="size-3.5"></i> Plan Premium
+                    Activo
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna Derecha: Apariencia e Interfaz -->
+            <div class="md:col-span-8 space-y-5">
+              <!-- Card Superior / Encabezado -->
+              <div
+                class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl flex items-center justify-between"
+              >
+                <div>
+                  <h2
+                    class="text-sm font-bold text-white flex items-center gap-2"
+                  >
+                    <i data-lucide="palette" class="size-4 text-blue-400"></i>
+                    Apariencia e Interfaz
+                  </h2>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    Personaliza la apariencia de la aplicación a tu gusto
+                  </p>
+                </div>
+                <button
+                  class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl transition shadow-md shadow-blue-600/20"
+                >
+                  Guardar Cambios
+                </button>
+              </div>
+
+              <!-- Sección: Tema de la Aplicación -->
+              <div
+                class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl space-y-4"
+              >
+                <div>
+                  <h3
+                    class="text-xs font-bold text-white flex items-center gap-2"
+                  >
+                    <i data-lucide="monitor" class="size-4 text-blue-400"></i>
+                    Tema de la Aplicación
+                  </h3>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    Elige entre tema claro, oscuro o automático según la hora
+                    del día
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                  <!-- Claro -->
+                  <button
+                    type="button"
+                    class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/60 hover:border-slate-700 text-center transition flex flex-col items-center justify-center gap-2"
+                  >
+                    <i data-lucide="sun" class="size-5 text-amber-400"></i>
+                    <div>
+                      <p class="text-xs font-bold text-white">Claro</p>
+                      <p class="text-[10px] text-slate-500 mt-0.5">
+                        Ideal para uso durante el día
+                      </p>
+                    </div>
+                  </button>
+
+                  <!-- Oscuro (Seleccionado) -->
+                  <button
+                    type="button"
+                    class="p-4 rounded-xl bg-blue-600/10 border-2 border-blue-500 text-center transition flex flex-col items-center justify-center gap-2"
+                  >
+                    <i data-lucide="moon" class="size-5 text-blue-400"></i>
+                    <div>
+                      <p class="text-xs font-bold text-white">Oscuro</p>
+                      <p class="text-[10px] text-slate-400 mt-0.5">
+                        Reduce la fatiga visual por la noche
+                      </p>
+                    </div>
+                  </button>
+
+                  <!-- Automático -->
+                  <button
+                    type="button"
+                    class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/60 opacity-60 text-center transition flex flex-col items-center justify-center gap-2"
+                  >
+                    <i data-lucide="sparkles" class="size-5 text-amber-300"></i>
+                    <div>
+                      <p class="text-xs font-bold text-white">Automático</p>
+                      <p class="text-[10px] text-slate-500 mt-0.5">
+                        Próximamente...
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Sección: Idioma y Región -->
+              <div
+                class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl space-y-4"
+              >
+                <div>
+                  <h3
+                    class="text-xs font-bold text-white flex items-center gap-2"
+                  >
+                    <i data-lucide="globe" class="size-4 text-blue-400"></i>
+                    Idioma y Región
+                  </h3>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    Configura el idioma de la interfaz y formatos regionales
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                  <div>
+                    <label
+                      class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5"
+                      >IDIOMA DE LA INTERFAZ</label
+                    >
+                    <select
+                      class="w-full px-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-blue-500 transition"
+                    >
+                      <option value="es">🇪🇸 Español</option>
+                      <option value="en">🇺🇸 English</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label
+                      class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5"
+                      >FORMATO DE FECHA</label
+                    >
+                    <select
+                      class="w-full px-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-blue-500 transition"
+                    >
+                      <option value="ddmmyyyy">DD/MM/AAAA (Español)</option>
+                      <option value="mmddyyyy">MM/DD/AAAA (English)</option>
+                    </select>
+                    <p class="text-[10px] text-slate-500 mt-1">
+                      Se establece automáticamente según el idioma
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección: Esquema de Colores -->
+              <div
+                class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl space-y-4"
+              >
+                <div>
+                  <h3
+                    class="text-xs font-bold text-white flex items-center gap-2"
+                  >
+                    <i data-lucide="palette" class="size-4 text-blue-400"></i>
+                    Esquema de Colores
+                  </h3>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    Elige el color principal para botones y elementos destacados
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+                  <!-- Azul (Seleccionado) -->
+                  <button
+                    type="button"
+                    class="p-4 rounded-xl bg-slate-950/60 border-2 border-blue-500 flex flex-col items-center justify-center gap-2"
+                  >
+                    <span class="size-5 rounded-full bg-blue-500"></span>
+                    <span class="text-xs font-bold text-white">Azul</span>
+                  </button>
+
+                  <!-- Verde -->
+                  <button
+                    type="button"
+                    class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/60 hover:border-slate-700 flex flex-col items-center justify-center gap-2"
+                  >
+                    <span class="size-5 rounded-full bg-emerald-500"></span>
+                    <span class="text-xs font-semibold text-slate-300"
+                      >Verde</span
+                    >
+                  </button>
+
+                  <!-- Morado -->
+                  <button
+                    type="button"
+                    class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/60 hover:border-slate-700 flex flex-col items-center justify-center gap-2"
+                  >
+                    <span class="size-5 rounded-full bg-purple-500"></span>
+                    <span class="text-xs font-semibold text-slate-300"
+                      >Morado</span
+                    >
+                  </button>
+
+                  <!-- Rojo -->
+                  <button
+                    type="button"
+                    class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/60 hover:border-slate-700 flex flex-col items-center justify-center gap-2"
+                  >
+                    <span class="size-5 rounded-full bg-rose-500"></span>
+                    <span class="text-xs font-semibold text-slate-300"
+                      >Rojo</span
+                    >
+                  </button>
+                </div>
+
+                <!-- Warning Banner -->
+                <div
+                  class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center gap-2 text-xs text-amber-400"
+                >
+                  <i data-lucide="alert-triangle" class="size-4 shrink-0"></i>
+                  <span
+                    >Los esquemas de color personalizados estarán disponibles en
+                    una futura actualización</span
+                  >
+                </div>
+              </div>
+
+              <!-- Sección: Configuraciones Avanzadas -->
+              <div
+                class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl space-y-4"
+              >
+                <div>
+                  <h3
+                    class="text-xs font-bold text-white flex items-center gap-2"
+                  >
+                    <i data-lucide="eye" class="size-4 text-blue-400"></i>
+                    Configuraciones Avanzadas
+                  </h3>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    Ajustes adicionales para mejorar tu experiencia
+                  </p>
+                </div>
+
+                <div class="space-y-4 pt-1">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs font-semibold text-slate-200">
+                        Modo compacto
+                      </p>
+                      <p class="text-[10px] text-slate-500">
+                        Reduce el espaciado para mostrar más información
+                      </p>
+                    </div>
+                    <label
+                      class="relative inline-flex items-center cursor-pointer"
+                    >
+                      <input type="checkbox" class="sr-only peer" />
+                      <div
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                      ></div>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs font-semibold text-slate-200">
+                        Animaciones
+                      </p>
+                      <p class="text-[10px] text-slate-500">
+                        Efectos de transición y animaciones suaves
+                      </p>
+                    </div>
+                    <label
+                      class="relative inline-flex items-center cursor-pointer"
+                    >
+                      <input type="checkbox" checked class="sr-only peer" />
+                      <div
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                      ></div>
+                    </label>
+                  </div>
+
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs font-semibold text-slate-200">
+                        Alto contraste
+                      </p>
+                      <p class="text-[10px] text-slate-500">
+                        Mejora la visibilidad para usuarios con dificultades
+                        visuales
+                      </p>
+                    </div>
+                    <label
+                      class="relative inline-flex items-center cursor-pointer"
+                    >
+                      <input type="checkbox" class="sr-only peer" />
+                      <div
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                      ></div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons()
+    </script>
+  </body>
+</html>
