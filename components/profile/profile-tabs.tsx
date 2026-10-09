@@ -1,13 +1,18 @@
 "use client"
 
 import type { AuthUser } from "@/lib/auth/types"
-import { useProfileTabs } from "@/lib/profile/hooks/use-profile-tabs"
+import {
+  useProfileTabs,
+  type ProfileTabId
+} from "@/lib/profile/hooks/use-profile-tabs"
 import { Lock, User } from "lucide-react"
 import { PasswordForm } from "./password-form"
 import { ProfileForm } from "./profile-form"
 
 interface ProfileTabsProps {
   user: AuthUser
+  /** Pestaña inicial; `?tab=password` abre directamente el cambio de contraseña. */
+  initialTab?: ProfileTabId
 }
 
 /**
@@ -15,7 +20,10 @@ interface ProfileTabsProps {
  * tabs. La pestaña de contraseña queda deshabilitada con candado y una nota
  * cuando la cuenta no tiene contraseña local (`hasPassword === false`, OAuth).
  */
-export function ProfileTabs({ user }: Readonly<ProfileTabsProps>) {
+export function ProfileTabs({
+  user,
+  initialTab
+}: Readonly<ProfileTabsProps>) {
   const {
     tabs,
     activeTab,
@@ -24,7 +32,7 @@ export function ProfileTabs({ user }: Readonly<ProfileTabsProps>) {
     registerTab,
     tabId,
     panelId
-  } = useProfileTabs(user.hasPassword)
+  } = useProfileTabs(user.hasPassword, initialTab)
 
   return (
     <div className="space-y-8">

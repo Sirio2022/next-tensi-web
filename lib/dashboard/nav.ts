@@ -75,7 +75,7 @@ export const DASHBOARD_NAV_ITEMS: readonly Readonly<DashboardNavItem>[] = [
 export const DASHBOARD_SETTINGS_ITEM: Readonly<FreeDashboardNavItem> = {
   id: "settings",
   label: "Configuración",
-  href: "/dashboard/profile",
+  href: "/dashboard/settings",
   requiresPremium: false
 }
 
@@ -83,7 +83,9 @@ export const DASHBOARD_SETTINGS_ITEM: Readonly<FreeDashboardNavItem> = {
  * Devuelve el ítem activo como el que mejor prefija el pathname (el más
  * específico), de modo que en `/dashboard/new-reading` solo se marque "Nueva
  * Lectura" y no también su ítem padre "Dashboard". Contempla también el ítem de
- * Configuración, que vive fuera de `DASHBOARD_NAV_ITEMS`.
+ * Configuración, que vive fuera de `DASHBOARD_NAV_ITEMS`; su prefijo
+ * `/dashboard/settings` marca activo el ítem en todas las sub-rutas del shell
+ * (incluida `/dashboard/settings/profile`).
  */
 export function getActiveNavId(
   pathname: string
