@@ -1,6 +1,6 @@
 # SPEC 17 — Núcleo portable y frontera lógica/UI (preparación Expo)
 
-> **Status:** Implemented
+> **Status:** Verificado
 > **Depends on:** SPEC 03, SPEC 06, SPEC 07, SPEC 11, SPEC 12
 > **Date:** 2026-10-09
 > **Objective:** Fijar la frontera entre lógica portable (reutilizable por la futura app Expo) y código web, con un guard de lint, tokens de diseño en TS y un adaptador de navegación, sin cambiar el comportamiento actual de la web.
@@ -66,12 +66,12 @@ export const SPACING_UNIT = 4
 
 ## Criterios de aceptación
 
-- [ ] Existe `lib/theme/tokens.ts` y sus valores coinciden con el `@theme inline` de `app/globals.css`.
-- [ ] Existe `components/ui/app-link.tsx` y navega igual que `next/link`.
-- [ ] Un archivo en `lib/**/core/**` que importe `next/*`/`server-only` o use `window`/`document`/`localStorage` falla `pnpm lint`.
-- [ ] `AGENTS.md` documenta la frontera portable/web y la regla "frontera de datos + vista portable".
-- [ ] Ninguna pantalla cambia de comportamiento; `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] `git -C ../nest-tensi-api status --short` sin cambios (spec front-only).
+- [x] Existe `lib/theme/tokens.ts` y sus valores coinciden con el `@theme inline` de `app/globals.css`.
+- [x] Existe `components/ui/app-link.tsx` y navega igual que `next/link`.
+- [x] Un archivo en `lib/**/core/**` que importe `next/*`/`server-only` o use `window`/`document`/`localStorage` falla `pnpm lint`.
+- [x] `AGENTS.md` documenta la frontera portable/web y la regla "frontera de datos + vista portable".
+- [x] Ninguna pantalla cambia de comportamiento; `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- [x] `git -C ../nest-tensi-api status --short` sin cambios (spec front-only).
 
 ## Decisiones
 
