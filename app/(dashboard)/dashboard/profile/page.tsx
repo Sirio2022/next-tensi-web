@@ -1,28 +1,10 @@
-import { ProfileTabs } from "@/components/profile/profile-tabs"
-import { verifySession } from "@/lib/auth/dal"
-import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
-export const metadata: Metadata = {
-  title: "Perfil"
-}
-
 /**
- * Pantalla de Perfil. Server Component: resuelve la sesión (memoizada con
- * `cache()`, comparte la llamada del layout) y pasa el usuario a las pestañas
- * de Perfil / Cambiar Contraseña.
+ * El editor de perfil se mudó bajo el shell de Configuración (SPEC 18). Esta
+ * ruta queda como redirect permanente a `/dashboard/settings/profile` para no
+ * romper enlaces ni marcadores antiguos.
  */
-export default async function ProfilePage() {
-  const user = await verifySession()
-
-  if (!user) {
-    redirect("/login")
-  }
-
-  return (
-    <div className="mx-auto w-full max-w-2xl space-y-8">
-      <h1 className="sr-only">Perfil</h1>
-      <ProfileTabs user={user} />
-    </div>
-  )
+export default function ProfileRedirectPage() {
+  redirect("/dashboard/settings/profile")
 }

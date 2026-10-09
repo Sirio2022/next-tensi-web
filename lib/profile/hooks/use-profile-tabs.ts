@@ -27,9 +27,18 @@ export interface ProfileTabsState {
  * navegación con flechas/Home/End sobre las pestañas habilitadas. La pestaña de
  * contraseña se deshabilita cuando la cuenta no tiene contraseña local
  * (`hasPassword === false`, caso OAuth).
+ *
+ * `initialTab` permite abrir directamente una pestaña (SPEC 18: `?tab=password`
+ * desde "Acceso Rápido"). Si apunta a contraseña en una cuenta sin contraseña
+ * local, se ignora y se abre "Perfil".
  */
-export function useProfileTabs(hasPassword: boolean): ProfileTabsState {
-  const [activeTab, setActiveTab] = useState<ProfileTabId>("profile")
+export function useProfileTabs(
+  hasPassword: boolean,
+  initialTab: ProfileTabId = "profile"
+): ProfileTabsState {
+  const [activeTab, setActiveTab] = useState<ProfileTabId>(
+    initialTab === "password" && !hasPassword ? "profile" : initialTab
+  )
   const baseId = useId()
   const tabRefs = useRef<Record<ProfileTabId, HTMLButtonElement | null>>({
     profile: null,

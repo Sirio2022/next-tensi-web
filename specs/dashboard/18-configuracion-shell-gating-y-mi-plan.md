@@ -1,6 +1,6 @@
 # SPEC 18 — Configuración: shell, gating por plan y "Mi Plan"
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** SPEC 03, SPEC 06, SPEC 07, SPEC 11, SPEC 12, SPEC 14, SPEC 17
 > **Date:** 2026-10-09
 > **Objective:** Sustituir `/dashboard/profile` por un shell de Configuración con sub-navegación por secciones, un mecanismo reutilizable de gating Free/Premium y las secciones "Vista General" y "Mi Plan", dejando las demás como "próximamente".
