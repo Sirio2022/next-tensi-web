@@ -1,6 +1,6 @@
 # SPEC 17 — Núcleo portable y frontera lógica/UI (preparación Expo)
 
-> **Status:** Aproved
+> **Status:** Implemented
 > **Depends on:** SPEC 03, SPEC 06, SPEC 07, SPEC 11, SPEC 12
 > **Date:** 2026-10-09
 > **Objective:** Fijar la frontera entre lógica portable (reutilizable por la futura app Expo) y código web, con un guard de lint, tokens de diseño en TS y un adaptador de navegación, sin cambiar el comportamiento actual de la web.
