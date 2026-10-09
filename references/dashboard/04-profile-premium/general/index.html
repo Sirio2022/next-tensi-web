@@ -328,7 +328,7 @@
                 <!-- Banner: Plan Premium Activo -->
                 <div class="pt-2">
                   <div
-                    class="p-2.5 rounded-lg bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 border border-amber-500/30 text-center"
+                    class="p-2.5 rounded-lg bg-linear-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 border border-amber-500/30 text-center"
                   >
                     <span
                       class="text-xs font-bold text-amber-400 flex items-center justify-center gap-1.5"
@@ -542,10 +542,13 @@
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <div>
                       <label
+                        for="user-id"
                         class="text-[10px] font-semibold text-slate-400 block mb-1"
+                        aria-label="ID del usuario"
                         >Usuario ID:</label
                       >
                       <input
+                        id="user-id"
                         type="text"
                         readonly
                         value="692e2a15a7f7fe215f3f5c88b"
@@ -555,6 +558,7 @@
 
                     <div>
                       <label
+                        for="plan-type"
                         class="text-[10px] font-semibold text-slate-400 block mb-1"
                         >Tipo de Plan:</label
                       >
@@ -568,6 +572,7 @@
 
                   <div class="pt-1">
                     <label
+                      for="autenticacion"
                       class="text-[10px] font-semibold text-slate-400 block mb-1"
                       >Autenticación:</label
                     >

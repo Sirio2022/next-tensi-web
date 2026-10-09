@@ -39,7 +39,7 @@
           <!-- Brand Header -->
           <div class="p-5 flex items-center gap-3 border-b border-slate-800/60">
             <div
-              class="size-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-0.5 shadow-lg shadow-blue-500/20"
+              class="size-9 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 p-0.5 shadow-lg shadow-blue-500/20"
             >
               <div
                 class="size-full bg-slate-950 rounded-[10px] flex items-center justify-center font-bold text-blue-400"
@@ -139,7 +139,7 @@
                 </p>
               </div>
               <div
-                class="size-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center"
+                class="size-8 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center"
               >
                 JM
               </div>
@@ -324,11 +324,13 @@
                     >Activar recordatorios</span
                   >
                   <label
+                    for="recordatorios"
                     class="relative inline-flex items-center cursor-pointer"
+                    aria-label="Activar o desactivar recordatorios"
                   >
                     <input type="checkbox" checked class="sr-only peer" />
                     <div
-                      class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                      class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
                     ></div>
                   </label>
                 </div>
@@ -336,10 +338,12 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                   <div>
                     <label
+                      for="frecuencia"
                       class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5"
                       >FRECUENCIA</label
                     >
                     <select
+                      id="frecuencia"
                       class="w-full px-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-blue-500 transition"
                     >
                       <option value="daily">Diario</option>
@@ -349,13 +353,16 @@
                   </div>
                   <div>
                     <label
+                      for="hora-preferida"
                       class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5"
                       >HORA PREFERIDA</label
                     >
                     <input
+                      id="hora-preferida"
                       type="text"
                       value="09:00 a.m."
                       class="w-full px-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-blue-500 transition"
+                      aria-label="Campo de entrada para seleccionar la hora preferida de recordatorio"
                     />
                   </div>
                 </div>
@@ -390,11 +397,13 @@
                     </p>
                   </div>
                   <label
+                    for="alertas-médicas"
                     class="relative inline-flex items-center cursor-pointer"
+                    aria-label="Activar o desactivar alertas médicas"
                   >
                     <input type="checkbox" checked class="sr-only peer" />
                     <div
-                      class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"
+                      class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"
                     ></div>
                   </label>
                 </div>
@@ -406,11 +415,13 @@
                       >Presión arterial alta (>140/90)</span
                     >
                     <label
+                      for="presion-alta"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar alerta de presión arterial alta"
                     >
                       <input type="checkbox" checked class="sr-only peer" />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"
                       ></div>
                     </label>
                   </div>
@@ -420,11 +431,13 @@
                       >Presión arterial baja (&lt;90/60)</span
                     >
                     <label
+                      for="presion-baja"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar alerta de presión arterial baja"
                     >
                       <input type="checkbox" class="sr-only peer" />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"
                       ></div>
                     </label>
                   </div>
@@ -434,11 +447,13 @@
                       >Patrones irregulares detectados</span
                     >
                     <label
+                      for="patrones-irregulares"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar alerta de patrones irregulares"
                     >
                       <input type="checkbox" checked class="sr-only peer" />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"
                       ></div>
                     </label>
                   </div>
@@ -467,11 +482,13 @@
                   <div class="flex items-center justify-between">
                     <span class="text-xs text-slate-300">Reporte semanal</span>
                     <label
+                      for="reporte-semanal"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar reporte semanal"
                     >
                       <input type="checkbox" checked class="sr-only peer" />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"
                       ></div>
                     </label>
                   </div>
@@ -479,11 +496,13 @@
                   <div class="flex items-center justify-between">
                     <span class="text-xs text-slate-300">Reporte mensual</span>
                     <label
+                      for="reporte-mensual"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar reporte mensual"
                     >
                       <input type="checkbox" class="sr-only peer" />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"
                       ></div>
                     </label>
                   </div>
@@ -491,11 +510,13 @@
                   <div class="flex items-center justify-between">
                     <span class="text-xs text-slate-300">Por email</span>
                     <label
+                      for="reporte-email"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar reporte por email"
                     >
                       <input type="checkbox" checked class="sr-only peer" />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
                       ></div>
                     </label>
                   </div>
@@ -503,11 +524,13 @@
                   <div class="flex items-center justify-between">
                     <span class="text-xs text-slate-300">En la app</span>
                     <label
+                      for="reporte-app"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar reporte en la app"
                     >
                       <input type="checkbox" checked class="sr-only peer" />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
                       ></div>
                     </label>
                   </div>
@@ -544,11 +567,13 @@
                       </p>
                     </div>
                     <label
+                      for="email"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar notificaciones por email"
                     >
                       <input type="checkbox" checked class="sr-only peer" />
                       <div
-                        class="w-8 h-4.5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-600"
+                        class="w-8 h-4.5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-600"
                       ></div>
                     </label>
                   </div>
@@ -563,11 +588,13 @@
                       </p>
                     </div>
                     <label
+                      for="push"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar notificaciones push"
                     >
                       <input type="checkbox" checked class="sr-only peer" />
                       <div
-                        class="w-8 h-4.5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-600"
+                        class="w-8 h-4.5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-600"
                       ></div>
                     </label>
                   </div>
@@ -582,11 +609,13 @@
                       </p>
                     </div>
                     <label
+                      for="app"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar notificaciones en la app"
                     >
                       <input type="checkbox" checked class="sr-only peer" />
                       <div
-                        class="w-8 h-4.5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-600"
+                        class="w-8 h-4.5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-600"
                       ></div>
                     </label>
                   </div>

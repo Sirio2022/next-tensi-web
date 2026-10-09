@@ -39,7 +39,7 @@
           <!-- Brand Header -->
           <div class="p-5 flex items-center gap-3 border-b border-slate-800/60">
             <div
-              class="size-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-0.5 shadow-lg shadow-blue-500/20"
+              class="size-9 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 p-0.5 shadow-lg shadow-blue-500/20"
             >
               <div
                 class="size-full bg-slate-950 rounded-[10px] flex items-center justify-center font-bold text-blue-400"
@@ -139,7 +139,7 @@
                 </p>
               </div>
               <div
-                class="size-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center"
+                class="size-8 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 text-white font-bold text-xs flex items-center justify-center"
               >
                 JM
               </div>
@@ -385,9 +385,12 @@
                   <div>
                     <label
                       class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5"
-                      >IDIOMA DE LA INTERFAZ</label
+                      for="idioma"
+                    >
+                      IDIOMA DE LA INTERFAZ</label
                     >
                     <select
+                      id="idioma"
                       class="w-full px-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-blue-500 transition"
                     >
                       <option value="es">🇪🇸 Español</option>
@@ -398,9 +401,12 @@
                   <div>
                     <label
                       class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5"
-                      >FORMATO DE FECHA</label
+                      for="formato-fecha"
                     >
+                      FORMATO DE FECHA
+                    </label>
                     <select
+                      id="formato-fecha"
                       class="w-full px-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-blue-500 transition"
                     >
                       <option value="ddmmyyyy">DD/MM/AAAA (Español)</option>
@@ -512,11 +518,17 @@
                       </p>
                     </div>
                     <label
+                      for="modo-compacto"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar modo compacto"
                     >
-                      <input type="checkbox" class="sr-only peer" />
+                      <input
+                        type="checkbox"
+                        class="sr-only peer"
+                        id="modo-compacto"
+                      />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
                       ></div>
                     </label>
                   </div>
@@ -531,11 +543,18 @@
                       </p>
                     </div>
                     <label
+                      for="animaciones"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar animaciones"
                     >
-                      <input type="checkbox" checked class="sr-only peer" />
+                      <input
+                        id="animaciones"
+                        type="checkbox"
+                        checked
+                        class="sr-only peer"
+                      />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
                       ></div>
                     </label>
                   </div>
@@ -551,11 +570,17 @@
                       </p>
                     </div>
                     <label
+                      for="alto-contraste"
                       class="relative inline-flex items-center cursor-pointer"
+                      aria-label="Activar o desactivar alto contraste"
                     >
-                      <input type="checkbox" class="sr-only peer" />
+                      <input
+                        type="checkbox"
+                        class="sr-only peer"
+                        id="alto-contraste"
+                      />
                       <div
-                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
+                        class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"
                       ></div>
                     </label>
                   </div>
