@@ -1,6 +1,6 @@
 # SPEC 18 — Configuración: shell, gating por plan y "Mi Plan"
 
-> **Status:** Implemented
+> **Status:** Verificado
 > **Depends on:** SPEC 03, SPEC 06, SPEC 07, SPEC 11, SPEC 12, SPEC 14, SPEC 17
 > **Date:** 2026-10-09
 > **Objective:** Sustituir `/dashboard/profile` por un shell de Configuración con sub-navegación por secciones, un mecanismo reutilizable de gating Free/Premium y las secciones "Vista General" y "Mi Plan", dejando las demás como "próximamente".
@@ -114,24 +114,24 @@ Hooks web (`lib/settings/hooks/`): `use-active-settings-section.ts` (usa `next/n
 
 ## Criterios de aceptación
 
-- [ ] El ítem "Configuración" del sidebar navega a `/dashboard/settings` y queda `aria-current="page"`, también en sus sub-rutas.
-- [ ] `/dashboard/profile` redirige a `/dashboard/settings/profile` y el editor de perfil (SPEC 14) sigue funcionando.
-- [ ] El shell muestra el sub-sidebar con las 6 secciones del mockup, en orden, marcando la activa.
-- [ ] "Vista General" muestra resumen de perfil, información médica (medicamentos), acceso rápido e información de cuenta con datos reales de la sesión.
-- [ ] "Acceso Rápido" enlaza a "Editar Perfil Completo" (`/dashboard/settings/profile`) y a "Cambiar Contraseña" (`...?tab=password`, abre la pestaña de contraseña).
-- [ ] "Mi Plan" muestra el estado del plan, una comparativa Free vs Premium y el CTA "Actualizar a Premium".
-- [ ] El CTA abre un `<dialog>` nativo "próximamente" que cierra con Escape, backdrop y botón, y devuelve el foco al disparador.
-- [ ] El banner inferior muestra "Plan Premium Activo" para Premium y un CTA de upgrade para Free.
-- [ ] Notificaciones, Apariencia, Seguridad y Avanzado muestran "Disponible próximamente" igual para Free y Premium.
-- [ ] Free y Premium ven las mismas 6 secciones; ninguna queda con candado premium en esta spec.
-- [ ] `isLockedForPlan` y `PremiumLockedCard` existen como mecanismo documentado para las specs de sección (sin aplicarse a secciones todavía).
-- [ ] `grep` confirma que `lib/settings/core/**` no importa `next/*` ni usa `window`/`document`/`localStorage`.
-- [ ] Las vistas de `components/settings/**` no importan `next/link` directamente (usan `AppLink`).
-- [ ] No hay etiquetas `<a>` (todo `next/link`/`AppLink`), props con `Readonly<>` y clases canónicas (`pnpm lint` limpio).
-- [ ] Ningún componente en `app/**`/`components/**` usa hooks vetados por SPEC 11.
-- [ ] `/dashboard/settings` y sus sub-rutas son usables a 375 px y 1440 px sin scroll horizontal ni errores de consola.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] `git -C ../nest-tensi-api status --short` sin cambios (spec front-only).
+- [x] El ítem "Configuración" del sidebar navega a `/dashboard/settings` y queda `aria-current="page"`, también en sus sub-rutas.
+- [x] `/dashboard/profile` redirige a `/dashboard/settings/profile` y el editor de perfil (SPEC 14) sigue funcionando.
+- [x] El shell muestra el sub-sidebar con las 6 secciones del mockup, en orden, marcando la activa.
+- [x] "Vista General" muestra resumen de perfil, información médica (medicamentos), acceso rápido e información de cuenta con datos reales de la sesión.
+- [x] "Acceso Rápido" enlaza a "Editar Perfil Completo" (`/dashboard/settings/profile`) y a "Cambiar Contraseña" (`...?tab=password`, abre la pestaña de contraseña).
+- [x] "Mi Plan" muestra el estado del plan, una comparativa Free vs Premium y el CTA "Actualizar a Premium".
+- [x] El CTA abre un `<dialog>` nativo "próximamente" que cierra con Escape, backdrop y botón, y devuelve el foco al disparador.
+- [x] El banner inferior muestra "Plan Premium Activo" para Premium y un CTA de upgrade para Free.
+- [x] Notificaciones, Apariencia, Seguridad y Avanzado muestran "Disponible próximamente" igual para Free y Premium.
+- [x] Free y Premium ven las mismas 6 secciones; ninguna queda con candado premium en esta spec.
+- [x] `isLockedForPlan` y `PremiumLockedCard` existen como mecanismo documentado para las specs de sección (sin aplicarse a secciones todavía).
+- [x] `grep` confirma que `lib/settings/core/**` no importa `next/*` ni usa `window`/`document`/`localStorage`.
+- [x] Las vistas de `components/settings/**` no importan `next/link` directamente (usan `AppLink`).
+- [x] No hay etiquetas `<a>` (todo `next/link`/`AppLink`), props con `Readonly<>` y clases canónicas (`pnpm lint` limpio).
+- [x] Ningún componente en `app/**`/`components/**` usa hooks vetados por SPEC 11.
+- [x] `/dashboard/settings` y sus sub-rutas son usables a 375 px y 1440 px sin scroll horizontal ni errores de consola.
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
+- [x] `git -C ../nest-tensi-api status --short` sin cambios (spec front-only).
 
 ## Decisiones
 
