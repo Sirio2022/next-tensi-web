@@ -63,7 +63,7 @@ export const SETTINGS_SECTIONS: readonly SettingsSection[] = [
     description: "Alertas y recordatorios",
     href: "/dashboard/settings/notifications",
     icon: "bell",
-    state: "coming-soon"
+    state: "available"
   },
   {
     id: "appearance",

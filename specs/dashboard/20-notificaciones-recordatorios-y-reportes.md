@@ -1,6 +1,6 @@
 # SPEC 20 — Notificaciones: recordatorios, alertas médicas y reportes automáticos
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 09, SPEC 11, SPEC 14, SPEC 17, SPEC 18
 > **Date:** 2026-10-23
 > **Objective:** Implementar la sección Notificaciones de Configuración con preferencias persistidas en Nest, recordatorios y reportes por email programados por cron, alertas médicas inmediatas al registrar una lectura y reportes en PDF, dejando Push y En la App como preferencias guardadas sin entrega.
@@ -226,35 +226,35 @@ Se usa `date-fns` + `date-fns-tz` (`formatInTimeZone`, `fromZonedTime`) para que
 
 ## Criterios de aceptación
 
-- [ ] `/dashboard/settings/notifications` muestra los cuatro bloques del mockup y ya no muestra "Disponible próximamente".
-- [ ] El ítem "Notificaciones" de la sub-nav queda `aria-current="page"` y sin la nota de próximamente.
-- [ ] Un usuario sin fila de preferencias recibe defaults al abrir la sección y se crea su fila en `notification_preferences`.
-- [ ] "Guardar Cambios" está deshabilitado sin cambios, se habilita al tocar cualquier control y en un solo `PATCH` persiste todo.
-- [ ] Al recargar la página se ven los valores guardados y el botón vuelve a estar deshabilitado.
-- [ ] Guardar muestra un toast de éxito; un fallo muestra el error de la API y no pierde los valores del formulario.
-- [ ] Con frecuencia "Dos veces al día" aparece y se exige la segunda hora; con "Semanal" aparece y se exige el día de la semana; en "Diario" ambos campos desaparecen y no se envían.
-- [ ] La zona horaria IANA del navegador se envía al guardar; una zona inválida se rechaza con 400.
-- [ ] Si el canal Email está apagado, "Por email" y los toggles dependientes quedan deshabilitados con nota, y no se envía ningún correo.
-- [ ] Push y En la App se pueden activar/desactivar, se persisten y muestran la nota "Disponible próximamente".
-- [ ] Un recordatorio diario se envía a la hora local configurada solo si no hay lecturas ese día; si ya hay una, no se envía.
-- [ ] "Dos veces al día" envía como máximo dos emails al día y el segundo solo si no hubo lectura desde el primero.
-- [ ] Un recordatorio semanal se envía el día elegido a la hora elegida y solo si no hubo lecturas en 7 días.
-- [ ] Cambiar la zona horaria del usuario desplaza la hora real del envío (verificado con dos zonas distintas).
-- [ ] Registrar una lectura >140/90 con `alertHighEnabled` envía un email inmediato; con el toggle apagado no lo envía.
-- [ ] Registrar una lectura <90/60 o con `irregularHeartBeat` respeta sus toggles correspondientes.
-- [ ] Una lectura con categoría de crisis que no cruce los umbrales configurados no envía email si esos toggles están apagados.
-- [ ] Si el envío del email de alerta falla, la lectura se guarda igual y el fallo queda en `notification_deliveries` con `status = FAILED`.
-- [ ] El reporte semanal se envía el lunes a las 08:00 locales y cubre la semana anterior completa.
-- [ ] El reporte mensual se envía el día 1 a las 08:00 locales y cubre el mes anterior completo.
-- [ ] El reporte llega con resumen HTML y PDF adjunto con nombre `tensi-reporte-{semanal|mensual}-{periodo}.pdf`.
-- [ ] Un mismo periodo no genera dos entregas para el mismo usuario, tipo y canal, aunque el job se ejecute dos veces.
-- [ ] `POST /notifications/dev/run` dispara los jobs a demanda en desarrollo y devuelve un resumen; en producción responde 404.
-- [ ] Los unit tests de `local-time.util`, `due-notifications` y `report-summary.util` pasan, incluido el caso DST.
-- [ ] `lib/notifications/core/**` no importa `next/*`, `server-only` ni usa `window`/`document`/`localStorage`.
-- [ ] Ningún componente de `components/settings/notifications/**` tiene estado propio: todo vive en `lib/notifications/hooks/**`.
-- [ ] No se añade ningún `<a>`; los props son `Readonly<>` y las clases son canónicas (`pnpm lint` limpio).
-- [ ] La sección es usable a 375 px y 1440 px sin scroll horizontal ni errores de consola.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan en `next-tensi-web`; `pnpm lint`, `pnpm build` y `pnpm test` pasan en `nest-tensi-api`.
+- [x] `/dashboard/settings/notifications` muestra los cuatro bloques del mockup y ya no muestra "Disponible próximamente".
+- [x] El ítem "Notificaciones" de la sub-nav queda `aria-current="page"` y sin la nota de próximamente.
+- [x] Un usuario sin fila de preferencias recibe defaults al abrir la sección y se crea su fila en `notification_preferences`.
+- [x] "Guardar Cambios" está deshabilitado sin cambios, se habilita al tocar cualquier control y en un solo `PATCH` persiste todo.
+- [x] Al recargar la página se ven los valores guardados y el botón vuelve a estar deshabilitado.
+- [x] Guardar muestra un toast de éxito; un fallo muestra el error de la API y no pierde los valores del formulario.
+- [x] Con frecuencia "Dos veces al día" aparece y se exige la segunda hora; con "Semanal" aparece y se exige el día de la semana; en "Diario" ambos campos desaparecen y no se envían.
+- [x] La zona horaria IANA del navegador se envía al guardar; una zona inválida se rechaza con 400.
+- [x] Si el canal Email está apagado, "Por email" y los toggles dependientes quedan deshabilitados con nota, y no se envía ningún correo.
+- [x] Push y En la App se pueden activar/desactivar, se persisten y muestran la nota "Disponible próximamente".
+- [x] Un recordatorio diario se envía a la hora local configurada solo si no hay lecturas ese día; si ya hay una, no se envía.
+- [x] "Dos veces al día" envía como máximo dos emails al día y el segundo solo si no hubo lectura desde el primero.
+- [x] Un recordatorio semanal se envía el día elegido a la hora elegida y solo si no hubo lecturas en 7 días.
+- [x] Cambiar la zona horaria del usuario desplaza la hora real del envío (verificado con dos zonas distintas).
+- [x] Registrar una lectura >140/90 con `alertHighEnabled` envía un email inmediato; con el toggle apagado no lo envía.
+- [x] Registrar una lectura <90/60 o con `irregularHeartBeat` respeta sus toggles correspondientes.
+- [x] Una lectura con categoría de crisis que no cruce los umbrales configurados no envía email si esos toggles están apagados.
+- [x] Si el envío del email de alerta falla, la lectura se guarda igual y el fallo queda en `notification_deliveries` con `status = FAILED`.
+- [x] El reporte semanal se envía el lunes a las 08:00 locales y cubre la semana anterior completa.
+- [x] El reporte mensual se envía el día 1 a las 08:00 locales y cubre el mes anterior completo.
+- [x] El reporte llega con resumen HTML y PDF adjunto con nombre `tensi-reporte-{semanal|mensual}-{periodo}.pdf`.
+- [x] Un mismo periodo no genera dos entregas para el mismo usuario, tipo y canal, aunque el job se ejecute dos veces.
+- [x] `POST /notifications/dev/run` dispara los jobs a demanda en desarrollo y devuelve un resumen; en producción responde 404.
+- [x] Los unit tests de `local-time.util`, `due-notifications` y `report-summary.util` pasan, incluido el caso DST.
+- [x] `lib/notifications/core/**` no importa `next/*`, `server-only` ni usa `window`/`document`/`localStorage`.
+- [x] Ningún componente de `components/settings/notifications/**` tiene estado propio: todo vive en `lib/notifications/hooks/**`.
+- [x] No se añade ningún `<a>`; los props son `Readonly<>` y las clases son canónicas (`pnpm lint` limpio).
+- [x] La sección es usable a 375 px y 1440 px sin scroll horizontal ni errores de consola.
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan en `next-tensi-web`; `pnpm lint`, `pnpm build` y `pnpm test` pasan en `nest-tensi-api`.
 
 ## Decisiones
 
