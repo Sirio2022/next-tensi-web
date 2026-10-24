@@ -3,6 +3,9 @@
 import { useOptionalAuthContext } from "@/lib/auth/auth-context"
 import * as authApi from "@/lib/auth/auth.api"
 import type { MessageResponse } from "@/lib/auth/types"
+import { clearAppearanceDraft } from "@/lib/appearance/appearance-draft"
+import { resetAppearanceAttributes } from "@/lib/theme/appearance-dom"
+import { clearAppearanceCookie } from "@/lib/theme/appearance-cookie"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 
@@ -20,6 +23,13 @@ export function useLogout() {
   const logout = useMutation<MessageResponse, unknown, void>({
     mutationFn: () => authApi.logout(),
     onSuccess: () => {
+      // Limpia la cookie espejo, los atributos del documento y el borrador sin
+      // guardar para que /login vuelva al tema del sistema y el siguiente
+      // usuario del dispositivo no herede nada del anterior (SPEC 22).
+      clearAppearanceCookie()
+      resetAppearanceAttributes()
+      clearAppearanceDraft()
+
       authContext?.setUser(null)
       queryClient.clear()
       router.push("/login")

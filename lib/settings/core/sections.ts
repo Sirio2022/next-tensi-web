@@ -71,7 +71,7 @@ export const SETTINGS_SECTIONS: readonly SettingsSection[] = [
     description: "Tema y personalización",
     href: "/dashboard/settings/appearance",
     icon: "palette",
-    state: "coming-soon"
+    state: "available"
   },
   {
     id: "security",

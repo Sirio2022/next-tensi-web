@@ -1,4 +1,6 @@
 import { DashboardShell } from "@/components/dashboard/dashboard-shell"
+import { AppearanceSync } from "@/components/theme/appearance-sync"
+import { getAppearanceValuesForSync } from "@/lib/appearance/dal"
 import { AuthProvider } from "@/lib/auth/auth-context"
 import { verifySession } from "@/lib/auth/dal"
 import type { Metadata } from "next"
@@ -33,9 +35,13 @@ async function AuthenticatedShell({ children }: Readonly<AuthenticatedShellProps
     redirect("/login")
   }
 
+  // Solo resuelve la apariencia cuando falta la cookie espejo (SPEC 22).
+  const appearance = await getAppearanceValuesForSync()
+
   return (
     <AuthProvider initialUser={user}>
       <DashboardShell user={user}>{children}</DashboardShell>
+      {appearance ? <AppearanceSync values={appearance} /> : null}
     </AuthProvider>
   )
 }
