@@ -1,6 +1,6 @@
 # SPEC 22 — Apariencia: preferencias de tema e interfaz
 
-> **Status:** Implementado
+> **Status:** Verificado
 > **Depends on:** SPEC 06, SPEC 09, SPEC 11, SPEC 14, SPEC 17, SPEC 18, SPEC 20, SPEC 21
 > **Date:** 2026-10-23
 > **Objective:** Implementar la sección Apariencia de Configuración con sus cuatro bloques, persistir tema, acento, contraste, motion, densidad, idioma y formato de fecha en Nest, y aplicar los cambios con preview inmediato y "Guardar Cambios" mediante la cookie espejo definida en SPEC 21.
@@ -189,35 +189,35 @@ Definida en SPEC 21 (`lib/theme/core/appearance.ts`):
 
 ## Criterios de aceptación
 
-- [ ] `/dashboard/settings/appearance` muestra los cuatro bloques del mockup y ya no muestra "Disponible próximamente".
-- [ ] El ítem "Apariencia" de la sub-nav queda `aria-current="page"` y sin la nota de próximamente.
-- [ ] Un usuario sin fila recibe defaults al abrir la sección (`dark`, `blue`, `normal`, `full`, `comfortable`, `es`, `DD/MM/YYYY`) y se crea su fila en `appearance_preferences`.
-- [ ] "Guardar Cambios" está deshabilitado sin cambios, se habilita al tocar cualquier control y en un solo `PATCH` persiste todos los campos.
-- [ ] Al recargar se ven los valores guardados y el botón vuelve a estar deshabilitado.
-- [ ] Guardar muestra un toast de éxito; un fallo muestra el mensaje de la API, conserva los valores del formulario y no escribe la cookie.
-- [ ] Elegir Claro, Oscuro o Automático aplica el tema al instante en toda la app (dashboard, auth y landing) antes de guardar.
-- [ ] Automático sigue `prefers-color-scheme` y reacciona a un cambio del tema del sistema sin recargar.
-- [ ] Elegir Verde, Morado o Rojo cambia al instante botones, enlaces, foco, ítem activo del sidebar y switches; Azul vuelve a la identidad actual.
-- [ ] "Alto contraste" refuerza textos y bordes al instante y el resultado pasa axe sin violaciones serias.
-- [ ] "Animaciones" apagado desactiva transiciones y animaciones al instante; encendido las restaura.
-- [ ] "Modo compacto" reduce padding y separación del contenido del dashboard al instante, sin encoger fuentes ni iconos.
-- [ ] El select de idioma muestra Español seleccionado y English deshabilitado con la nota "Disponible próximamente"; guardar persiste `es`.
-- [ ] El select de formato de fecha muestra el valor derivado (`DD/MM/AAAA`), está deshabilitado y guarda `DD/MM/YYYY`.
-- [ ] Si se sale de la sección sin guardar, la preview sigue hasta recargar; al recargar vuelven los valores persistidos y la cookie no cambió.
-- [ ] La cookie `tensi_appearance` solo se escribe tras un `PATCH` exitoso (o al sincronizar) y contiene los cinco valores visuales; `language` y `dateFormat` no van en ella.
-- [ ] Tras login con email/contraseña, el dashboard se pinta con el tema guardado desde la primera pintura.
-- [ ] Con OAuth o dispositivo nuevo sin cookie, el dashboard aplica el tema guardado y escribe la cookie; la siguiente carga ya no consulta las preferencias para pintar.
-- [ ] Cerrar sesión limpia `tensi_appearance` y `/login` usa el tema por defecto del sistema.
-- [ ] Free y Premium ven y usan exactamente los mismos controles, sin candados ni CTA de upgrade.
-- [ ] Los grupos de tema y acento se navegan con las flechas del teclado; los switches con espacio; los selects con teclado; el foco es visible en todos.
-- [ ] Los grupos tienen nombre accesible (`fieldset`/`legend`), las ayudas están asociadas con `aria-describedby` y el error de guardado se anuncia con `role="alert"`.
-- [ ] La sección es usable a 375 px y 1440 px sin scroll horizontal ni errores de consola, en claro y oscuro.
-- [ ] `lib/appearance/core/**` no importa `next/*`, `server-only` ni usa `window`/`document`/`localStorage`.
-- [ ] Ningún componente de `components/settings/appearance/**` tiene estado propio: todo vive en `lib/appearance/hooks/**` y `lib/theme/hooks/**`.
-- [ ] No se añade ningún `<a>`; los props son `Readonly<>` y las clases son canónicas (`pnpm lint` limpio).
-- [ ] `GET /appearance/preferences` devuelve defaults sin fila; `PATCH` con enum inválido devuelve 400; sin sesión devuelve 401; Swagger documenta ambos endpoints y los enums.
-- [ ] Los tests unitarios del mapper y del servicio pasan (`pnpm test appearance`).
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan en `next-tensi-web`; `pnpm lint`, `pnpm build` y `pnpm test` pasan en `nest-tensi-api`.
+- [x] `/dashboard/settings/appearance` muestra los cuatro bloques del mockup y ya no muestra "Disponible próximamente".
+- [x] El ítem "Apariencia" de la sub-nav queda `aria-current="page"` y sin la nota de próximamente.
+- [x] Un usuario sin fila recibe defaults al abrir la sección (`dark`, `blue`, `normal`, `full`, `comfortable`, `es`, `DD/MM/YYYY`) y se crea su fila en `appearance_preferences`.
+- [x] "Guardar Cambios" está deshabilitado sin cambios, se habilita al tocar cualquier control y en un solo `PATCH` persiste todos los campos.
+- [x] Al recargar se ven los valores guardados y el botón vuelve a estar deshabilitado.
+- [x] Guardar muestra un toast de éxito; un fallo muestra el mensaje de la API, conserva los valores del formulario y no escribe la cookie.
+- [x] Elegir Claro, Oscuro o Automático aplica el tema al instante en toda la app (dashboard, auth y landing) antes de guardar.
+- [x] Automático sigue `prefers-color-scheme` y reacciona a un cambio del tema del sistema sin recargar.
+- [x] Elegir Verde, Morado o Rojo cambia al instante botones, enlaces, foco, ítem activo del sidebar y switches; Azul vuelve a la identidad actual.
+- [x] "Alto contraste" refuerza textos y bordes al instante y el resultado pasa axe sin violaciones serias.
+- [x] "Animaciones" apagado desactiva transiciones y animaciones al instante; encendido las restaura.
+- [x] "Modo compacto" reduce padding y separación del contenido del dashboard al instante, sin encoger fuentes ni iconos.
+- [x] El select de idioma muestra Español seleccionado y English deshabilitado con la nota "Disponible próximamente"; guardar persiste `es`.
+- [x] El select de formato de fecha muestra el valor derivado (`DD/MM/AAAA`), está deshabilitado y guarda `DD/MM/YYYY`.
+- [x] Si se sale de la sección sin guardar, la preview sigue hasta recargar; al recargar vuelven los valores persistidos y la cookie no cambió.
+- [x] La cookie `tensi_appearance` solo se escribe tras un `PATCH` exitoso (o al sincronizar) y contiene los cinco valores visuales; `language` y `dateFormat` no van en ella.
+- [x] Tras login con email/contraseña, el dashboard se pinta con el tema guardado desde la primera pintura.
+- [x] Con OAuth o dispositivo nuevo sin cookie, el dashboard aplica el tema guardado y escribe la cookie; la siguiente carga ya no consulta las preferencias para pintar.
+- [x] Cerrar sesión limpia `tensi_appearance` y `/login` usa el tema por defecto del sistema.
+- [x] Free y Premium ven y usan exactamente los mismos controles, sin candados ni CTA de upgrade.
+- [x] Los grupos de tema y acento se navegan con las flechas del teclado; los switches con espacio; los selects con teclado; el foco es visible en todos.
+- [x] Los grupos tienen nombre accesible (`fieldset`/`legend`), las ayudas están asociadas con `aria-describedby` y el error de guardado se anuncia con `role="alert"`.
+- [x] La sección es usable a 375 px y 1440 px sin scroll horizontal ni errores de consola, en claro y oscuro.
+- [x] `lib/appearance/core/**` no importa `next/*`, `server-only` ni usa `window`/`document`/`localStorage`.
+- [x] Ningún componente de `components/settings/appearance/**` tiene estado propio: todo vive en `lib/appearance/hooks/**` y `lib/theme/hooks/**`.
+- [x] No se añade ningún `<a>`; los props son `Readonly<>` y las clases son canónicas (`pnpm lint` limpio).
+- [x] `GET /appearance/preferences` devuelve defaults sin fila; `PATCH` con enum inválido devuelve 400; sin sesión devuelve 401; Swagger documenta ambos endpoints y los enums.
+- [x] Los tests unitarios del mapper y del servicio pasan (`pnpm test appearance`).
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan en `next-tensi-web`; `pnpm lint`, `pnpm build` y `pnpm test` pasan en `nest-tensi-api`.
 
 ## Decisiones
 
