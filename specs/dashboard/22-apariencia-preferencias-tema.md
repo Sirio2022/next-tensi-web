@@ -1,6 +1,6 @@
 # SPEC 22 — Apariencia: preferencias de tema e interfaz
 
-> **Status:** Draft
+> **Status:** Aprobado
 > **Depends on:** SPEC 06, SPEC 09, SPEC 11, SPEC 14, SPEC 17, SPEC 18, SPEC 20, SPEC 21
 > **Date:** 2026-10-23
 > **Objective:** Implementar la sección Apariencia de Configuración con sus cuatro bloques, persistir tema, acento, contraste, motion, densidad, idioma y formato de fecha en Nest, y aplicar los cambios con preview inmediato y "Guardar Cambios" mediante la cookie espejo definida en SPEC 21.
@@ -240,18 +240,18 @@ Definida en SPEC 21 (`lib/theme/core/appearance.ts`):
 
 ## Riesgos
 
-| Riesgo                                                                 | Mitigación                                                                                                             |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Flash de tema en el primer login con OAuth (no hay handler en Next)     | `AppearanceSync` aplica la preferencia y escribe la cookie; las cargas siguientes ya pintan bien desde el script.      |
-| La cookie queda desfasada respecto a la base de datos                  | Se reescribe en cada guardado y en cada login; el dashboard la corrige cuando falta. Se documenta como limitación.      |
-| El usuario manipula la cookie                                          | `parseAppearanceCookie` valida cada enum y cae al default; solo afecta a lo cosmético, nunca a datos ni permisos.       |
-| `PATCH` exitoso pero escritura de cookie fallida (modo privado)        | La cookie queda ausente; la siguiente carga del dashboard resuelve desde la base de datos y reintenta.                 |
-| Un `GET` extra en cada carga dura del dashboard cuando falta la cookie  | Solo ocurre sin cookie (primer login/dispositivo nuevo); luego se escribe y se deja de llamar.                         |
-| El acento elegido no alcanza contraste AA sobre `accent`               | `--color-accent-fg` se define por acento y tema; axe se ejecuta con los cuatro acentos.                                |
-| `dateFormat` guardado no coincide con el idioma                        | El servicio lo deriva del idioma efectivo y el front lo muestra deshabilitado; no se puede editar a mano.               |
-| La migración Prisma choca con datos existentes                         | Tabla nueva 1:1 sin backfill obligatorio; `getOrCreate` crea la fila al primer acceso.                                 |
-| Cambios sin guardar se pierden al recargar                             | Es el comportamiento acordado; el botón dirty y el toast dejan claro cuándo se persistió.                              |
-| La sección se degrada en móvil por los cuatro bloques                  | Grid de una columna a 375 px y dos columnas del shell desde `md`; verificación con Playwright en ambos anchos.          |
+| Riesgo                                                                 | Mitigación                                                                                                         |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Flash de tema en el primer login con OAuth (no hay handler en Next)    | `AppearanceSync` aplica la preferencia y escribe la cookie; las cargas siguientes ya pintan bien desde el script.  |
+| La cookie queda desfasada respecto a la base de datos                  | Se reescribe en cada guardado y en cada login; el dashboard la corrige cuando falta. Se documenta como limitación. |
+| El usuario manipula la cookie                                          | `parseAppearanceCookie` valida cada enum y cae al default; solo afecta a lo cosmético, nunca a datos ni permisos.  |
+| `PATCH` exitoso pero escritura de cookie fallida (modo privado)        | La cookie queda ausente; la siguiente carga del dashboard resuelve desde la base de datos y reintenta.             |
+| Un `GET` extra en cada carga dura del dashboard cuando falta la cookie | Solo ocurre sin cookie (primer login/dispositivo nuevo); luego se escribe y se deja de llamar.                     |
+| El acento elegido no alcanza contraste AA sobre `accent`               | `--color-accent-fg` se define por acento y tema; axe se ejecuta con los cuatro acentos.                            |
+| `dateFormat` guardado no coincide con el idioma                        | El servicio lo deriva del idioma efectivo y el front lo muestra deshabilitado; no se puede editar a mano.          |
+| La migración Prisma choca con datos existentes                         | Tabla nueva 1:1 sin backfill obligatorio; `getOrCreate` crea la fila al primer acceso.                             |
+| Cambios sin guardar se pierden al recargar                             | Es el comportamiento acordado; el botón dirty y el toast dejan claro cuándo se persistió.                          |
+| La sección se degrada en móvil por los cuatro bloques                  | Grid de una columna a 375 px y dos columnas del shell desde `md`; verificación con Playwright en ambos anchos.     |
 
 ## Qué **no** entra en esta spec
 
