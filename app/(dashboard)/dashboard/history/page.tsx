@@ -48,12 +48,12 @@ export default async function HistoryPage({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-section">
       <div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-white lg:text-3xl">
+        <h1 className="text-2xl font-extrabold tracking-tight text-fg lg:text-3xl">
           Historial
         </h1>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs text-fg-muted">
           Tus mediciones registradas, de la más reciente a la más antigua.
         </p>
       </div>

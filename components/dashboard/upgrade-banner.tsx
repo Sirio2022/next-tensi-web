@@ -12,20 +12,20 @@ export function UpgradeBanner() {
     <Card
       id="upgrade"
       tone="upgrade"
-      className="relative scroll-mt-20 overflow-hidden p-8"
+      className="relative scroll-mt-20 overflow-hidden p-card"
     >
       <div
-        className="pointer-events-none absolute top-0 right-0 size-96 rounded-full bg-indigo-500/10 blur-3xl"
+        className="pointer-events-none absolute top-0 right-0 size-96 rounded-full bg-accent/10 blur-3xl"
         aria-hidden="true"
       />
 
       <div className="relative z-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
         <div className="max-w-xl space-y-3">
           <Badge tone="amber">✨ Desbloquea Tensi Premium</Badge>
-          <h2 className="text-xl font-bold tracking-tight text-white">
+          <h2 className="text-xl font-bold tracking-tight text-fg">
             Obtén gráficos de evolución y reportes exportables para tu médico
           </h2>
-          <p className="text-xs/relaxed text-slate-300">
+          <p className="text-xs/relaxed text-fg-muted">
             Accede al historial ilimitado, tendencias de presión
             sistólica/diastólica por hora y generación automática de PDFs para
             consulta médica.

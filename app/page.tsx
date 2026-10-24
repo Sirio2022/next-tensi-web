@@ -14,7 +14,7 @@ import { SiteHeader } from "@/components/site/site-header"
 export default function Home() {
   return (
     <AuthModalsProvider>
-      <div className="relative flex min-h-screen flex-col bg-slate-950 text-slate-100 antialiased">
+      <div className="relative flex min-h-screen flex-col bg-surface text-fg antialiased">
         <div
           aria-hidden="true"
           className="fixed inset-0 pointer-events-none z-0 overflow-hidden"

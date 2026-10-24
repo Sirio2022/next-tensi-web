@@ -40,15 +40,15 @@ function Toast({
       onMouseLeave={resume}
       onFocus={pause}
       onBlur={resume}
-      className="pointer-events-auto flex items-center space-x-2 rounded-xl border border-tensi-500/40 bg-slate-900 px-4 py-3 text-xs text-white shadow-xl animate-toast-in motion-reduce:animate-none"
+      className="pointer-events-auto flex items-center space-x-2 rounded-xl border border-accent-line bg-card px-4 py-3 text-xs text-fg shadow-xl animate-toast-in motion-reduce:animate-none"
     >
-      <CircleCheck className="size-4 shrink-0 text-tensi-400" />
+      <CircleCheck className="size-4 shrink-0 text-accent-text" />
       <span>{message}</span>
       <button
         type="button"
         onClick={() => onDismiss(id)}
         aria-label="Cerrar notificación"
-        className="ml-1 shrink-0 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tensi-400"
+        className="ml-1 shrink-0 rounded-md p-1 text-fg-muted transition-colors hover:bg-card-muted hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
       >
         <X className="size-3.5" />
       </button>

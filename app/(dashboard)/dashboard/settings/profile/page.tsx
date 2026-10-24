@@ -25,7 +25,7 @@ export default async function SettingsProfilePage({
   const initialTab = params.tab === "password" ? "password" : "profile"
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-8">
+    <div className="mx-auto w-full max-w-2xl space-y-section">
       <h1 className="sr-only">Perfil</h1>
       <ProfileTabs user={user} initialTab={initialTab} />
     </div>

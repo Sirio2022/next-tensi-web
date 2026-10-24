@@ -41,11 +41,11 @@ export function RegisterForm() {
       </form>
 
       <div className="mt-6 text-center">
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-fg-muted">
           ¿Ya tienes cuenta?{" "}
           <Link
             href="/login"
-            className="text-tensi-400 hover:text-tensi-300 font-medium transition-colors"
+            className="text-accent-text hover:text-accent-hover font-medium transition-colors"
           >
             Inicia sesión
           </Link>

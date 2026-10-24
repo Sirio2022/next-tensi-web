@@ -13,11 +13,11 @@ export type ToneName =
   | "neutral"
 
 export const TONE_CLASSES: Record<ToneName, string> = {
-  neutral: "bg-slate-800 text-slate-300 border-slate-700",
-  amber: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  sky: "bg-sky-500/10 text-sky-300 border-sky-500/20",
-  emerald: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20",
-  "emerald-soft": "bg-emerald-500/5 text-emerald-400 border-emerald-500/10",
-  orange: "bg-orange-500/10 text-orange-300 border-orange-500/20",
-  rose: "bg-rose-500/10 text-rose-300 border-rose-500/20"
+  neutral: "bg-card-muted text-fg-muted border-line-strong",
+  amber: "bg-amber-500/10 text-tone-amber border-amber-500/30",
+  sky: "bg-sky-500/10 text-tone-sky border-sky-500/30",
+  emerald: "bg-emerald-500/10 text-tone-emerald border-emerald-500/30",
+  "emerald-soft": "bg-emerald-500/5 text-tone-emerald border-emerald-500/20",
+  orange: "bg-orange-500/10 text-tone-orange border-orange-500/30",
+  rose: "bg-rose-500/10 text-tone-rose border-rose-500/30"
 }

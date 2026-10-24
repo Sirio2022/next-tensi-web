@@ -47,7 +47,7 @@ export function PremiumLockedCard({
   className = ""
 }: Readonly<PremiumLockedCardProps>) {
   return (
-    <Card className={`relative overflow-hidden p-6 ${className}`.trim()}>
+    <Card className={`relative overflow-hidden p-card ${className}`.trim()}>
       <div
         className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-amber-500/10 blur-3xl"
         aria-hidden="true"
@@ -56,8 +56,8 @@ export function PremiumLockedCard({
       <div className="relative z-10 space-y-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
-            <p className="mt-0.5 text-xs text-slate-400">{description}</p>
+            <h2 className="text-sm font-semibold text-fg">{title}</h2>
+            <p className="mt-0.5 text-xs text-fg-muted">{description}</p>
           </div>
           <LockBadge />
         </div>

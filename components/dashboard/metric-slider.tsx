@@ -20,11 +20,11 @@ export function MetricSlider({
   const inputId = `reading-${metric.id}`
 
   return (
-    <Card className="space-y-4 p-5">
+    <Card className="space-y-4 p-card">
       <div className="text-center">
         <label
           htmlFor={inputId}
-          className="text-xs font-medium tracking-wider text-slate-400 uppercase"
+          className="text-xs font-medium tracking-wider text-fg-muted uppercase"
         >
           {metric.label}
         </label>
@@ -35,7 +35,7 @@ export function MetricSlider({
           >
             {value}
           </output>
-          <span className="text-xs text-slate-500">{metric.unit}</span>
+          <span className="text-xs text-fg-subtle">{metric.unit}</span>
         </div>
       </div>
 
@@ -49,7 +49,7 @@ export function MetricSlider({
         className={`w-full cursor-pointer ${metric.accentClassName}`}
       />
 
-      <div className="flex justify-between text-[11px] font-medium text-slate-500">
+      <div className="flex justify-between text-[11px] font-medium text-fg-subtle">
         <span>{metric.min}</span>
         <span>{metric.max}</span>
       </div>

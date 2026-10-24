@@ -49,8 +49,8 @@ export function HistoryPagination({
         </span>
       )}
 
-      <p aria-live="polite" className="text-xs text-slate-400">
-        Página <span className="font-semibold text-slate-200">{page}</span> de{" "}
+      <p aria-live="polite" className="text-xs text-fg-muted">
+        Página <span className="font-semibold text-fg">{page}</span> de{" "}
         {totalPages}
       </p>
 

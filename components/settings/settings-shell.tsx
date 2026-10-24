@@ -19,18 +19,18 @@ export function SettingsShell({
   children
 }: Readonly<SettingsShellProps>) {
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-6">
+    <div className="mx-auto w-full max-w-5xl space-y-section">
       <div>
-        <h1 className="flex items-center gap-2 text-xl font-bold text-white">
-          <Settings className="size-5 text-slate-300" aria-hidden />
+        <h1 className="flex items-center gap-2 text-xl font-bold text-fg">
+          <Settings className="size-5 text-fg-muted" aria-hidden />
           Configuración
         </h1>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs text-fg-muted">
           Personaliza tu experiencia y ajusta tus preferencias
         </p>
       </div>
 
-      <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-12">
+      <div className="grid grid-cols-1 items-start gap-gap md:grid-cols-12">
         <div className="md:col-span-4">
           <SettingsSectionNav plan={plan} />
         </div>

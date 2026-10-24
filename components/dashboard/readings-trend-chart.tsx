@@ -28,11 +28,11 @@ interface ReadingsTrendChartProps {
   actions?: ReactNode
 }
 
-const SYSTOLIC_COLOR = "#fb7185"
-const DIASTOLIC_COLOR = "#38bdf8"
+const SYSTOLIC_COLOR = "var(--color-chart-systolic)"
+const DIASTOLIC_COLOR = "var(--color-chart-diastolic)"
 
-const AXIS_COLOR = "#64748b"
-const GRID_COLOR = "#1e293b"
+const AXIS_COLOR = "var(--color-chart-axis)"
+const GRID_COLOR = "var(--color-chart-grid)"
 
 /**
  * Gráfica de evolución del plan Free. Client component (Recharts monta SVG) que
@@ -59,11 +59,11 @@ export function ReadingsTrendChart({
   const description = `Gráfica de evolución de ${points.length} mediciones de presión arterial sistólica y diastólica, en orden cronológico.`
 
   return (
-    <Card className="space-y-4 p-6">
+    <Card className="space-y-4 p-card">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
-          <p className="mt-0.5 text-xs text-slate-400">
+          <h2 className="text-sm font-semibold text-fg">{title}</h2>
+          <p className="mt-0.5 text-xs text-fg-muted">
             {subtitle ?? `Últimas ${points.length} mediciones registradas`}
           </p>
         </div>
@@ -92,15 +92,15 @@ export function ReadingsTrendChart({
               domain={["dataMin - 10", "dataMax + 10"]}
             />
             <Tooltip
-              cursor={{ stroke: "#334155" }}
+              cursor={{ stroke: "var(--color-line-strong)" }}
               contentStyle={{
-                background: "#0f172a",
-                border: "1px solid #1e293b",
+                background: "var(--color-chart-tooltip)",
+                border: "1px solid var(--color-chart-tooltip-line)",
                 borderRadius: "0.75rem",
                 fontSize: "0.75rem"
               }}
-              labelStyle={{ color: "#e2e8f0" }}
-              itemStyle={{ color: "#cbd5e1" }}
+              labelStyle={{ color: "var(--color-fg)" }}
+              itemStyle={{ color: "var(--color-fg-muted)" }}
               labelFormatter={(label, payload) => {
                 const point = payload?.[0]?.payload as TrendPoint | undefined
                 if (!point?.category) return label
@@ -133,7 +133,7 @@ export function ReadingsTrendChart({
           </LineChart>
         </ResponsiveContainer>
 
-        <figcaption className="mt-3 text-center text-xs text-slate-400">
+        <figcaption className="mt-3 text-center text-xs text-fg-muted">
           Sistólica (línea continua) y diastólica (línea discontinua) en mmHg.
         </figcaption>
       </figure>

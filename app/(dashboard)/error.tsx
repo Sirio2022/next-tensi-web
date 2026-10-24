@@ -23,7 +23,7 @@ export default function DashboardError({
   useErrorReport(error)
 
   return (
-    <Card className="relative overflow-hidden p-8 text-center">
+    <Card className="relative overflow-hidden p-card text-center">
       <div
         className="pointer-events-none absolute -top-24 -right-24 size-64 rounded-full bg-tensi-rose/10 blur-3xl"
         aria-hidden="true"
@@ -34,15 +34,15 @@ export default function DashboardError({
           <TriangleAlert className="size-8" />
         </div>
 
-        <h2 className="text-xl font-bold tracking-tight text-white">
+        <h2 className="text-xl font-bold tracking-tight text-fg">
           No pudimos cargar tu panel
         </h2>
-        <p className="text-xs/relaxed text-slate-400">
+        <p className="text-xs/relaxed text-fg-muted">
           Ocurrió un error inesperado al recuperar tu información. Verifica tu
           conexión e inténtalo de nuevo.
         </p>
         {error.digest ? (
-          <p className="text-[10px] text-slate-500">
+          <p className="text-[10px] text-fg-subtle">
             Referencia: {error.digest}
           </p>
         ) : null}
@@ -51,13 +51,13 @@ export default function DashboardError({
           <button
             type="button"
             onClick={() => retry()}
-            className="inline-flex items-center justify-center rounded-xl bg-linear-to-r from-tensi-600 to-tensi-violet px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-tensi-600/20 transition-all hover:scale-[1.02] active:scale-95 focus-visible:ring-2 focus-visible:ring-tensi-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 focus-visible:outline-none"
+            className="inline-flex items-center justify-center rounded-xl bg-linear-to-r from-accent to-tensi-violet px-5 py-3 text-sm font-semibold text-accent-fg shadow-lg shadow-accent/20 transition-all hover:scale-[1.02] active:scale-95 focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none"
           >
             Reintentar
           </button>
           <Link
             href="/dashboard"
-            className="inline-flex items-center justify-center rounded-xl border border-slate-700/80 bg-slate-900/90 px-5 py-3 text-sm font-semibold text-slate-200 transition-all hover:bg-slate-800 focus-visible:ring-2 focus-visible:ring-tensi-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 focus-visible:outline-none"
+            className="inline-flex items-center justify-center rounded-xl border border-line-strong bg-card/90 px-5 py-3 text-sm font-semibold text-fg transition-all hover:bg-card-muted focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none"
           >
             Volver al panel
           </Link>

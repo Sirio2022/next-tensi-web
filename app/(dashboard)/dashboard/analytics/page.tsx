@@ -76,10 +76,10 @@ export default async function AnalyticsPage({
       <MedicalDisclaimer />
 
       <div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-white lg:text-3xl">
+        <h1 className="text-2xl font-extrabold tracking-tight text-fg lg:text-3xl">
           Análisis
         </h1>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs text-fg-muted">
           Métricas, tendencias y patrones de tu presión arterial, calculados por
           Tensi.
         </p>
@@ -90,7 +90,7 @@ export default async function AnalyticsPage({
       {weekly ? (
         <section
           aria-label="Resumen de los últimos 7 días"
-          className="grid grid-cols-1 gap-4 sm:grid-cols-3"
+          className="grid grid-cols-1 gap-gap sm:grid-cols-3"
         >
           <AnalyticsWeeklyKpis summary={weekly} />
         </section>
@@ -103,7 +103,7 @@ export default async function AnalyticsPage({
         actions={<AnalyticsRangeToggle range={range} period={period} />}
       />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-gap lg:grid-cols-2">
         <AnalyticsPeriodAverages
           period={period}
           averages={averages ?? []}
@@ -116,7 +116,7 @@ export default async function AnalyticsPage({
 
       <AnalyticsCategoryEvolution points={distribution ?? []} />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-gap lg:grid-cols-2">
         <AnalyticsCategoryStatsTable stats={stats ?? []} />
         <AnalyticsEmergencyAlerts
           count={summary.emergencyAlertsCount}

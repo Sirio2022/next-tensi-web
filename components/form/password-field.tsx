@@ -28,7 +28,7 @@ export function PasswordField<T extends FieldValues>({
     <div>
       <label
         htmlFor={id}
-        className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2"
+        className="block text-xs font-semibold text-fg-muted uppercase tracking-wider mb-2"
       >
         {label}
       </label>
@@ -40,7 +40,7 @@ export function PasswordField<T extends FieldValues>({
           autoComplete={autoComplete}
           aria-invalid={message ? true : undefined}
           aria-describedby={message ? errorId : undefined}
-          className="w-full px-4 py-3 pr-12 rounded-xl bg-slate-950/80 border border-slate-500 text-white placeholder-slate-400 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all aria-invalid:border-red-500"
+          className="w-full px-4 py-3 pr-12 rounded-xl bg-card-muted border border-line-strong text-fg placeholder-fg-subtle text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all aria-invalid:border-red-500"
           {...field}
         />
         <button
@@ -48,7 +48,7 @@ export function PasswordField<T extends FieldValues>({
           onClick={toggleVisible}
           aria-pressed={visible}
           aria-label={visible ? "Ocultar contraseña" : "Mostrar contraseña"}
-          className="absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 hover:text-white transition-colors"
+          className="absolute inset-y-0 right-0 flex items-center px-3 text-fg-muted hover:text-fg transition-colors"
         >
           {visible ? (
             <EyeOff className="size-5" />
@@ -58,7 +58,7 @@ export function PasswordField<T extends FieldValues>({
         </button>
       </div>
       {message ? (
-        <p id={errorId} role="alert" className="mt-2 text-xs text-red-400">
+        <p id={errorId} role="alert" className="mt-2 text-xs text-tone-rose">
           {message}
         </p>
       ) : null}

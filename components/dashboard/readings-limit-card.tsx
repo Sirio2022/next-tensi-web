@@ -18,21 +18,21 @@ export function ReadingsLimitCard({ meta }: Readonly<ReadingsLimitCardProps>) {
   const ratio = meta.total > 0 ? meta.visible / meta.total : 0
 
   return (
-    <Card className="space-y-4 p-6">
+    <Card className="space-y-4 p-card">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-sm font-semibold text-slate-100">
+        <h2 className="text-sm font-semibold text-fg">
           Lecturas en tu plan Free
         </h2>
-        <span className="text-sm font-bold text-white">
+        <span className="text-sm font-bold text-fg">
           {meta.visible}
-          <span className="font-normal text-slate-400"> / {meta.total}</span>
+          <span className="font-normal text-fg-muted"> / {meta.total}</span>
         </span>
       </div>
 
       {/* Barra de progreso con el estilo de la app; no hay tag nativo equivalente estilizable. */}
       {/* eslint-disable-next-line jsx-a11y/prefer-tag-over-role */}
       <div
-        className="h-1.5 overflow-hidden rounded-full bg-slate-800"
+        className="h-1.5 overflow-hidden rounded-full bg-card-muted"
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={meta.total}
@@ -40,14 +40,14 @@ export function ReadingsLimitCard({ meta }: Readonly<ReadingsLimitCardProps>) {
         aria-label="Lecturas visibles del total registradas"
       >
         <div
-          className="h-full rounded-full bg-tensi-500"
+          className="h-full rounded-full bg-accent"
           style={{ width: formatPercent(ratio) }}
         />
       </div>
 
       {meta.requiresUpgrade ? (
         <div className="flex flex-col gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="flex items-center gap-2 text-xs text-amber-300">
+          <p className="flex items-center gap-2 text-xs text-tone-amber">
             <Lock className="size-3.5 shrink-0" aria-hidden />
             {meta.hiddenReadings}{" "}
             {meta.hiddenReadings === 1 ? "lectura oculta" : "lecturas ocultas"}{" "}

@@ -54,17 +54,17 @@ export function EmergencyAlertDialog({
       aria-describedby={bodyId}
       className="m-0 flex size-full max-h-none max-w-none items-center justify-center border-0 bg-transparent p-4 backdrop:bg-black/75 backdrop:backdrop-blur-sm"
     >
-      <div className="w-full max-w-md rounded-2xl border border-rose-500/40 bg-slate-900 p-6 shadow-2xl">
+      <div className="w-full max-w-md rounded-2xl border border-rose-500/40 bg-card p-card shadow-2xl">
         <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-rose-500/15 text-rose-400">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-rose-500/15 text-tone-rose">
             <AlertTriangle className="size-5" aria-hidden />
           </span>
-          <h2 id={titleId} className="text-lg font-bold text-white">
+          <h2 id={titleId} className="text-lg font-bold text-fg">
             {title}
           </h2>
         </div>
 
-        <p id={bodyId} className="mt-4 text-sm/relaxed text-slate-300">
+        <p id={bodyId} className="mt-4 text-sm/relaxed text-fg-muted">
           {body}
         </p>
 

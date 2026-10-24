@@ -20,7 +20,7 @@ export function AvatarField({ avatar }: Readonly<AvatarFieldProps>) {
 
   return (
     <div className="space-y-2">
-      <span className="block text-xs font-semibold tracking-wider text-slate-300 uppercase">
+      <span className="block text-xs font-semibold tracking-wider text-fg-muted uppercase">
         Imagen de Perfil
       </span>
 
@@ -30,17 +30,17 @@ export function AvatarField({ avatar }: Readonly<AvatarFieldProps>) {
           <img
             src={previewUrl}
             alt="Previsualización de la imagen de perfil"
-            className="size-16 rounded-full object-cover ring-2 ring-slate-800"
+            className="size-16 rounded-full object-cover ring-2 ring-line"
           />
         ) : (
-          <span className="flex size-16 items-center justify-center rounded-full bg-slate-800 text-slate-500">
+          <span className="flex size-16 items-center justify-center rounded-full bg-card-muted text-fg-subtle">
             <Camera className="size-6" />
           </span>
         )}
 
         <label
           htmlFor={inputId}
-          className="flex-1 cursor-pointer rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-center text-sm font-medium text-slate-300 transition hover:bg-slate-800/60"
+          className="flex-1 cursor-pointer rounded-xl border border-line bg-card px-4 py-3 text-center text-sm font-medium text-fg-muted transition hover:bg-card-muted/60"
         >
           Seleccionar imagen de perfil
         </label>

@@ -19,7 +19,7 @@ import type { ReactNode } from "react"
 /** Íconos del sidebar por ítem; heredan el color del texto salvo el de Nueva Lectura. */
 const NAV_ICON: Record<DashboardNavItemId, ReactNode> = {
   dashboard: <LayoutDashboard className="size-5" />,
-  "new-reading": <Plus className="size-5 text-emerald-400" />,
+  "new-reading": <Plus className="size-5 text-tone-emerald" />,
   history: <RotateCcwClock className="size-5" />,
   analytics: <ChartColumn className="size-5" />,
   reports: <FileText className="size-5" />,
@@ -63,7 +63,7 @@ export function SidebarNavItem({
       <button
         type="button"
         onClick={onLockedSelect}
-        className="flex w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-400 transition-all hover:bg-slate-900/60 hover:text-slate-100 focus-visible:ring-2 focus-visible:ring-tensi-400/70 focus-visible:outline-none"
+        className="flex w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-fg-muted transition-all hover:bg-card-muted hover:text-fg focus-visible:ring-2 focus-visible:ring-focus/70 focus-visible:outline-none"
       >
         <span className="flex items-center gap-3">
           {icon}
@@ -79,10 +79,10 @@ export function SidebarNavItem({
       href={item.href}
       aria-current={active ? "page" : undefined}
       onClick={state === "placeholder" ? preventPlaceholderNavigation : undefined}
-      className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-all focus-visible:ring-2 focus-visible:ring-tensi-400/70 focus-visible:outline-none ${
+      className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-all focus-visible:ring-2 focus-visible:ring-focus/70 focus-visible:outline-none ${
         active
-          ? "border border-tensi-500/20 bg-tensi-600/10 font-semibold text-tensi-400"
-          : "font-medium text-slate-400 hover:bg-slate-900/60 hover:text-slate-100"
+          ? "border border-accent-line bg-accent-soft font-semibold text-accent-text"
+          : "font-medium text-fg-muted hover:bg-card-muted hover:text-fg"
       }`}
     >
       {icon}

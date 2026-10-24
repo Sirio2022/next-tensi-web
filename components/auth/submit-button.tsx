@@ -21,7 +21,7 @@ export function SubmitButton({
       onClick={(event) => {
         if (isSubmitting) event.preventDefault()
       }}
-      className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-tensi-600 hover:bg-tensi-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-tensi-600/25 transition-all duration-200 active:scale-[0.99] mt-2 aria-disabled:opacity-60 aria-disabled:cursor-not-allowed"
+      className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-accent hover:bg-accent-hover text-accent-fg font-semibold text-sm rounded-xl shadow-lg shadow-accent/25 transition-all duration-200 active:scale-[0.99] mt-2 aria-disabled:opacity-60 aria-disabled:cursor-not-allowed"
     >
       {isSubmitting ? (
         <>

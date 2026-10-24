@@ -21,9 +21,9 @@ export function LastReadingCard({ reading }: Readonly<LastReadingCardProps>) {
   const category = getCategoryPresentation(reading.category)
 
   return (
-    <Card className="p-6">
+    <Card className="p-card">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-sm font-semibold text-slate-100">
+        <h2 className="text-sm font-semibold text-fg">
           Última medición
         </h2>
         <Badge tone={category.tone}>{category.label}</Badge>
@@ -31,26 +31,26 @@ export function LastReadingCard({ reading }: Readonly<LastReadingCardProps>) {
 
       <div className="mt-5 flex flex-wrap items-end gap-x-6 gap-y-3">
         <p className="flex items-baseline gap-1.5">
-          <span className="text-3xl font-extrabold text-white">
+          <span className="text-3xl font-extrabold text-fg">
             {reading.systolic}
           </span>
-          <span className="text-lg text-slate-500">/</span>
-          <span className="text-2xl font-bold text-slate-200">
+          <span className="text-lg text-fg-subtle">/</span>
+          <span className="text-2xl font-bold text-fg">
             {reading.diastolic}
           </span>
-          <span className="ml-0.5 text-xs text-slate-400">mmHg</span>
+          <span className="ml-0.5 text-xs text-fg-muted">mmHg</span>
         </p>
 
         {reading.pulse !== null ? (
-          <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-200">
-            <HeartPulse className="size-4 text-purple-400" aria-hidden />
+          <p className="flex items-center gap-1.5 text-sm font-semibold text-fg">
+            <HeartPulse className="size-4 text-tone-purple" aria-hidden />
             {reading.pulse}
-            <span className="text-xs font-normal text-slate-400">BPM</span>
+            <span className="text-xs font-normal text-fg-muted">BPM</span>
           </p>
         ) : null}
       </div>
 
-      <p className="mt-4 flex items-center gap-1.5 text-xs text-slate-400">
+      <p className="mt-4 flex items-center gap-1.5 text-xs text-fg-muted">
         <CalendarClock className="size-3.5" aria-hidden />
         <time dateTime={reading.timestamp}>
           {dateFormatter.format(new Date(reading.timestamp))}

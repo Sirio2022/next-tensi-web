@@ -20,19 +20,19 @@ export function AnalyticsCategoryDistribution({
   const max = points.reduce((acc, point) => Math.max(acc, point.count), 0)
 
   return (
-    <Card className="space-y-4 p-6">
+    <Card className="space-y-4 p-card">
       <div>
-        <h2 className="text-sm font-semibold text-slate-100">
+        <h2 className="text-sm font-semibold text-fg">
           Distribución por categoría
         </h2>
-        <p className="mt-0.5 text-xs text-slate-400">
+        <p className="mt-0.5 text-xs text-fg-muted">
           {total} {total === 1 ? "lectura clasificada" : "lecturas clasificadas"}{" "}
           según la OMS
         </p>
       </div>
 
       {points.length === 0 ? (
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-fg-muted">
           Todavía no hay lecturas categorizadas.
         </p>
       ) : (
@@ -45,16 +45,16 @@ export function AnalyticsCategoryDistribution({
               <li key={point.category} className="space-y-1.5">
                 <div className="flex items-center justify-between gap-3">
                   <Badge tone={point.tone}>{point.label}</Badge>
-                  <span className="text-xs font-semibold text-slate-200">
+                  <span className="text-xs font-semibold text-fg">
                     {point.count}
-                    <span className="font-normal text-slate-500">
+                    <span className="font-normal text-fg-subtle">
                       {" "}
                       · {share} %
                     </span>
                   </span>
                 </div>
                 <div
-                  className="h-1.5 overflow-hidden rounded-full bg-slate-800"
+                  className="h-1.5 overflow-hidden rounded-full bg-card-muted"
                   aria-hidden="true"
                 >
                   <div

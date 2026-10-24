@@ -13,13 +13,13 @@ interface DashboardHeaderProps {
  */
 export function DashboardHeader({ user }: Readonly<DashboardHeaderProps>) {
   return (
-    <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between border-b border-slate-800/60 bg-slate-950/80 px-6 backdrop-blur-xl md:static">
-      <p className="text-sm font-semibold text-slate-200">Panel Principal</p>
+    <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between border-b border-line bg-surface/80 px-6 backdrop-blur-xl md:static">
+      <p className="text-sm font-semibold text-fg">Panel Principal</p>
 
       <div className="flex items-center gap-4">
         <PlanBadge plan={user.plan} />
         <UpgradeButton plan={user.plan} />
-        <div className="h-4 w-px bg-slate-800" aria-hidden="true" />
+        <div className="h-4 w-px bg-line-strong" aria-hidden="true" />
         <UserProfile user={user} />
       </div>
     </header>

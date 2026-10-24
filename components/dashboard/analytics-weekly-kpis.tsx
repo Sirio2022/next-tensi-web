@@ -15,9 +15,9 @@ const dateFormatter = new Intl.DateTimeFormat("es-ES", {
 })
 
 const CHANGE_TONE: Record<"up" | "down" | "flat", string> = {
-  up: "text-amber-400",
-  down: "text-emerald-400",
-  flat: "text-slate-400"
+  up: "text-tone-amber",
+  down: "text-tone-emerald",
+  flat: "text-fg-muted"
 }
 
 function ReadingValue({
@@ -29,14 +29,14 @@ function ReadingValue({
       <span className={`text-3xl font-extrabold ${className}`}>
         {reading.systolic} / {reading.diastolic}
       </span>
-      <span className="text-xs text-slate-400">mmHg</span>
+      <span className="text-xs text-fg-muted">mmHg</span>
     </div>
   )
 }
 
 function RegisteredAt({ timestamp }: Readonly<{ timestamp: string }>) {
   return (
-    <p className="mt-3 text-[11px] text-slate-400">
+    <p className="mt-3 text-[11px] text-fg-muted">
       Registrado el{" "}
       <time dateTime={timestamp}>
         {dateFormatter.format(new Date(timestamp))}
@@ -60,53 +60,53 @@ export function AnalyticsWeeklyKpis({
 
   return (
     <>
-      <Card className="p-5">
-        <span className="mb-3 block text-xs font-medium tracking-wider text-slate-400 uppercase">
+      <Card className="p-card">
+        <span className="mb-3 block text-xs font-medium tracking-wider text-fg-muted uppercase">
           Pico más alto (7 días)
         </span>
         {summary.peak ? (
           <>
-            <ReadingValue reading={summary.peak} className="text-amber-400" />
+            <ReadingValue reading={summary.peak} className="text-tone-amber" />
             <RegisteredAt timestamp={summary.peak.timestamp} />
           </>
         ) : (
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-fg-muted">
             Sin lecturas en los últimos 7 días.
           </p>
         )}
       </Card>
 
-      <Card className="p-5">
-        <span className="mb-3 block text-xs font-medium tracking-wider text-slate-400 uppercase">
+      <Card className="p-card">
+        <span className="mb-3 block text-xs font-medium tracking-wider text-fg-muted uppercase">
           Mínima (7 días)
         </span>
         {summary.lowest ? (
           <>
-            <ReadingValue reading={summary.lowest} className="text-sky-400" />
+            <ReadingValue reading={summary.lowest} className="text-tone-sky" />
             <RegisteredAt timestamp={summary.lowest.timestamp} />
           </>
         ) : (
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-fg-muted">
             Sin lecturas en los últimos 7 días.
           </p>
         )}
       </Card>
 
-      <Card className="p-5">
-        <span className="mb-3 block text-xs font-medium tracking-wider text-slate-400 uppercase">
+      <Card className="p-card">
+        <span className="mb-3 block text-xs font-medium tracking-wider text-fg-muted uppercase">
           Promedio semanal
         </span>
         {summary.average ? (
           <>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-3xl font-extrabold text-white">
+              <span className="text-3xl font-extrabold text-fg">
                 {summary.average.systolic} / {summary.average.diastolic}
               </span>
-              <span className="text-xs text-slate-400">mmHg</span>
+              <span className="text-xs text-fg-muted">mmHg</span>
             </div>
             <p
               className={`mt-3 text-[11px] ${
-                change ? CHANGE_TONE[change.direction] : "text-slate-400"
+                change ? CHANGE_TONE[change.direction] : "text-fg-muted"
               }`}
             >
               {change
@@ -115,7 +115,7 @@ export function AnalyticsWeeklyKpis({
             </p>
           </>
         ) : (
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-fg-muted">
             Sin lecturas en los últimos 7 días.
           </p>
         )}

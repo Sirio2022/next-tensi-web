@@ -27,7 +27,7 @@ export function SettingsSectionNav({ plan }: Readonly<SettingsSectionNavProps>) 
   return (
     <nav
       aria-label="Secciones de configuración"
-      className="space-y-1 rounded-3xl border border-slate-800/80 bg-slate-900/60 p-2 shadow-lg backdrop-blur-xl"
+      className="space-y-1 rounded-3xl border border-line bg-card/60 p-2 shadow-lg backdrop-blur-xl"
     >
       {SETTINGS_SECTIONS.map((section) => {
         const isActive = section.id === activeId
@@ -37,31 +37,31 @@ export function SettingsSectionNav({ plan }: Readonly<SettingsSectionNavProps>) 
             key={section.id}
             href={section.href as AppLinkHref}
             aria-current={isActive ? "page" : undefined}
-            className={`flex items-start gap-3 rounded-xl border p-3 transition focus-visible:ring-2 focus-visible:ring-tensi-400 focus-visible:outline-none ${
+            className={`flex items-start gap-3 rounded-xl border p-3 transition focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none ${
               isActive
-                ? "border-tensi-500/20 bg-tensi-600/10 text-white"
-                : "border-transparent text-slate-300 hover:bg-slate-800/50 hover:text-white"
+                ? "border-accent-line bg-accent-soft text-fg"
+                : "border-transparent text-fg-muted hover:bg-card-muted/50 hover:text-fg"
             }`}
           >
             <span className="mt-0.5 shrink-0">
               <SettingsSectionIcon
                 id={section.icon}
-                className={section.highlighted ? "size-4 text-amber-400" : "size-4"}
+                className={section.highlighted ? "size-4 text-tone-amber" : "size-4"}
               />
             </span>
             <span className="min-w-0">
               <span className="flex items-center gap-1.5 text-xs font-bold leading-none">
                 {section.label}
                 {section.highlighted ? (
-                  <Crown className="size-3 text-amber-400" aria-hidden />
+                  <Crown className="size-3 text-tone-amber" aria-hidden />
                 ) : null}
                 {section.state === "coming-soon" ? (
-                  <span className="rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-slate-400 uppercase">
+                  <span className="rounded-full bg-card-muted px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-fg-muted uppercase">
                     Pronto
                   </span>
                 ) : null}
               </span>
-              <span className="mt-1 block text-[10px] leading-tight text-slate-400">
+              <span className="mt-1 block text-[10px] leading-tight text-fg-muted">
                 {section.description}
               </span>
             </span>

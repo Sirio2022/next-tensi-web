@@ -20,7 +20,7 @@ function renderPlanValue(
 ): ReactNode {
   if (value === true) {
     return (
-      <span className="inline-flex items-center justify-center text-emerald-400">
+      <span className="inline-flex items-center justify-center text-tone-emerald">
         <Check className="size-4" aria-hidden />
         <span className="sr-only">{`Incluido en ${planName}`}</span>
       </span>
@@ -29,14 +29,14 @@ function renderPlanValue(
 
   if (value === false) {
     return (
-      <span className="inline-flex items-center justify-center text-slate-600">
+      <span className="inline-flex items-center justify-center text-fg-subtle">
         <X className="size-4" aria-hidden />
         <span className="sr-only">{`No incluido en ${planName}`}</span>
       </span>
     )
   }
 
-  return <span className="font-semibold text-slate-200">{value}</span>
+  return <span className="font-semibold text-fg">{value}</span>
 }
 
 interface PlanOverviewProps {
@@ -58,7 +58,7 @@ export function PlanOverview({ user }: Readonly<PlanOverviewProps>) {
   return (
     <div className="space-y-4">
       {/* Estado del plan */}
-      <Card className="relative overflow-hidden p-5">
+      <Card className="relative overflow-hidden p-card">
         <div
           className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-amber-500/10 blur-3xl"
           aria-hidden="true"
@@ -67,17 +67,17 @@ export function PlanOverview({ user }: Readonly<PlanOverviewProps>) {
         <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-tone-amber">
                 <Crown className="size-5" aria-hidden />
               </span>
               <div>
-                <p className="text-xs text-slate-400">Tu plan actual</p>
-                <p className="text-lg font-bold text-white">
+                <p className="text-xs text-fg-muted">Tu plan actual</p>
+                <p className="text-lg font-bold text-fg">
                   {isPremium ? "Plan Premium" : "Plan Free"}
                 </p>
               </div>
             </div>
-            <p className="max-w-md text-xs/relaxed text-slate-400">
+            <p className="max-w-md text-xs/relaxed text-fg-muted">
               {isPremium
                 ? "Tienes acceso completo a las analíticas, los reportes y todas las funciones premium de Tensi."
                 : "Estás en el plan gratuito. Actualiza para desbloquear analíticas, reportes y funciones premium."}
@@ -104,9 +104,9 @@ export function PlanOverview({ user }: Readonly<PlanOverviewProps>) {
       </Card>
 
       {/* Comparativa Free vs Premium */}
-      <Card className="p-5">
-        <h2 className="text-sm font-bold text-white">Comparación de planes</h2>
-        <p className="mt-0.5 text-[11px] text-slate-400">
+      <Card className="p-card">
+        <h2 className="text-sm font-bold text-fg">Comparación de planes</h2>
+        <p className="mt-0.5 text-[11px] text-fg-muted">
           Qué incluye cada plan de Tensi
         </p>
 
@@ -116,14 +116,14 @@ export function PlanOverview({ user }: Readonly<PlanOverviewProps>) {
               Comparación de funciones entre el plan Free y el plan Premium
             </caption>
             <thead>
-              <tr className="text-[10px] tracking-wider text-slate-400 uppercase">
+              <tr className="text-[10px] tracking-wider text-fg-muted uppercase">
                 <th scope="col" className="py-2 pr-3 font-semibold">
                   Función
                 </th>
                 <th
                   scope="col"
                   className={`px-3 py-2 text-center font-semibold ${
-                    !isPremium ? "text-white" : ""
+                    !isPremium ? "text-fg" : ""
                   }`}
                 >
                   Free
@@ -131,7 +131,7 @@ export function PlanOverview({ user }: Readonly<PlanOverviewProps>) {
                 <th
                   scope="col"
                   className={`py-2 pl-3 text-center font-semibold ${
-                    isPremium ? "text-amber-400" : ""
+                    isPremium ? "text-tone-amber" : ""
                   }`}
                 >
                   Premium
@@ -140,10 +140,10 @@ export function PlanOverview({ user }: Readonly<PlanOverviewProps>) {
             </thead>
             <tbody>
               {PLAN_FEATURES.map((feature) => (
-                <tr key={feature.label} className="border-t border-slate-800/80">
+                <tr key={feature.label} className="border-t border-line">
                   <th
                     scope="row"
-                    className="py-3 pr-3 font-medium text-slate-300"
+                    className="py-3 pr-3 font-medium text-fg-muted"
                   >
                     {feature.label}
                   </th>

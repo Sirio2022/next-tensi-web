@@ -102,20 +102,20 @@ function Modal({
       aria-describedby={descriptionId}
       className="m-0 flex size-full max-h-none max-w-none items-center justify-center border-0 bg-transparent p-4 backdrop:bg-black/75 backdrop:backdrop-blur-sm"
     >
-      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-2xl">
+      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-line-strong bg-card p-6 shadow-2xl">
         <button
           type="button"
           onClick={onClose}
           aria-label="Cerrar"
-          className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-fg-muted hover:text-fg transition-colors"
         >
           <X className="size-5" />
         </button>
 
-        <h2 id={titleId} className="text-xl font-bold text-white mb-1">
+        <h2 id={titleId} className="text-xl font-bold text-fg mb-1">
           {title}
         </h2>
-        <p id={descriptionId} className="text-xs text-slate-400 mb-6">
+        <p id={descriptionId} className="text-xs text-fg-muted mb-6">
           {description}
         </p>
 

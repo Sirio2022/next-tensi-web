@@ -15,7 +15,7 @@ export function PlanBadge({ plan }: Readonly<PlanBadgeProps>) {
         className={`size-1.5 rounded-full ${
           isPremium
             ? "animate-pulse bg-amber-400 motion-reduce:animate-none"
-            : "bg-slate-400"
+            : "bg-fg-muted"
         }`}
         aria-hidden="true"
       />

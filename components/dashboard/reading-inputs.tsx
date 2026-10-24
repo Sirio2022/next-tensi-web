@@ -21,7 +21,7 @@ function MetricError({ id, message }: Readonly<{ id: string; message: string }>)
     <p
       id={id}
       role="alert"
-      className="text-center text-xs text-rose-400"
+      className="text-center text-xs text-tone-rose"
     >
       {message}
     </p>
@@ -77,7 +77,7 @@ function ReadingContextField({
 export function ReadingInputs({ control }: Readonly<ReadingInputsProps>) {
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-gap md:grid-cols-2">
         {READING_METRICS.slice(0, 2).map((metric) => (
           <ReadingMetricField key={metric.id} control={control} metricId={metric.id} />
         ))}

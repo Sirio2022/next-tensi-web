@@ -1,6 +1,6 @@
 # SPEC 21 — Sistema de temas y tokens semánticos
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 02, SPEC 03, SPEC 06, SPEC 17
 > **Date:** 2026-10-23
 > **Objective:** Introducir un sistema de tokens semánticos y atributos de tema (`data-theme`, `data-accent`, `data-contrast`, `data-motion`, `data-density`) que permita pintar toda la app en claro u oscuro, con acento configurable, alto contraste, motion reducido y densidad compacta, sin parpadeo y sin acoplar la UI a una paleta hardcodeada.

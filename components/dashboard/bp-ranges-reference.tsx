@@ -4,12 +4,12 @@ import { BP_RANGE_DISPLAY } from "@/lib/dashboard/bp-ranges"
 /** Tabla de referencia educativa de rangos OMS, en la grilla responsive del mockup. */
 export function BpRangesReference() {
   return (
-    <section className="space-y-4 rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 backdrop-blur-xl">
+    <section className="space-y-4 rounded-2xl border border-line bg-card/60 p-card backdrop-blur-xl">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-bold text-white">
+        <h2 className="text-sm font-bold text-fg">
           Referencia de Rangos de Presión Arterial (OMS)
         </h2>
-        <span className="text-[10px] text-slate-400">
+        <span className="text-[10px] text-fg-muted">
           Sistólica / Diastólica
         </span>
       </div>
@@ -25,7 +25,7 @@ export function BpRangesReference() {
             className={`rounded-xl border p-2.5 ${TONE_CLASSES[entry.tone]}`}
           >
             <span className="block font-bold">{entry.label}</span>
-            <span className="text-[10px] text-slate-400">{entry.range}</span>
+            <span className="text-[10px] text-fg-muted">{entry.range}</span>
           </li>
         ))}
       </ul>

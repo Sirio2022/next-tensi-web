@@ -14,7 +14,7 @@ interface ChannelsCardProps {
 }
 
 const TILE_CLASSES =
-  "flex items-start justify-between gap-3 rounded-xl border border-slate-800/60 bg-slate-950/60 p-3.5"
+  "flex items-start justify-between gap-3 rounded-xl border border-line bg-surface/60 p-3.5"
 
 /** Canales de Notificación (SPEC 20). */
 export function ChannelsCard({
@@ -28,7 +28,7 @@ export function ChannelsCard({
       title="Canales de Notificación"
       description="Elige cómo prefieres recibir las notificaciones"
       icon={Smartphone}
-      iconClassName="size-4 text-tensi-400"
+      iconClassName="size-4 text-accent-text"
     >
       <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-3">
         <div className={TILE_CLASSES}>

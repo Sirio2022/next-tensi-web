@@ -23,18 +23,18 @@ export function AnalyticsCategoryStatsTable({
   const ordered = orderCategoryStats(stats)
 
   return (
-    <Card className="space-y-4 p-6">
+    <Card className="space-y-4 p-card">
       <div>
-        <h2 className="text-sm font-semibold text-slate-100">
+        <h2 className="text-sm font-semibold text-fg">
           Detalle por categoría
         </h2>
-        <p className="mt-0.5 text-xs text-slate-400">
+        <p className="mt-0.5 text-xs text-fg-muted">
           Conteo, promedio y última lectura de cada categoría
         </p>
       </div>
 
       {ordered.length === 0 ? (
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-fg-muted">
           Todavía no hay lecturas categorizadas.
         </p>
       ) : (
@@ -44,7 +44,7 @@ export function AnalyticsCategoryStatsTable({
               Conteo, promedio y última lectura por categoría
             </caption>
             <thead>
-              <tr className="text-slate-400">
+              <tr className="text-fg-muted">
                 <th scope="col" className="pb-3 pr-3 font-medium">
                   Categoría
                 </th>
@@ -59,23 +59,23 @@ export function AnalyticsCategoryStatsTable({
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/80">
+            <tbody className="divide-y divide-line/80">
               {ordered.map((stat) => {
                 const category = getCategoryPresentation(stat.category)
 
                 return (
                   <tr key={stat.category}>
-                    <th scope="row" className="py-3 pr-3 font-normal">
+                    <th scope="row" className="py-row pr-3 font-normal">
                       <Badge tone={category.tone}>{category.label}</Badge>
                     </th>
-                    <td className="py-3 pr-3 text-right font-semibold text-slate-200">
+                    <td className="py-row pr-3 text-right font-semibold text-fg">
                       {stat.count}
                     </td>
-                    <td className="py-3 pr-3 text-right whitespace-nowrap text-slate-300">
+                    <td className="py-row pr-3 text-right whitespace-nowrap text-fg-muted">
                       {stat.avgSystolic} / {stat.avgDiastolic}{" "}
-                      <span className="text-slate-500">mmHg</span>
+                      <span className="text-fg-subtle">mmHg</span>
                     </td>
-                    <td className="py-3 text-slate-400">
+                    <td className="py-row text-fg-muted">
                       <time dateTime={stat.lastReading}>
                         {dateFormatter.format(new Date(stat.lastReading))}
                       </time>

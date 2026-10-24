@@ -24,7 +24,7 @@ export function ReportsCard({
       title="Reportes Automáticos"
       description="Recibe resúmenes periódicos de tus mediciones"
       icon={Mail}
-      iconClassName="size-4 text-tensi-400"
+      iconClassName="size-4 text-accent-text"
     >
       <div className="grid grid-cols-1 gap-x-8 gap-y-4 pt-1 sm:grid-cols-2">
         <Switch
@@ -74,7 +74,7 @@ export function ReportsCard({
       </div>
 
       {emailBlocked ? (
-        <p className="text-[10px] text-slate-500">
+        <p className="text-[10px] text-fg-subtle">
           El canal Email está apagado; los reportes no se enviarán hasta que lo
           actives.
         </p>

@@ -24,7 +24,7 @@ export function LockBadge({
   return (
     <span
       ref={ref}
-      className={`inline-flex rounded-md border border-amber-500/20 bg-amber-500/10 p-1 text-amber-400 ${className}`}
+      className={`inline-flex rounded-md border border-amber-500/30 bg-amber-500/10 p-1 text-tone-amber ${className}`}
       {...rest}
     >
       {/* Icono Lucide sin tag nativo equivalente; role="img" + aria-label es el patrón accesible correcto. */}

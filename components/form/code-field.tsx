@@ -37,7 +37,7 @@ export function CodeField<T extends FieldValues>({
 
   return (
     <fieldset className="min-w-0 w-full">
-      <legend className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 text-center">
+      <legend className="block text-xs font-semibold text-fg-muted uppercase tracking-wider mb-3 text-center">
         {label}
       </legend>
       <div className="flex gap-2">
@@ -59,7 +59,7 @@ export function CodeField<T extends FieldValues>({
             aria-label={`Dígito ${index + 1} de ${length}`}
             aria-invalid={message ? true : undefined}
             aria-describedby={message ? errorId : undefined}
-            className="min-w-0 flex-1 basis-0 h-12 text-center text-lg font-bold rounded-xl bg-slate-950/80 border border-slate-500 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all aria-invalid:border-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="min-w-0 flex-1 basis-0 h-12 text-center text-lg font-bold rounded-xl bg-card-muted border border-line-strong text-fg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all aria-invalid:border-red-500 disabled:cursor-not-allowed disabled:opacity-60"
           />
         ))}
       </div>
@@ -67,7 +67,7 @@ export function CodeField<T extends FieldValues>({
         <p
           id={errorId}
           role="alert"
-          className="mt-3 text-xs text-red-400 text-center"
+          className="mt-3 text-xs text-tone-rose text-center"
         >
           {message}
         </p>

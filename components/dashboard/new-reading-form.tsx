@@ -10,7 +10,7 @@ import { EmergencyAlertDialog } from "./emergency-alert-dialog"
 import { ReadingInputs } from "./reading-inputs"
 
 const INPUT_CLASSES =
-  "w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 transition-colors focus:border-slate-600 focus:outline-none"
+  "w-full rounded-xl border border-line bg-card/60 px-4 py-2.5 text-sm text-fg placeholder-fg-subtle transition-colors focus:border-line-strong focus:outline-none"
 
 interface NewReadingFormProps {
   /** Plan del usuario resuelto en el server; decide el pie de la tarjeta IA. */
@@ -52,7 +52,7 @@ export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
         <div className="space-y-2 text-center">
           <label
             htmlFor="reading-notes"
-            className="text-xs font-medium text-slate-300"
+            className="text-xs font-medium text-fg-muted"
           >
             Notas
           </label>
@@ -69,7 +69,7 @@ export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
             <p
               id={notesErrorId}
               role="alert"
-              className="text-center text-xs text-rose-400"
+              className="text-center text-xs text-tone-rose"
             >
               {notesError}
             </p>
@@ -79,7 +79,7 @@ export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
         <div className="space-y-2 text-center">
           <label
             htmlFor="reading-datetime"
-            className="text-xs font-medium text-slate-300"
+            className="text-xs font-medium text-fg-muted"
           >
             Fecha y hora de la medición
           </label>
@@ -93,7 +93,7 @@ export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
         </div>
 
         {submitError ? (
-          <p role="alert" className="text-center text-xs text-rose-400">
+          <p role="alert" className="text-center text-xs text-tone-rose">
             {submitError}
           </p>
         ) : null}
@@ -104,7 +104,7 @@ export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
           tone="primary"
           disabled={isPendingSubmission}
           aria-busy={isPendingSubmission}
-          className="w-full bg-emerald-500 py-3 text-sm font-bold text-slate-950 shadow-emerald-500/20 hover:bg-emerald-400"
+          className="w-full bg-emerald-500 py-3 text-sm font-bold text-emerald-950 shadow-emerald-500/20 hover:bg-emerald-400"
         >
           {isPendingSubmission ? "Guardando..." : "Agregar Lectura"}
         </Button>
@@ -113,14 +113,14 @@ export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
       {showInlineWarning ? (
         <div
           aria-live="polite"
-          className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-200/90"
+          className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-tone-amber"
         >
           <TriangleAlert
-            className="mt-0.5 size-5 shrink-0 text-amber-400"
+            className="mt-0.5 size-5 shrink-0 text-tone-amber"
             aria-hidden
           />
           <p className="leading-relaxed">
-            <strong className="font-semibold text-amber-300">
+            <strong className="font-semibold text-tone-amber">
               {result?.emergencyAssessment.uiMessage.title}
             </strong>{" "}
             {result?.emergencyAssessment.uiMessage.body}
@@ -133,7 +133,7 @@ export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
           aria-live="polite"
           className="flex flex-col gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 sm:flex-row sm:items-center sm:justify-between"
         >
-          <p className="flex items-center gap-2 text-xs font-medium text-emerald-200">
+          <p className="flex items-center gap-2 text-xs font-medium text-tone-emerald">
             <CheckCircle2 className="size-4 shrink-0" aria-hidden />
             Lectura guardada correctamente.
           </p>
@@ -144,7 +144,7 @@ export function NewReadingForm({ isPremium }: Readonly<NewReadingFormProps>) {
             <ButtonLink
               href="/dashboard/history"
               size="sm"
-              className="bg-slate-800 text-slate-200 shadow-none hover:bg-slate-700"
+              className="bg-card-muted text-fg shadow-none hover:bg-line-strong"
             >
               Ver Historial
             </ButtonLink>

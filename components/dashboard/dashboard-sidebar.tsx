@@ -33,10 +33,10 @@ export function DashboardSidebar({ plan }: Readonly<DashboardSidebarProps>) {
   return (
     <aside
       aria-label="Barra lateral"
-      className="relative z-20 flex w-full shrink-0 flex-col justify-between border-r border-slate-800/80 bg-slate-950/90 backdrop-blur-xl md:h-screen md:w-64"
+      className="relative z-20 flex w-full shrink-0 flex-col justify-between border-r border-line bg-surface/90 backdrop-blur-xl md:h-screen md:w-64"
     >
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-slate-800/60 px-6">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-6">
           <SidebarBrand />
         </div>
 
@@ -66,7 +66,7 @@ export function DashboardSidebar({ plan }: Readonly<DashboardSidebarProps>) {
         </nav>
       </div>
 
-      <div className="shrink-0 space-y-1 border-t border-slate-800/60 p-4">
+      <div className="shrink-0 space-y-1 border-t border-line p-4">
         <SidebarNavItem
           item={DASHBOARD_SETTINGS_ITEM}
           state={getNavItemState(DASHBOARD_SETTINGS_ITEM, plan)}
@@ -78,7 +78,7 @@ export function DashboardSidebar({ plan }: Readonly<DashboardSidebarProps>) {
           onClick={() => logout.mutate()}
           disabled={logout.isPending}
           aria-busy={logout.isPending}
-          className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-rose-400 transition-all hover:bg-rose-500/10 focus-visible:ring-2 focus-visible:ring-rose-400/70 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-tone-rose transition-all hover:bg-rose-500/10 focus-visible:ring-2 focus-visible:ring-rose-400/70 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
         >
           <LogOut className="size-5" />
           {logout.isPending ? "Cerrando sesión…" : "Cerrar Sesión"}

@@ -46,7 +46,7 @@ export function ProfileForm({ user }: Readonly<ProfileFormProps>) {
         <div>
           <label
             htmlFor="profile-email"
-            className="mb-2 block text-xs font-semibold tracking-wider text-slate-300 uppercase"
+            className="mb-2 block text-xs font-semibold tracking-wider text-fg-muted uppercase"
           >
             Correo Electrónico
           </label>
@@ -56,7 +56,7 @@ export function ProfileForm({ user }: Readonly<ProfileFormProps>) {
             value={user.email ?? ""}
             disabled
             readOnly
-            className="w-full rounded-xl border border-slate-500 bg-slate-950/80 px-4 py-3 text-sm text-white disabled:opacity-60"
+            className="w-full rounded-xl border border-line-strong bg-surface/80 px-4 py-3 text-sm text-fg disabled:opacity-60"
           />
         </div>
 
@@ -65,7 +65,6 @@ export function ProfileForm({ user }: Readonly<ProfileFormProps>) {
             name="birthDate"
             label="Fecha de Nacimiento"
             type="date"
-            className="scheme-dark"
           />
           <SelectField
             name="gender"

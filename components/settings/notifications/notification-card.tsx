@@ -19,13 +19,13 @@ export function NotificationCard({
   children
 }: Readonly<NotificationCardProps>) {
   return (
-    <Card className="space-y-4 p-5">
+    <Card className="space-y-4 p-card">
       <div>
-        <h3 className="flex items-center gap-2 text-sm font-bold text-white">
+        <h3 className="flex items-center gap-2 text-sm font-bold text-fg">
           <Icon className={iconClassName} aria-hidden />
           {title}
         </h3>
-        <p className="mt-0.5 text-[11px] text-slate-400">{description}</p>
+        <p className="mt-0.5 text-[11px] text-fg-muted">{description}</p>
       </div>
       {children}
     </Card>

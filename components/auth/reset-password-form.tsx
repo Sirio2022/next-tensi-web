@@ -47,7 +47,7 @@ export function ResetPasswordForm({ email }: Readonly<ResetPasswordFormProps>) {
       <div className="mt-6 text-center">
         <Link
           href="/login"
-          className="text-xs text-slate-400 hover:text-slate-300 transition-colors inline-flex items-center gap-1.5"
+          className="text-xs text-fg-muted hover:text-fg-muted transition-colors inline-flex items-center gap-1.5"
         >
           <ArrowLeft className="size-3.5" />
           Volver al inicio de sesión

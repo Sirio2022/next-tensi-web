@@ -35,7 +35,7 @@ const FEATURES: readonly TeaserFeature[] = [
  */
 export function PremiumAnalyticsTeaser() {
   return (
-    <Card className="relative overflow-hidden p-6">
+    <Card className="relative overflow-hidden p-card">
       <div
         className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-purple-500/10 blur-3xl"
         aria-hidden="true"
@@ -44,10 +44,10 @@ export function PremiumAnalyticsTeaser() {
       <div className="relative z-10 space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-sm font-semibold text-slate-100">
+            <h2 className="text-sm font-semibold text-fg">
               Analíticas avanzadas
             </h2>
-            <p className="mt-0.5 text-xs text-slate-400">
+            <p className="mt-0.5 text-xs text-fg-muted">
               Disponibles con Tensi Premium
             </p>
           </div>
@@ -61,33 +61,33 @@ export function PremiumAnalyticsTeaser() {
           {FEATURES.map((feature) => (
             <li
               key={feature.title}
-              className="flex items-center gap-3 rounded-xl border border-slate-800/80 bg-slate-950/60 p-3"
+              className="flex items-center gap-3 rounded-xl border border-line bg-surface/60 p-3"
             >
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-purple-500/30 bg-purple-600/20 text-purple-400">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-purple-500/30 bg-purple-600/20 text-tone-purple">
                 {feature.icon}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-xs font-semibold text-slate-200">
+                <span className="block truncate text-xs font-semibold text-fg">
                   {feature.title}
                 </span>
-                <span className="block truncate text-[11px] text-slate-400">
+                <span className="block truncate text-[11px] text-fg-muted">
                   {feature.description}
                 </span>
               </span>
-              <span className="h-2 w-16 shrink-0 rounded-full bg-slate-800" />
+              <span className="h-2 w-16 shrink-0 rounded-full bg-card-muted" />
             </li>
           ))}
         </ul>
 
-        <div className="flex flex-col gap-3 rounded-xl border border-purple-500/20 bg-linear-to-r from-blue-950/60 to-purple-950/60 p-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-slate-300">
+        <div className="flex flex-col gap-3 rounded-xl border border-purple-500/20 bg-linear-to-r from-accent-soft to-tensi-violet/10 p-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-fg-muted">
             Desbloquea promedios, tendencias y reportes exportables.
           </p>
           <ButtonLink
             href="/dashboard#upgrade"
             tone="primary"
             size="sm"
-            className="shrink-0 bg-purple-600 shadow-purple-600/25 hover:bg-purple-500"
+            className="shrink-0"
           >
             Mejorar a Premium
           </ButtonLink>
