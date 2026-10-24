@@ -1,5 +1,7 @@
 "use client"
 
+import { getAppearancePreferences } from "@/lib/appearance/appearance.api"
+import { toAppearanceValues } from "@/lib/appearance/core/preferences"
 import * as authApi from "@/lib/auth/auth.api"
 import { useLogout } from "@/lib/auth/hooks/use-logout"
 import type {
@@ -11,6 +13,8 @@ import type {
 } from "@/lib/auth/schemas"
 import type { MessageResponse } from "@/lib/auth/types"
 import { ApiError } from "@/lib/http/types"
+import { applyAppearanceAttributes } from "@/lib/theme/appearance-dom"
+import { writeAppearanceCookie } from "@/lib/theme/appearance-cookie"
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 
@@ -19,6 +23,26 @@ function toMessage(error: unknown): string {
   if (error instanceof ApiError) return error.message
   if (error instanceof Error) return error.message
   return "Ha ocurrido un error inesperado"
+}
+
+/**
+ * Pinta la apariencia guardada antes de entrar al dashboard (SPEC 22) y deja
+ * escrita la cookie espejo para que la siguiente carga no parpadee.
+ *
+ * El fallo es no bloqueante: si el `GET` falla o el navegador no permite
+ * cookies (modo privado), el login continúa y `AppearanceSync` lo reintenta en
+ * el dashboard.
+ */
+async function applySavedAppearance(): Promise<void> {
+  try {
+    const { preferences } = await getAppearancePreferences()
+    const values = toAppearanceValues(preferences)
+
+    applyAppearanceAttributes(values)
+    writeAppearanceCookie(values)
+  } catch {
+    // La apariencia es cosmética: nunca impide iniciar sesión.
+  }
 }
 
 /**
@@ -44,7 +68,8 @@ export function useAuth() {
 
   const login = useMutation<MessageResponse, unknown, LoginInput>({
     mutationFn: (input) => authApi.login(input),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await applySavedAppearance()
       router.push("/dashboard")
       router.refresh()
     }

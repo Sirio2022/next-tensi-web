@@ -1,6 +1,6 @@
 # SPEC 22 — Apariencia: preferencias de tema e interfaz
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 06, SPEC 09, SPEC 11, SPEC 14, SPEC 17, SPEC 18, SPEC 20, SPEC 21
 > **Date:** 2026-10-23
 > **Objective:** Implementar la sección Apariencia de Configuración con sus cuatro bloques, persistir tema, acento, contraste, motion, densidad, idioma y formato de fecha en Nest, y aplicar los cambios con preview inmediato y "Guardar Cambios" mediante la cookie espejo definida en SPEC 21.
