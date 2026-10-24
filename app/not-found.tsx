@@ -37,7 +37,7 @@ export default function NotFound() {
           </Link>
           <Link
             href="/login"
-            className="inline-flex items-center justify-center rounded-full border border-line-strong bg-card/90 px-8 py-3.5 text-sm font-semibold text-accent-fg backdrop-blur-md transition-all duration-300 hover:bg-card-muted focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none"
+            className="inline-flex items-center justify-center rounded-full border border-line-strong bg-card/90 px-8 py-3.5 text-sm font-semibold text-fg backdrop-blur-md transition-all duration-300 hover:bg-card-muted focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none"
           >
             Iniciar sesión
           </Link>

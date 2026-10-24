@@ -32,7 +32,7 @@ export const READING_METRICS: readonly ReadingMetric[] = [
     min: 70,
     max: 200,
     defaultValue: 120,
-    accentClassName: "text-red-500 accent-red-500"
+    accentClassName: "text-tone-rose accent-red-500"
   },
   {
     id: "diastolic",
@@ -41,7 +41,7 @@ export const READING_METRICS: readonly ReadingMetric[] = [
     min: 40,
     max: 130,
     defaultValue: 80,
-    accentClassName: "text-blue-500 accent-blue-500"
+    accentClassName: "text-tone-sky accent-blue-500"
   },
   {
     id: "pulse",
@@ -50,7 +50,7 @@ export const READING_METRICS: readonly ReadingMetric[] = [
     min: 40,
     max: 180,
     defaultValue: 70,
-    accentClassName: "text-purple-400 accent-purple-500"
+    accentClassName: "text-tone-purple accent-purple-500"
   }
 ]
 

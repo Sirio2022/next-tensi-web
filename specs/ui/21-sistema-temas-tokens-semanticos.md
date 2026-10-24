@@ -1,6 +1,6 @@
 # SPEC 21 — Sistema de temas y tokens semánticos
 
-> **Status:** Implementado
+> **Status:** Verificado
 > **Depends on:** SPEC 02, SPEC 03, SPEC 06, SPEC 17
 > **Date:** 2026-10-23
 > **Objective:** Introducir un sistema de tokens semánticos y atributos de tema (`data-theme`, `data-accent`, `data-contrast`, `data-motion`, `data-density`) que permita pintar toda la app en claro u oscuro, con acento configurable, alto contraste, motion reducido y densidad compacta, sin parpadeo y sin acoplar la UI a una paleta hardcodeada.
@@ -28,7 +28,7 @@
   - Gráficas: `--color-chart-grid`, `--color-chart-axis`, `--color-chart-tooltip`, `--color-chart-tooltip-line`, `--color-chart-systolic`, `--color-chart-diastolic`.
 - **Tema oscuro por defecto** en `:root` y **tema claro** en `[data-theme="light"]`; `[data-theme="dark"]` explícito para forzar oscuro.
 - **Fallback de sistema** para páginas sin preferencia: sin atributo `data-theme`, `@media (prefers-color-scheme: light)` aplica los tokens claros. La landing y auth se beneficiarán de esto sin sesión.
-- **Acentos**: `[data-accent="blue|green|purple|red"]` sobrescriben los tokens de acento. Azul es el valor por defecto y conserva la identidad actual (`tensi-600`); verde, morado y rojo usan las escalas `emerald`, `violet` y `rose` del mockup.
+- **Acentos**: `[data-accent="blue|green|purple|red"]` sobrescriben los tokens de acento (incluido `--focus`, para que el anillo de foco siga al acento). Azul es el valor por defecto y conserva la identidad actual (`tensi-600`); verde, morado y rojo usan las escalas `emerald`, `violet` y `rose` del mockup.
 - **Alto contraste**: `[data-contrast="high"]` refuerza `--color-fg*` y `--color-line*` en ambos temas (texto secundario más oscuro/claro y bordes más visibles).
 - **Motion reducido**: `[data-motion="reduced"]` desactiva transiciones, animaciones y `scroll-behavior`; `@media (prefers-reduced-motion: reduce)` aplica lo mismo siempre, sin importar el atributo.
 - **Densidad compacta**: `[data-density="compact"]` reduce los tokens de densidad `--density-card-padding`, `--density-row-padding`, `--density-gap` y `--density-section-gap`. Se exponen como `--spacing-card`, `--spacing-row`, `--spacing-gap` y `--spacing-section` para usarlos con utilidades canónicas (`p-card`, `py-row`, `gap-gap`, `space-y-section`). **No** se toca la escala global `--spacing`, ni tamaños de fuente, iconos o radios.
@@ -127,7 +127,7 @@ Nombres de utilidad esperados (Tailwind v4, namespace `--color-*` y `--spacing-*
 | `--color-line-strong`     | `border-line-strong`           | `#334155`        | `#cbd5e1` |
 | `--color-fg`              | `text-fg`                      | `#f1f5f9`        | `#0f172a` |
 | `--color-fg-muted`        | `text-fg-muted`                | `#94a3b8`        | `#334155` |
-| `--color-fg-subtle`       | `text-fg-subtle`               | `#64748b`        | `#475569` |
+| `--color-fg-subtle`       | `text-fg-subtle`               | `#7c8ba1`        | `#475569` |
 | `--color-fg-inverted`     | `text-fg-inverted`             | `#020617`        | `#f8fafc` |
 | `--color-focus`           | `ring-focus`                   | `#38bdf8`        | `#0284c7` |
 | `--color-chart-grid`      | `var(--color-chart-grid)`      | `#1e293b`        | `#e2e8f0` |
@@ -177,23 +177,30 @@ La densidad aplica **solo al contenido del dashboard** (páginas, tarjetas, tabl
 
 ## Criterios de aceptación
 
-- [ ] `app/globals.css` define tokens semánticos de superficie, tarjeta, borde, texto, acento, foco y gráficas, y declara `color-scheme` para ambos temas.
-- [ ] Sin atributo `data-theme` y con el sistema en claro, la landing y auth se pintan claras; con el sistema en oscuro, oscuras.
-- [ ] `data-theme="light"` y `data-theme="dark"` fuerzan el tema en dashboard, auth, landing, settings, error y not-found.
-- [ ] Los cuatro acentos cambian botones primarios, enlaces, foco, ítem activo del sidebar, switches y tarjetas seleccionadas; con verde, morado o rojo no queda azul estructural.
-- [ ] `data-contrast="high"` aumenta el contraste de textos secundarios y bordes en ambos temas, y axe no reporta violaciones serias de contraste.
-- [ ] `data-motion="reduced"` elimina transiciones y animaciones (toast, gráficas, hover) y `prefers-reduced-motion: reduce` produce el mismo efecto sin atributo.
-- [ ] `data-density="compact"` reduce padding de tarjetas, filas de tablas y separación entre secciones del dashboard, sin encoger fuentes, iconos ni radios; landing y auth no cambian.
-- [ ] Las tres gráficas del dashboard usan `var(--color-chart-*)` y son legibles en claro y oscuro (grid, ejes, tooltip y series).
-- [ ] No quedan clases estructurales `slate-*`, `indigo-*` ni `text-white` en `app/**` y `components/**`; las excepciones documentadas son el thumb blanco del `Switch` y los degradados decorativos de marca (`tensi-*`) de landing/auth.
-- [ ] Los tonos de categoría (óptima, normal, alta, crisis) son legibles en ambos temas y mantienen su significado.
-- [ ] Con la cookie `tensi_appearance`, la primera pintura ya tiene el tema, acento, contraste, motion y densidad correctos, sin flash (verificado con Playwright antes de la hidratación).
-- [ ] `lib/theme/core/**` no importa `next`, `next/*` ni `server-only`, y no usa `window`, `document` ni `localStorage`.
-- [ ] El script anti-FOUC no rompe la CSP existente (`script-src 'self' 'unsafe-inline'`).
-- [ ] Landing, login, registro, dashboard, historial, análisis, nueva lectura, configuración, perfil, toasts y modales son usables a 375 px y 1440 px en ambos temas, sin scroll horizontal ni errores de consola.
-- [ ] `lib/theme/tokens.ts` refleja los mismos valores que `app/globals.css`.
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan.
-- [ ] `git -C ../nest-tensi-api status --short` no muestra cambios (spec front-only).
+- [x] `app/globals.css` define tokens semánticos de superficie, tarjeta, borde, texto, acento, foco y gráficas, y declara `color-scheme` para ambos temas. _(Verificado en `app/globals.css`: `@theme inline` + `:root`/`[data-theme="light"]` y `color-scheme` en ambos.)_
+- [x] Sin atributo `data-theme` y con el sistema en claro, la landing y auth se pintan claras; con el sistema en oscuro, oscuras. _(Playwright con cookie `theme=auto`: `prefers-color-scheme: light` → fondo `rgb(248,250,252)`; dark → `rgb(3,7,18)`; sin `data-theme`.)_
+- [x] `data-theme="light"` y `data-theme="dark"` fuerzan el tema en dashboard, auth, landing, settings, error y not-found. _(Matriz de 10 rutas × 2 temas: `data-theme` correcto y fondo esperado en todas; 404 incluido.)_
+- [x] Los cuatro acentos cambian botones primarios, enlaces, foco, ítem activo del sidebar, switches y tarjetas seleccionadas; con verde, morado o rojo no queda azul estructural. _(Playwright: `--accent`/`--focus` resueltos por acento en ambos temas, nav activo y botón primario con el acento, switch encendido `rgb(16,185,129)` con verde. Capturas `spec21-accent-*.png`.)_
+- [x] `data-contrast="high"` aumenta el contraste de textos secundarios y bordes en ambos temas, y axe no reporta violaciones serias de contraste. _(axe-core en 11 rutas × 2 temas × 2 contrastes: 0 violaciones de `color-contrast`.)_
+- [x] `data-motion="reduced"` elimina transiciones y animaciones (toast, gráficas, hover) y `prefers-reduced-motion: reduce` produce el mismo efecto sin atributo. _(Playwright: `transition-duration: 1e-05s` y `scroll-behavior: auto` con el atributo; `full` mantiene `smooth`.)_
+- [x] `data-density="compact"` reduce padding de tarjetas, filas de tablas y separación entre secciones del dashboard, sin encoger fuentes, iconos ni radios; landing y auth no cambian. _(Playwright: padding de tarjeta 24 px → 16 px; landing/auth no usan `p-card`/`py-row`/`gap-gap`/`space-y-section`.)_
+- [x] Las tres gráficas del dashboard usan `var(--color-chart-*)` y son legibles en claro y oscuro (grid, ejes, tooltip y series). _(Grep: sin hex en `components/dashboard`; tooltip claro resuelto a `rgb(255,255,255)` con borde `rgb(226,232,240)`.)_
+- [x] No quedan clases estructurales `slate-*`, `indigo-*` ni `text-white` en `app/**` y `components/**`; las excepciones documentadas son el thumb blanco del `Switch` y los degradados decorativos de marca (`tensi-*`) de landing/auth. _(Grep con límites de palabra: 0 coincidencias; solo el thumb de `switch.tsx`.)_
+- [x] Los tonos de categoría (óptima, normal, alta, crisis) son legibles en ambos temas y mantienen su significado. _(Tokens `--tone-*` por tema + axe sin violaciones en dashboard, historial, análisis y nueva lectura.)_
+- [x] Con la cookie `tensi_appearance`, la primera pintura ya tiene el tema, acento, contraste, motion y densidad correctos, sin flash (verificado con Playwright antes de la hidratación). _(Con todo el JS externo bloqueado, el script inline ya dejó `data-theme=light`, `data-accent=green`, `data-contrast=high`, `data-motion=reduced`, `data-density=compact` y fondo claro antes de hidratar.)_
+- [x] `lib/theme/core/**` no importa `next`, `next/*` ni `server-only`, y no usa `window`, `document` ni `localStorage`. _(Guard de ESLint `lib/**/core/**` + `pnpm lint` limpio.)_
+- [x] El script anti-FOUC no rompe la CSP existente (`script-src 'self' 'unsafe-inline'`). _(El script es inline y estático; la CSP de `next.config.ts` ya permite `unsafe-inline`.)_
+- [x] Landing, login, registro, dashboard, historial, análisis, nueva lectura, configuración, perfil, toasts y modales son usables a 375 px y 1440 px en ambos temas, sin scroll horizontal ni errores de consola. _(Matriz 10 rutas × 2 temas × 2 viewports: 0 overflow horizontal y 0 errores de consola.)_
+- [x] `lib/theme/tokens.ts` refleja los mismos valores que `app/globals.css`. _(Script de comparación de 44 tokens por tema: 0 discrepancias.)_
+- [x] `pnpm lint`, `pnpm exec tsc --noEmit` y `pnpm build` pasan. _(Los tres verdes tras los ajustes de contraste.)_
+- [x] `git -C ../nest-tensi-api status --short` no muestra cambios (spec front-only). _(Salida vacía.)_
+
+### Notas de verificación
+
+- **Anti-FOUC:** se usa un `<script>` inline síncrono como primer hijo de `<body>` en lugar de `next/script` + `beforeInteractive`. Next encola los scripts inline y los ejecuta desde `app-bootstrap.js` de forma asíncrona después del primer pintado, lo que reintroduce el flash; el script plano se ejecuta durante el parseo. Es contenido estático y encaja con la CSP (`unsafe-inline`). Verificado bloqueando todos los `.js` externos.
+- **Contraste corregido durante la verificación:** el `--fg-subtle` oscuro pasó de `#64748b` a `#7c8ba1` (3.96:1 → 5.4:1 sobre tarjetas) y el texto de las métricas de Nueva Lectura usa `text-tone-*` en vez de `text-red/blue/purple-*`, que fallaban en claro. El botón secundario de error/not-found usa `text-fg` (antes `text-accent-fg`, ilegible en oscuro).
+- **Foco por acento:** `--focus` se sobrescribe en cada bloque `[data-accent]` (y su variante clara) para que el anillo de foco no quede azul con verde, morado o rojo.
+- **Evidencia visual:** capturas en `.playwright-mcp/spec21-*.png` (matriz tema × pantalla × viewport, acentos, alto contraste, densidad compacta y tooltip).
 
 ## Decisiones
 

@@ -43,6 +43,8 @@ export interface AccentTokens {
   text: string
   /** `--accent-fg` (texto sobre el color de acento). */
   fg: string
+  /** `--focus` (anillo de foco; sigue al acento). */
+  focus: string
   /** `--accent-soft` = acento al 12 %. */
   soft: string
   /** `--accent-line` = acento al 32 %. */
@@ -83,13 +85,15 @@ function accentTokens(
   accent: string,
   hover: string,
   text: string,
-  fg: string
+  fg: string,
+  focus: string
 ): AccentTokens {
   return {
     accent,
     hover,
     text,
     fg,
+    focus,
     soft: `color-mix(in oklab, ${accent} 12%, transparent)`,
     line: `color-mix(in oklab, ${accent} 32%, transparent)`
   }
@@ -105,7 +109,7 @@ export const THEME_TOKENS: Record<ThemeName, ThemeTokens> = {
     lineStrong: "#334155",
     fg: "#f1f5f9",
     fgMuted: "#94a3b8",
-    fgSubtle: "#64748b",
+    fgSubtle: "#7c8ba1",
     fgInverted: "#020617",
     focus: "#38bdf8",
     chartGrid: "#1e293b",
@@ -123,10 +127,22 @@ export const THEME_TOKENS: Record<ThemeName, ThemeTokens> = {
       purple: "#c4b5fd"
     },
     accents: {
-      blue: accentTokens("#0284c7", "#0ea5e9", "#38bdf8", "#020617"),
-      green: accentTokens("#10b981", "#34d399", "#34d399", "#020617"),
-      purple: accentTokens("#8b5cf6", "#a78bfa", "#a78bfa", "#020617"),
-      red: accentTokens("#f43f5e", "#fb7185", "#fb7185", "#020617")
+      blue: accentTokens("#0284c7", "#0ea5e9", "#38bdf8", "#020617", "#38bdf8"),
+      green: accentTokens(
+        "#10b981",
+        "#34d399",
+        "#34d399",
+        "#020617",
+        "#34d399"
+      ),
+      purple: accentTokens(
+        "#8b5cf6",
+        "#a78bfa",
+        "#a78bfa",
+        "#020617",
+        "#a78bfa"
+      ),
+      red: accentTokens("#f43f5e", "#fb7185", "#fb7185", "#020617", "#fb7185")
     }
   },
   light: {
@@ -155,10 +171,22 @@ export const THEME_TOKENS: Record<ThemeName, ThemeTokens> = {
       purple: "#6d28d9"
     },
     accents: {
-      blue: accentTokens("#0284c7", "#0369a1", "#0369a1", "#020617"),
-      green: accentTokens("#059669", "#047857", "#047857", "#020617"),
-      purple: accentTokens("#7c3aed", "#6d28d9", "#6d28d9", "#ffffff"),
-      red: accentTokens("#e11d48", "#be123c", "#be123c", "#ffffff")
+      blue: accentTokens("#0284c7", "#0369a1", "#0369a1", "#020617", "#0284c7"),
+      green: accentTokens(
+        "#059669",
+        "#047857",
+        "#047857",
+        "#020617",
+        "#059669"
+      ),
+      purple: accentTokens(
+        "#7c3aed",
+        "#6d28d9",
+        "#6d28d9",
+        "#ffffff",
+        "#7c3aed"
+      ),
+      red: accentTokens("#e11d48", "#be123c", "#be123c", "#ffffff", "#e11d48")
     }
   }
 }

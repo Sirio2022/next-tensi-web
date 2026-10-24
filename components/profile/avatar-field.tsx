@@ -54,7 +54,7 @@ export function AvatarField({ avatar }: Readonly<AvatarFieldProps>) {
       </div>
 
       {error ? (
-        <p role="alert" className="text-xs text-red-400">
+        <p role="alert" className="text-xs text-tone-rose">
           {error}
         </p>
       ) : null}
