@@ -85,7 +85,7 @@ export default async function DashboardPage() {
       <>
         <section
           aria-label="Resumen de tus mediciones"
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid grid-cols-1 gap-gap sm:grid-cols-2 lg:grid-cols-4"
         >
           {lastReading ? <LastReadingCard reading={lastReading} /> : null}
           {weekly ? <AnalyticsWeeklyKpis summary={weekly} /> : null}
@@ -112,12 +112,12 @@ export default async function DashboardPage() {
     <>
       <MedicalDisclaimer />
 
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-gap sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-white lg:text-3xl">
+          <h1 className="text-2xl font-extrabold tracking-tight text-fg lg:text-3xl">
             Dashboard
           </h1>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-fg-muted">
             Resumen en tiempo real y estado general de tu salud cardiovascular.
           </p>
         </div>

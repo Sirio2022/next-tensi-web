@@ -28,7 +28,7 @@ export function AnalyticsPeriodToggle({
   return (
     <nav
       aria-label="Granularidad de los promedios"
-      className="inline-flex rounded-xl border border-slate-800 bg-slate-950/60 p-1"
+      className="inline-flex rounded-xl border border-line bg-surface/60 p-1"
     >
       {PERIOD_OPTIONS.map((option) => {
         const isActive = option.value === period
@@ -38,10 +38,10 @@ export function AnalyticsPeriodToggle({
             key={option.value}
             href={buildAnalyticsHref({ range, period: option.value })}
             aria-current={isActive ? "true" : undefined}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all focus-visible:ring-2 focus-visible:ring-tensi-400/70 focus-visible:outline-none ${
+            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all focus-visible:ring-2 focus-visible:ring-focus/70 focus-visible:outline-none ${
               isActive
-                ? "bg-slate-800 text-white"
-                : "text-slate-400 hover:text-slate-100"
+                ? "bg-accent-soft text-accent-text"
+                : "text-fg-muted hover:text-fg"
             }`}
           >
             {option.label}

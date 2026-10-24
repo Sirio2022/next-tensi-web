@@ -48,21 +48,21 @@ export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
       </form>
 
       <div className="mt-6 text-center space-y-2">
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-fg-muted">
           ¿No recibiste el código?{" "}
           <button
             type="button"
             onClick={onResend}
             disabled={isResending}
             aria-busy={isResending}
-            className="text-tensi-400 hover:text-tensi-300 font-medium transition-colors disabled:opacity-60"
+            className="text-accent-text hover:text-accent-hover font-medium transition-colors disabled:opacity-60"
           >
             {isResending ? "Reenviando…" : "Reenviar código"}
           </button>
         </p>
 
         {notice ? (
-          <output aria-live="polite" className="block text-xs text-emerald-400">
+          <output aria-live="polite" className="block text-xs text-tone-emerald">
             {notice}
           </output>
         ) : null}
@@ -70,7 +70,7 @@ export function VerifyAccountForm({ email }: Readonly<VerifyAccountFormProps>) {
         <p>
           <Link
             href="/login"
-            className="text-xs text-slate-400 hover:text-slate-300 transition-colors inline-flex items-center gap-1.5"
+            className="text-xs text-fg-muted hover:text-fg-muted transition-colors inline-flex items-center gap-1.5"
           >
             <ArrowLeft className="size-3.5" />
             Volver al inicio de sesión

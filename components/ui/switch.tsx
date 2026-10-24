@@ -4,7 +4,7 @@ export type SwitchTone = "primary" | "danger" | "success"
 export type SwitchSize = "md" | "sm"
 
 const TRACK_TONE_CLASSES: Record<SwitchTone, string> = {
-  primary: "bg-tensi-600",
+  primary: "bg-accent",
   danger: "bg-rose-600",
   success: "bg-emerald-500"
 }
@@ -66,7 +66,7 @@ export function Switch({
 
   const trackClasses = checked
     ? TRACK_TONE_CLASSES[tone]
-    : "bg-slate-800"
+    : "bg-line-strong"
 
   return (
     <div
@@ -75,20 +75,20 @@ export function Switch({
       <div className="min-w-0">
         <label
           htmlFor={id}
-          className="block text-sm font-medium text-slate-200"
+          className="block text-sm font-medium text-fg"
         >
           {label}
         </label>
         {description ? (
           <p
             id={descriptionId}
-            className="mt-0.5 text-xs/relaxed text-slate-400"
+            className="mt-0.5 text-xs/relaxed text-fg-muted"
           >
             {description}
           </p>
         ) : null}
         {note ? (
-          <p id={noteId} className="mt-1 text-xs font-medium text-amber-400">
+          <p id={noteId} className="mt-1 text-xs font-medium text-tone-amber">
             {note}
           </p>
         ) : null}
@@ -112,10 +112,11 @@ export function Switch({
         />
         <span
           aria-hidden="true"
-          className={`${TRACK_SIZE_CLASSES[size]} ${trackClasses} relative inline-flex items-center rounded-full transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-tensi-400 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-slate-950 ${
+          className={`${TRACK_SIZE_CLASSES[size]} ${trackClasses} relative inline-flex items-center rounded-full transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface ${
             disabled ? "opacity-50" : ""
           }`.trim()}
         >
+          {/* Thumb blanco intencional en ambos temas (excepción documentada, SPEC 21). */}
           <span
             className={`${THUMB_SIZE_CLASSES[size]} absolute top-0.5 left-0.5 rounded-full bg-white transition-transform ${
               checked ? THUMB_CHECKED_CLASSES[size] : "translate-x-0"

@@ -23,11 +23,11 @@ export function AnalyticsEmergencyAlerts({
   alerts
 }: Readonly<AnalyticsEmergencyAlertsProps>) {
   return (
-    <Card className="space-y-4 p-6">
+    <Card className="space-y-4 p-card">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <TriangleAlert className="size-4 text-rose-400" aria-hidden />
-          <h2 className="text-sm font-semibold text-slate-100">
+          <TriangleAlert className="size-4 text-tone-rose" aria-hidden />
+          <h2 className="text-sm font-semibold text-fg">
             Emergencias registradas
           </h2>
         </div>
@@ -35,7 +35,7 @@ export function AnalyticsEmergencyAlerts({
       </div>
 
       {alerts.length === 0 ? (
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-fg-muted">
           No hay lecturas en rango de crisis en tu historial.
         </p>
       ) : (
@@ -46,21 +46,21 @@ export function AnalyticsEmergencyAlerts({
               className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-3"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-sm font-bold text-rose-200">
+                <span className="text-sm font-bold text-tone-rose">
                   {alert.systolic} / {alert.diastolic}{" "}
-                  <span className="text-xs font-normal text-slate-400">
+                  <span className="text-xs font-normal text-fg-muted">
                     mmHg
                   </span>
                 </span>
                 <time
                   dateTime={alert.timestamp}
-                  className="text-[11px] text-slate-400"
+                  className="text-[11px] text-fg-muted"
                 >
                   {dateFormatter.format(new Date(alert.timestamp))}
                 </time>
               </div>
               {alert.notes ? (
-                <p className="mt-2 text-xs/relaxed text-slate-300">
+                <p className="mt-2 text-xs/relaxed text-fg-muted">
                   {alert.notes}
                 </p>
               ) : null}

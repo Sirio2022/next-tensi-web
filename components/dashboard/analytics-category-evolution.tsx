@@ -18,8 +18,8 @@ interface AnalyticsCategoryEvolutionProps {
   points: readonly CategoryDistributionPoint[]
 }
 
-const AXIS_COLOR = "#64748b"
-const GRID_COLOR = "#1e293b"
+const AXIS_COLOR = "var(--color-chart-axis)"
+const GRID_COLOR = "var(--color-chart-grid)"
 
 /**
  * Evolución mensual por categoría (barras apiladas). Client component (Recharts
@@ -37,16 +37,16 @@ export function AnalyticsCategoryEvolution({
 
   if (series.points.length === 0 || series.categories.length === 0) {
     return (
-      <Card className="space-y-4 p-6">
+      <Card className="space-y-4 p-card">
         <div>
-          <h2 className="text-sm font-semibold text-slate-100">
+          <h2 className="text-sm font-semibold text-fg">
             Evolución por categoría
           </h2>
-          <p className="mt-0.5 text-xs text-slate-400">
+          <p className="mt-0.5 text-xs text-fg-muted">
             Distribución mensual de tus lecturas
           </p>
         </div>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-fg-muted">
           Todavía no hay meses con lecturas categorizadas.
         </p>
       </Card>
@@ -61,12 +61,12 @@ export function AnalyticsCategoryEvolution({
   const description = `Gráfica de evolución mensual de ${series.points.length} meses con lecturas agrupadas por categoría de presión arterial.`
 
   return (
-    <Card className="space-y-4 p-6">
+    <Card className="space-y-4 p-card">
       <div>
-        <h2 className="text-sm font-semibold text-slate-100">
+        <h2 className="text-sm font-semibold text-fg">
           Evolución por categoría
         </h2>
-        <p className="mt-0.5 text-xs text-slate-400">
+        <p className="mt-0.5 text-xs text-fg-muted">
           Lecturas por mes y categoría OMS
         </p>
       </div>
@@ -93,15 +93,15 @@ export function AnalyticsCategoryEvolution({
               allowDecimals={false}
             />
             <Tooltip
-              cursor={{ fill: "#1e293b", fillOpacity: 0.4 }}
+              cursor={{ fill: "var(--color-chart-grid)", fillOpacity: 0.4 }}
               contentStyle={{
-                background: "#0f172a",
-                border: "1px solid #1e293b",
+                background: "var(--color-chart-tooltip)",
+                border: "1px solid var(--color-chart-tooltip-line)",
                 borderRadius: "0.75rem",
                 fontSize: "0.75rem"
               }}
-              labelStyle={{ color: "#e2e8f0" }}
-              itemStyle={{ color: "#cbd5e1" }}
+              labelStyle={{ color: "var(--color-fg)" }}
+              itemStyle={{ color: "var(--color-fg-muted)" }}
               formatter={(value, name) => [String(value), String(name)]}
             />
             <Legend wrapperStyle={{ fontSize: "0.75rem" }} />
@@ -118,7 +118,7 @@ export function AnalyticsCategoryEvolution({
           </BarChart>
         </ResponsiveContainer>
 
-        <figcaption className="mt-3 text-center text-xs text-slate-400">
+        <figcaption className="mt-3 text-center text-xs text-fg-muted">
           Cantidad de lecturas por mes agrupadas por categoría de presión
           arterial.
         </figcaption>

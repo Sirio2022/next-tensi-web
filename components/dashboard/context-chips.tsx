@@ -16,7 +16,7 @@ export function ContextChips({
 }: Readonly<ContextChipsProps>) {
   return (
     <fieldset className="space-y-3 text-center">
-      <legend className="text-xs font-medium text-slate-300">
+      <legend className="text-xs font-medium text-fg-muted">
         Contexto (¿Qué estabas haciendo o sintiendo?)
       </legend>
 
@@ -30,10 +30,10 @@ export function ContextChips({
               type="button"
               aria-pressed={isSelected}
               onClick={() => onToggle(tag)}
-              className={`rounded-full border px-3.5 py-1.5 text-xs transition-colors focus-visible:ring-2 focus-visible:ring-tensi-400/70 focus-visible:outline-none ${
+              className={`rounded-full border px-3.5 py-1.5 text-xs transition-colors focus-visible:ring-2 focus-visible:ring-focus/70 focus-visible:outline-none ${
                 isSelected
-                  ? "border-tensi-500/30 bg-tensi-600/15 font-semibold text-tensi-400"
-                  : "border-slate-700/60 bg-slate-800/80 text-slate-300 hover:bg-slate-700"
+                  ? "border-accent-line bg-accent-soft font-semibold text-accent-text"
+                  : "border-line-strong bg-card-muted/80 text-fg-muted hover:bg-line-strong"
               }`}
             >
               {tag}

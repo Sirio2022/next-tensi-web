@@ -22,17 +22,17 @@ export function ComingSoonSection({
   description
 }: Readonly<ComingSoonSectionProps>) {
   return (
-    <Card className="flex flex-col items-center gap-4 p-8 text-center">
-      <span className="flex size-12 items-center justify-center rounded-2xl bg-slate-800 text-slate-300">
+    <Card className="flex flex-col items-center gap-4 p-card text-center">
+      <span className="flex size-12 items-center justify-center rounded-2xl bg-card-muted text-fg-muted">
         <SettingsSectionIcon id={icon} className="size-6" />
       </span>
 
       <div className="space-y-1">
-        <h2 className="text-sm font-bold text-white">{title}</h2>
-        <p className="text-xs text-slate-400">{description}</p>
+        <h2 className="text-sm font-bold text-fg">{title}</h2>
+        <p className="text-xs text-fg-muted">{description}</p>
       </div>
 
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-800/60 px-3 py-1 text-xs font-semibold text-slate-300">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-card-muted/60 px-3 py-1 text-xs font-semibold text-fg-muted">
         <Clock className="size-3.5" aria-hidden />
         Disponible próximamente
       </span>

@@ -17,11 +17,11 @@ export function NotificationsHeader({
   return (
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div>
-        <h2 className="flex items-center gap-2 text-sm font-bold text-white">
-          <Bell className="size-4 text-tensi-400" aria-hidden />
+        <h2 className="flex items-center gap-2 text-sm font-bold text-fg">
+          <Bell className="size-4 text-accent-text" aria-hidden />
           Notificaciones y Alertas
         </h2>
-        <p className="mt-0.5 text-[11px] text-slate-400">
+        <p className="mt-0.5 text-[11px] text-fg-muted">
           Configura cómo y cuándo quieres recibir recordatorios y alertas
         </p>
       </div>

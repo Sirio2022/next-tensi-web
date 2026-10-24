@@ -42,18 +42,18 @@ export function PlanUpgradeDialog({
       onClick={onBackdropClick}
       aria-labelledby={titleId}
       aria-describedby={bodyId}
-      className="m-auto w-full max-w-md rounded-2xl border border-amber-500/30 bg-slate-900 p-6 text-slate-100 shadow-2xl backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+      className="m-auto w-full max-w-md rounded-2xl border border-amber-500/30 bg-card p-card text-fg shadow-2xl backdrop:bg-black/75 backdrop:backdrop-blur-sm"
     >
       <div className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-amber-500/10 text-amber-400">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-amber-500/10 text-tone-amber">
           <Crown className="size-5" aria-hidden />
         </span>
-        <h2 id={titleId} className="text-lg font-bold text-white">
+        <h2 id={titleId} className="text-lg font-bold text-fg">
           Próximamente
         </h2>
       </div>
 
-      <p id={bodyId} className="mt-4 text-sm/relaxed text-slate-300">
+      <p id={bodyId} className="mt-4 text-sm/relaxed text-fg-muted">
         La pasarela de pago aún no está disponible. Estamos trabajando para que
         puedas actualizar a Tensi Premium muy pronto.
       </p>

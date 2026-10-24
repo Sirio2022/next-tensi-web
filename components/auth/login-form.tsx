@@ -38,10 +38,10 @@ export function LoginForm() {
 
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
-          <div className="w-full border-t border-slate-800" />
+          <div className="w-full border-t border-line" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-slate-900/90 px-3 text-slate-400 font-medium">
+          <span className="bg-card/90 px-3 text-fg-muted font-medium">
             O continúa con
           </span>
         </div>
@@ -76,7 +76,7 @@ export function LoginForm() {
           onClick={() => startOAuth("github")}
         >
           <svg
-            className="size-4 fill-current text-white"
+            className="size-4 fill-current text-fg"
             viewBox="0 0 24 24"
             aria-hidden="true"
           >
@@ -93,16 +93,16 @@ export function LoginForm() {
         <p>
           <Link
             href="/forgot-password"
-            className="text-xs text-tensi-400 hover:text-tensi-300 font-medium transition-colors"
+            className="text-xs text-accent-text hover:text-accent-hover font-medium transition-colors"
           >
             ¿Olvidaste tu contraseña?
           </Link>
         </p>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-fg-muted">
           ¿No tienes cuenta?{" "}
           <Link
             href="/register"
-            className="text-tensi-400 hover:text-tensi-300 font-medium transition-colors"
+            className="text-accent-text hover:text-accent-hover font-medium transition-colors"
           >
             Regístrate aquí
           </Link>
@@ -126,7 +126,7 @@ function OAuthButton({
     <button
       type="button"
       onClick={onClick}
-      className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 text-slate-200 hover:text-white text-sm font-medium transition-all"
+      className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-surface/60 border border-line hover:border-line-strong text-fg hover:text-fg text-sm font-medium transition-all"
     >
       {children}
       {label}

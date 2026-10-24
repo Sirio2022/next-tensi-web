@@ -20,7 +20,7 @@ export const metadata: Metadata = {
  */
 export default function AuthLayout({ children }: Readonly<LayoutProps<'/'>>) {
   return (
-    <div className="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-tensi-500 selection:text-white antialiased relative overflow-x-hidden">
+    <div className="bg-surface text-fg min-h-screen flex flex-col justify-between selection:bg-accent selection:text-accent-fg antialiased relative overflow-x-hidden">
       <div
         aria-hidden="true"
         className="fixed top-0 left-1/2 -translate-x-1/2 w-200 h-87.5 bg-linear-to-b from-tensi-600/15 via-tensi-violet/10 to-transparent blur-3xl pointer-events-none z-0"

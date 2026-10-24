@@ -34,33 +34,33 @@ export function AiAnalysisCard({
   return (
     <section
       aria-labelledby="ai-analysis-title"
-      className="space-y-5 rounded-3xl border border-blue-900/50 bg-slate-900/60 p-6 shadow-xl backdrop-blur-xl"
+      className="space-y-5 rounded-3xl border border-accent-line bg-card/60 p-card shadow-xl backdrop-blur-xl"
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-600/20 text-purple-400">
+          <div className="flex size-9 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-600/20 text-tone-purple">
             <Bot className="size-5" aria-hidden />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2
                 id="ai-analysis-title"
-                className="text-sm font-semibold text-slate-100"
+                className="text-sm font-semibold text-fg"
               >
                 Análisis IA con OpenAI GPT-OSS
               </h2>
-              <span className="rounded border border-emerald-500/30 bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-400">
+              <span className="rounded border border-emerald-500/30 bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-tone-emerald">
                 REAL
               </span>
             </div>
             <div className="mt-0.5 flex items-center gap-2">
               {isPremium ? (
-                <span className="flex shrink-0 items-center gap-1 text-[11px] font-bold text-amber-400">
+                <span className="flex shrink-0 items-center gap-1 text-[11px] font-bold text-tone-amber">
                   <Crown className="size-3" aria-hidden />
                   PREMIUM
                 </span>
               ) : null}
-              <p className="text-xs text-blue-400">
+              <p className="text-xs text-tone-sky">
                 {hasInsight
                   ? `${formatPercent(analysis!.confidence)} de confianza`
                   : "Interpretación de tus valores"}
@@ -70,14 +70,14 @@ export function AiAnalysisCard({
         </div>
       </div>
 
-      <div className="space-y-4 rounded-xl border border-slate-800/80 bg-slate-950/60 p-4">
+      <div className="space-y-4 rounded-xl border border-line bg-surface/60 p-4">
         {hasError ? (
           <div className="space-y-3 text-center">
-            <p className="text-sm font-semibold text-amber-400">
+            <p className="text-sm font-semibold text-tone-amber">
               {analysis!.error}
             </p>
             {typeof analysis!.usageCount === "number" ? (
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-fg-muted">
                 Análisis IA usados en este ciclo: {analysis!.usageCount}
               </p>
             ) : null}
@@ -90,10 +90,10 @@ export function AiAnalysisCard({
         ) : hasInsight ? (
           <AiInsightText
             text={analysis!.insight}
-            className="space-y-3 text-xs/relaxed text-slate-300"
+            className="space-y-3 text-xs/relaxed text-fg-muted"
           />
         ) : (
-          <p className="py-2 text-center text-xs/relaxed text-slate-400">
+          <p className="py-2 text-center text-xs/relaxed text-fg-muted">
             Aún no hay análisis. Registra tu primera medición para que la IA
             interprete tus valores y detecte patrones.
           </p>
@@ -102,7 +102,7 @@ export function AiAnalysisCard({
 
       {patterns.length > 0 ? (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-slate-400">
+          <span className="text-xs font-medium text-fg-muted">
             Patrones detectados:
           </span>
           {patterns.map((pattern) => (
@@ -115,18 +115,18 @@ export function AiAnalysisCard({
 
       {hasInsight ? (
         <div className="flex items-center justify-between text-xs font-medium">
-          <span className="text-slate-400">Precisión del análisis IA:</span>
+          <span className="text-fg-muted">Precisión del análisis IA:</span>
           <div className="flex w-1/2 items-center gap-2">
             <div
-              className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800"
+              className="h-1.5 flex-1 overflow-hidden rounded-full bg-card-muted"
               aria-hidden
             >
               <div
-                className="h-full rounded-full bg-blue-500"
+                className="h-full rounded-full bg-accent"
                 style={{ width: formatPercent(analysis!.confidence) }}
               />
             </div>
-            <span className="text-[11px] text-slate-300">
+            <span className="text-[11px] text-fg-muted">
               {formatPercent(analysis!.confidence)}
             </span>
           </div>
@@ -134,10 +134,10 @@ export function AiAnalysisCard({
       ) : null}
 
       {isPremium ? null : (
-        <div className="flex items-center justify-between rounded-xl border border-purple-500/20 bg-linear-to-r from-blue-950/60 to-purple-950/60 p-3">
+        <div className="flex items-center justify-between rounded-xl border border-purple-500/20 bg-linear-to-r from-accent-soft to-tensi-violet/10 p-3">
           <div className="flex items-center gap-2">
-            <Sparkles className="size-4 text-purple-400" aria-hidden />
-            <span className="text-xs text-slate-300">
+            <Sparkles className="size-4 text-tone-purple" aria-hidden />
+            <span className="text-xs text-fg-muted">
               Premium: análisis más profundos, patrones avanzados, predicciones
             </span>
           </div>
@@ -145,7 +145,7 @@ export function AiAnalysisCard({
             href="/dashboard#upgrade"
             tone="primary"
             size="sm"
-            className="shrink-0 bg-purple-600 shadow-purple-600/25 hover:bg-purple-500"
+            className="shrink-0"
           >
             Upgrade
           </ButtonLink>

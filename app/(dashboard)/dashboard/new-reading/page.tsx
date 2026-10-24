@@ -20,8 +20,8 @@ export default async function NewReadingPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-8">
-      <h1 className="text-center text-2xl font-bold tracking-tight text-slate-100">
+    <div className="mx-auto w-full max-w-2xl space-y-section">
+      <h1 className="text-center text-2xl font-bold tracking-tight text-fg">
         Agregar Nueva Lectura
       </h1>
 

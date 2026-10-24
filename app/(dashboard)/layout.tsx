@@ -62,7 +62,7 @@ export default function DashboardLayout({
  */
 function DashboardShellSkeleton() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 antialiased" aria-busy="true">
+    <div className="min-h-screen bg-surface text-fg antialiased" aria-busy="true">
       <span className="sr-only">Cargando tu sesión…</span>
     </div>
   )

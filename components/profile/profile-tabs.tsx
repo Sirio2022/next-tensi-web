@@ -39,7 +39,7 @@ export function ProfileTabs({
       <div
         role="tablist"
         aria-label="Secciones del perfil"
-        className="flex items-center justify-center border-b border-slate-800"
+        className="flex items-center justify-center border-b border-line"
       >
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id
@@ -58,11 +58,11 @@ export function ProfileTabs({
               aria-disabled={tab.disabled}
               onClick={() => selectTab(tab.id)}
               onKeyDown={handleKeyDown}
-              className={`flex items-center gap-2 border-b-2 px-6 py-3 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none ${
+              className={`flex items-center gap-2 border-b-2 px-6 py-3 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none ${
                 isActive
-                  ? "border-blue-500 text-blue-400"
-                  : "border-transparent text-slate-400 hover:text-slate-200"
-              } ${tab.disabled ? "cursor-not-allowed text-slate-600 hover:text-slate-600" : ""}`}
+                  ? "border-accent text-accent-text"
+                  : "border-transparent text-fg-muted hover:text-fg"
+              } ${tab.disabled ? "cursor-not-allowed text-fg-subtle hover:text-fg-subtle" : ""}`}
             >
               {tab.id === "password" ? (
                 <Lock className="size-4" aria-hidden />
@@ -76,8 +76,8 @@ export function ProfileTabs({
       </div>
 
       {!user.hasPassword ? (
-        <p className="flex items-start gap-2 rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-xs text-slate-400">
-          <Lock className="mt-0.5 size-4 shrink-0 text-slate-500" aria-hidden />
+        <p className="flex items-start gap-2 rounded-xl border border-line bg-card/60 p-4 text-xs text-fg-muted">
+          <Lock className="mt-0.5 size-4 shrink-0 text-fg-subtle" aria-hidden />
           Tu cuenta se gestiona con Google/GitHub, así que el cambio de
           contraseña no está disponible: se administra desde tu proveedor.
         </p>
@@ -88,7 +88,7 @@ export function ProfileTabs({
         id={panelId(activeTab)}
         aria-labelledby={tabId(activeTab)}
         tabIndex={0}
-        className="focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+        className="focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
       >
         {activeTab === "profile" ? (
           <ProfileForm user={user} />

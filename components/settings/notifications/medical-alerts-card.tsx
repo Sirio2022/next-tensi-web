@@ -30,7 +30,7 @@ export function MedicalAlertsCard({
       title="Alertas Médicas"
       description="Recibe alertas cuando tus valores requieran atención médica"
       icon={AlertTriangle}
-      iconClassName="size-4 text-rose-500"
+      iconClassName="size-4 text-tone-rose"
     >
       <Switch
         id="notifications-medical-enabled"
@@ -45,7 +45,7 @@ export function MedicalAlertsCard({
         tone="danger"
       />
 
-      <div className="space-y-3 border-l-2 border-slate-800 pt-1 pl-4">
+      <div className="space-y-3 border-l-2 border-line pt-1 pl-4">
         <Switch
           id="notifications-alert-high"
           checked={values.alertHighEnabled}
@@ -77,7 +77,7 @@ export function MedicalAlertsCard({
         />
 
         {!emailDisabled && !values.medicalAlertsEnabled ? (
-          <p className="text-[10px] text-slate-500">
+          <p className="text-[10px] text-fg-subtle">
             Activa las alertas médicas para ajustar estos avisos.
           </p>
         ) : null}

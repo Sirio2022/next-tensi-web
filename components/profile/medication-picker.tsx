@@ -30,14 +30,14 @@ export function MedicationPicker({ control }: Readonly<MedicationPickerProps>) {
 
   return (
     <div className="space-y-3">
-      <span className="block text-xs font-semibold tracking-wider text-slate-300 uppercase">
+      <span className="block text-xs font-semibold tracking-wider text-fg-muted uppercase">
         Medicamentos para Hipertensión
       </span>
 
-      <div className="space-y-4 rounded-xl border border-slate-800/80 bg-slate-900/60 p-4">
+      <div className="space-y-4 rounded-xl border border-line bg-card/60 p-4">
         {groups.map((group) => (
           <div key={group.id}>
-            <span className="mb-2 block text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+            <span className="mb-2 block text-[10px] font-bold tracking-wider text-fg-muted uppercase">
               {group.label}
             </span>
             <div className="flex flex-wrap gap-2">
@@ -52,8 +52,8 @@ export function MedicationPicker({ control }: Readonly<MedicationPickerProps>) {
                     onClick={() => toggle(medication)}
                     className={`rounded-full border px-3 py-1.5 text-xs transition ${
                       selected
-                        ? "border-blue-500 bg-blue-600 text-white"
-                        : "border-slate-700 bg-slate-800 text-slate-300 hover:border-blue-500 hover:text-white"
+                        ? "border-accent bg-accent text-accent-fg"
+                        : "border-line-strong bg-card-muted text-fg-muted hover:border-accent hover:text-accent-text"
                     }`}
                   >
                     {medication}
@@ -66,21 +66,21 @@ export function MedicationPicker({ control }: Readonly<MedicationPickerProps>) {
 
         {custom.length > 0 ? (
           <div>
-            <span className="mb-2 block text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+            <span className="mb-2 block text-[10px] font-bold tracking-wider text-fg-muted uppercase">
               Otros
             </span>
             <div className="flex flex-wrap gap-2">
               {custom.map((medication) => (
                 <span
                   key={medication}
-                  className="inline-flex items-center gap-1 rounded-full border border-blue-500 bg-blue-600 px-3 py-1.5 text-xs text-white"
+                  className="inline-flex items-center gap-1 rounded-full border border-accent bg-accent px-3 py-1.5 text-xs text-accent-fg"
                 >
                   {medication}
                   <button
                     type="button"
                     onClick={() => remove(medication)}
                     aria-label={`Quitar ${medication}`}
-                    className="rounded-full p-0.5 transition hover:bg-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none"
+                    className="rounded-full p-0.5 transition hover:bg-accent-hover focus-visible:ring-2 focus-visible:ring-accent-fg focus-visible:outline-none"
                   >
                     <X className="size-3" />
                   </button>
@@ -94,7 +94,7 @@ export function MedicationPicker({ control }: Readonly<MedicationPickerProps>) {
       <div className="space-y-2">
         <label
           htmlFor={inputId}
-          className="block text-xs font-semibold tracking-wider text-slate-300 uppercase"
+          className="block text-xs font-semibold tracking-wider text-fg-muted uppercase"
         >
           ¿No encuentras tu medicamento?
         </label>
@@ -105,9 +105,9 @@ export function MedicationPicker({ control }: Readonly<MedicationPickerProps>) {
           onChange={(event) => setInputValue(event.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Escribe y presiona Enter (separa por comas)"
-          className="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition focus:border-blue-500 focus:outline-none"
+          className="w-full rounded-xl border border-line bg-card px-4 py-2.5 text-sm text-fg placeholder-fg-subtle transition focus:border-accent focus:outline-none"
         />
-        <p className="text-[11px] text-slate-500">
+        <p className="text-[11px] text-fg-subtle">
           Puedes agregar múltiples medicamentos separándolos con comas
         </p>
       </div>

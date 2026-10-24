@@ -18,10 +18,10 @@ interface RemindersCardProps {
 }
 
 const FIELD_CLASSES =
-  "w-full rounded-xl border border-slate-800 bg-slate-950/80 px-3 py-2 text-xs text-slate-200 transition focus:border-tensi-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 [color-scheme:dark]"
+  "w-full rounded-xl border border-line bg-surface/80 px-3 py-2 text-xs text-fg transition focus:border-accent focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
 
 const LABEL_CLASSES =
-  "mb-1.5 block text-[10px] font-bold tracking-wider text-slate-400 uppercase"
+  "mb-1.5 block text-[10px] font-bold tracking-wider text-fg-muted uppercase"
 
 /** Recordatorios de Medición (SPEC 20). */
 export function RemindersCard({
@@ -39,7 +39,7 @@ export function RemindersCard({
       title="Recordatorios de Medición"
       description="Te ayudamos a mantener un control regular de tu presión arterial"
       icon={Clock}
-      iconClassName="size-4 text-tensi-400"
+      iconClassName="size-4 text-accent-text"
     >
       <Switch
         id="notifications-reminders-enabled"
@@ -101,7 +101,7 @@ export function RemindersCard({
           {errors.reminderTime ? (
             <p
               id="notifications-reminder-time-error"
-              className="mt-1 text-[10px] text-rose-400"
+              className="mt-1 text-[10px] text-tone-rose"
             >
               {errors.reminderTime}
             </p>
@@ -138,7 +138,7 @@ export function RemindersCard({
             {errors.reminderSecondTime ? (
               <p
                 id="notifications-reminder-second-time-error"
-                className="mt-1 text-[10px] text-rose-400"
+                className="mt-1 text-[10px] text-tone-rose"
               >
                 {errors.reminderSecondTime}
               </p>
@@ -185,7 +185,7 @@ export function RemindersCard({
             {errors.reminderWeekday ? (
               <p
                 id="notifications-reminder-weekday-error"
-                className="mt-1 text-[10px] text-rose-400"
+                className="mt-1 text-[10px] text-tone-rose"
               >
                 {errors.reminderWeekday}
               </p>

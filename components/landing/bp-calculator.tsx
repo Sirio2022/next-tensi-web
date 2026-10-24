@@ -29,37 +29,37 @@ const BUCKET_STYLES: Record<BpVisualBucket, BucketStyle> = {
   saludable: {
     label: "Saludable",
     box: "bg-emerald-500/10 border-emerald-500/30",
-    icon: "bg-emerald-500/20 text-emerald-400",
-    tag: "bg-emerald-500/20 text-emerald-300",
-    title: "text-emerald-400"
+    icon: "bg-emerald-500/20 text-tone-emerald",
+    tag: "bg-emerald-500/10 text-tone-emerald",
+    title: "text-tone-emerald"
   },
   atencion: {
     label: "Atención",
     box: "bg-amber-500/10 border-amber-500/30",
-    icon: "bg-amber-500/20 text-amber-400",
-    tag: "bg-amber-500/20 text-amber-300",
-    title: "text-amber-400"
+    icon: "bg-amber-500/20 text-tone-amber",
+    tag: "bg-amber-500/10 text-tone-amber",
+    title: "text-tone-amber"
   },
   riesgo_moderado: {
     label: "Riesgo Moderado",
     box: "bg-orange-500/10 border-orange-500/30",
-    icon: "bg-orange-500/20 text-orange-400",
-    tag: "bg-orange-500/20 text-orange-300",
-    title: "text-orange-400"
+    icon: "bg-orange-500/20 text-tone-orange",
+    tag: "bg-orange-500/10 text-tone-orange",
+    title: "text-tone-orange"
   },
   consultar_medico: {
     label: "Consultar Médico",
     box: "bg-rose-500/10 border-rose-500/30",
-    icon: "bg-rose-500/20 text-rose-400",
-    tag: "bg-rose-500/20 text-rose-300",
-    title: "text-rose-400"
+    icon: "bg-rose-500/20 text-tone-rose",
+    tag: "bg-rose-500/10 text-tone-rose",
+    title: "text-tone-rose"
   },
   presion_baja: {
     label: "Presión Baja",
     box: "bg-sky-500/10 border-sky-500/30",
-    icon: "bg-sky-500/20 text-sky-400",
-    tag: "bg-sky-500/20 text-sky-300",
-    title: "text-sky-400"
+    icon: "bg-sky-500/20 text-tone-sky",
+    tag: "bg-sky-500/10 text-tone-sky",
+    title: "text-tone-sky"
   }
 }
 
@@ -79,8 +79,8 @@ function BucketIcon({ bucket }: Readonly<{ bucket: BpVisualBucket }>) {
 }
 
 const INPUT_CLASSES =
-  "w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white font-mono text-lg focus:outline-none focus:border-tensi-400 focus:ring-1 focus:ring-tensi-400 transition-colors"
-const LABEL_CLASSES = "block text-xs font-semibold text-slate-300 mb-2"
+  "w-full bg-card border border-line-strong rounded-xl px-4 py-2.5 text-fg font-mono text-lg focus:outline-none focus:border-tensi-400 focus:ring-1 focus:ring-focus transition-colors"
+const LABEL_CLASSES = "block text-xs font-semibold text-fg-muted mb-2"
 
 /** Calculadora de presión de la landing: solo renderiza el estado del hook. */
 export function BpCalculator() {
@@ -94,18 +94,18 @@ export function BpCalculator() {
     <section id="simulador" className="scroll-mt-20 py-16">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-8">
-          <span className="text-xs uppercase font-bold tracking-widest text-tensi-400">
+          <span className="text-xs uppercase font-bold tracking-widest text-accent-text">
             Herramienta Interactiva
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-fg mt-1">
             Calculadora de Presión Arterial
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-2">
+          <p className="text-xs sm:text-sm text-fg-muted mt-2">
             Ingresa tus valores para evaluar tu estado de salud en tiempo real.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur-xl p-6 sm:p-8">
+        <div className="rounded-2xl border border-line bg-card/70 backdrop-blur-xl p-6 sm:p-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
             <div>
               <label htmlFor={ids.sys} className={LABEL_CLASSES}>
@@ -158,7 +158,7 @@ export function BpCalculator() {
             aria-live="polite"
             aria-atomic="true"
             className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center items-start justify-between gap-3 ${
-              bucketStyle ? bucketStyle.box : "bg-slate-900/60 border-slate-800"
+              bucketStyle ? bucketStyle.box : "bg-card/60 border-line"
             }`}
           >
             {result && bucketStyle ? (
@@ -170,7 +170,7 @@ export function BpCalculator() {
                     <BucketIcon bucket={result.bucket} />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-fg-muted">
                       Categoría estimada:
                     </div>
                     <div
@@ -188,14 +188,14 @@ export function BpCalculator() {
               </>
             ) : (
               <div className="flex items-center space-x-3">
-                <div className="size-10 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
+                <div className="size-10 shrink-0 rounded-lg bg-card-muted flex items-center justify-center text-fg-muted">
                   <Info className="size-6" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">
+                  <div className="text-xs text-fg-muted">
                     Categoría estimada:
                   </div>
-                  <div className="text-base font-semibold text-slate-300">
+                  <div className="text-base font-semibold text-fg-muted">
                     Ingresa tu sistólica y diastólica
                   </div>
                 </div>

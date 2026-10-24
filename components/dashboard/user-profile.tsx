@@ -14,19 +14,19 @@ export function UserProfile({ user }: Readonly<UserProfileProps>) {
         <img
           src={user.avatarUrl}
           alt={`Avatar de ${user.username}`}
-          className="size-8 rounded-xl object-cover ring-2 ring-slate-800"
+          className="size-8 rounded-xl object-cover ring-2 ring-line"
         />
       ) : (
-        <span className="flex size-8 items-center justify-center rounded-xl bg-linear-to-br from-tensi-400 to-tensi-600 text-xs font-bold text-white">
+        <span className="flex size-8 items-center justify-center rounded-xl bg-linear-to-br from-accent-hover to-accent text-xs font-bold text-accent-fg">
           {getUserInitials(user)}
         </span>
       )}
       <div className="hidden text-left md:block">
-        <p className="text-xs leading-none font-semibold text-white">
+        <p className="text-xs leading-none font-semibold text-fg">
           {user.username}
         </p>
         {user.email ? (
-          <p className="mt-0.5 text-[10px] leading-none text-slate-400">
+          <p className="mt-0.5 text-[10px] leading-none text-fg-muted">
             {user.email}
           </p>
         ) : null}

@@ -7,6 +7,12 @@
  *
  * Espejo en TypeScript para la app Expo: `lib/theme/tokens.ts` (SPEC 17).
  * Si cambias un valor aquí, actualiza también ese archivo.
+ *
+ * SPEC 21: además de la marca, aquí viven los tokens semánticos que usa toda la
+ * UI (superficie, tarjeta, borde, texto, acento, foco y gráficas). Los valores
+ * reales se declaran como variables en `:root` (tema oscuro por defecto) y se
+ * sobrescriben con los atributos `data-theme`, `data-accent`, `data-contrast`,
+ * `data-motion` y `data-density` del elemento `<html>`.
  */
 @theme inline {
   --color-tensi-50: #f0f7ff;
@@ -21,6 +27,60 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Superficies y bordes. */
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-muted: var(--card-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  /* Texto. */
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-fg-inverted: var(--fg-inverted);
+
+  /* Acento (configurable con `data-accent`). */
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-text: var(--accent-text);
+
+  /* Foco. */
+  --color-focus: var(--focus);
+
+  /*
+   * Tonos clínicos (categorías, avisos, plan). Son independientes del acento:
+   * rojo siempre significa crisis, verde óptima, etc. El valor de `fg` cambia
+   * por tema para mantener contraste AA sin duplicar clases `dark:`.
+   */
+  --color-tone-amber: var(--tone-amber);
+  --color-tone-sky: var(--tone-sky);
+  --color-tone-emerald: var(--tone-emerald);
+  --color-tone-orange: var(--tone-orange);
+  --color-tone-rose: var(--tone-rose);
+  --color-tone-purple: var(--tone-purple);
+
+  /* Gráficas (Recharts). */
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-axis: var(--chart-axis);
+  --color-chart-tooltip: var(--chart-tooltip);
+  --color-chart-tooltip-line: var(--chart-tooltip-line);
+  --color-chart-systolic: var(--chart-systolic);
+  --color-chart-diastolic: var(--chart-diastolic);
+
+  /*
+   * Densidad (SPEC 21). Se expone cada token como `--spacing-*` para usarlo con
+   * utilidades canónicas (`p-card`, `py-row`, `gap-gap`, `space-y-section`).
+   * No se toca `--spacing`: la escala global sigue siendo px ÷ 4.
+   */
+  --spacing-card: var(--density-card-padding);
+  --spacing-row: var(--density-row-padding);
+  --spacing-gap: var(--density-gap);
+  --spacing-section: var(--density-section-gap);
 
   --font-sans: var(--font-plus-jakarta-sans);
 
@@ -39,9 +99,321 @@
   }
 }
 
+/*
+ * Tema oscuro (valor por defecto de la app). `--background` y `--foreground` se
+ * conservan como alias de los tokens semánticos para no romper el CSS previo.
+ */
 :root {
-  --background: #030712;
-  --foreground: #f1f5f9;
+  color-scheme: dark;
+
+  --background: var(--surface);
+  --foreground: var(--fg);
+
+  /* Superficies. */
+  --surface: #030712;
+  --card: #0f172a;
+  --card-muted: #1e293b;
+
+  /* Bordes. */
+  --line: #1e293b;
+  --line-strong: #334155;
+
+  /* Texto. */
+  --fg: #f1f5f9;
+  --fg-muted: #94a3b8;
+  /* #7c8ba1 en vez de slate-500: #64748b da 3.96:1 sobre tarjetas y falla AA. */
+  --fg-subtle: #7c8ba1;
+  --fg-inverted: #020617;
+
+  /* Acento azul (identidad actual, `tensi-600`). */
+  --accent: #0284c7;
+  --accent-hover: #0ea5e9;
+  --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
+  --accent-line: color-mix(in oklab, var(--accent) 32%, transparent);
+  --accent-fg: #020617;
+  --accent-text: #38bdf8;
+  --focus: #38bdf8;
+
+  /* Tonos clínicos (oscuro). */
+  --tone-amber: #fbbf24;
+  --tone-sky: #7dd3fc;
+  --tone-emerald: #6ee7b7;
+  --tone-orange: #fdba74;
+  --tone-rose: #fda4af;
+  --tone-purple: #c4b5fd;
+
+  /* Gráficas. */
+  --chart-grid: #1e293b;
+  --chart-axis: #64748b;
+  --chart-tooltip: #0f172a;
+  --chart-tooltip-line: #1e293b;
+  --chart-systolic: #fb7185;
+  --chart-diastolic: #38bdf8;
+
+  /* Densidad cómoda (valor por defecto). */
+  --density-card-padding: 1.5rem;
+  --density-row-padding: 0.75rem;
+  --density-gap: 1rem;
+  --density-section-gap: 2rem;
+}
+
+/* Tema oscuro forzado explícitamente (anula el fallback del sistema). */
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/*
+ * Tema claro. Se aplica con `data-theme="light"` sobre `<html>`; el fallback
+ * para páginas públicas sin preferencia guardada está más abajo, en
+ * `@media (prefers-color-scheme: light)`.
+ */
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Superficies. */
+  --surface: #f8fafc;
+  --card: #ffffff;
+  --card-muted: #f1f5f9;
+
+  /* Bordes. */
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+
+  /* Texto. */
+  --fg: #0f172a;
+  --fg-muted: #334155;
+  --fg-subtle: #475569;
+  --fg-inverted: #f8fafc;
+
+  /* Acento azul. */
+  --accent: #0284c7;
+  --accent-hover: #0369a1;
+  --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
+  --accent-line: color-mix(in oklab, var(--accent) 32%, transparent);
+  --accent-fg: #020617;
+  --accent-text: #0369a1;
+  --focus: #0284c7;
+
+  /* Tonos clínicos (claro). */
+  --tone-amber: #92400e;
+  --tone-sky: #0369a1;
+  --tone-emerald: #047857;
+  --tone-orange: #c2410c;
+  --tone-rose: #be123c;
+  --tone-purple: #6d28d9;
+
+  /* Gráficas. */
+  --chart-grid: #e2e8f0;
+  --chart-axis: #64748b;
+  --chart-tooltip: #ffffff;
+  --chart-tooltip-line: #e2e8f0;
+  --chart-systolic: #e11d48;
+  --chart-diastolic: #0284c7;
+}
+
+/*
+ * Fallback de sistema: sin `data-theme` (landing, auth y cualquier página
+ * pública sin preferencia guardada) se sigue `prefers-color-scheme`.
+ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+
+    /* Superficies. */
+    --surface: #f8fafc;
+    --card: #ffffff;
+    --card-muted: #f1f5f9;
+
+    /* Bordes. */
+    --line: #e2e8f0;
+    --line-strong: #cbd5e1;
+
+    /* Texto. */
+    --fg: #0f172a;
+    --fg-muted: #334155;
+    --fg-subtle: #475569;
+    --fg-inverted: #f8fafc;
+
+    /* Acento azul. */
+    --accent: #0284c7;
+    --accent-hover: #0369a1;
+    --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
+    --accent-line: color-mix(in oklab, var(--accent) 32%, transparent);
+    --accent-fg: #020617;
+    --accent-text: #0369a1;
+    --focus: #0284c7;
+
+    /* Tonos clínicos (claro). */
+    --tone-amber: #92400e;
+    --tone-sky: #0369a1;
+    --tone-emerald: #047857;
+    --tone-orange: #c2410c;
+    --tone-rose: #be123c;
+    --tone-purple: #6d28d9;
+
+    /* Gráficas. */
+    --chart-grid: #e2e8f0;
+    --chart-axis: #64748b;
+    --chart-tooltip: #ffffff;
+    --chart-tooltip-line: #e2e8f0;
+    --chart-systolic: #e11d48;
+    --chart-diastolic: #0284c7;
+  }
+}
+
+/*
+ * Acentos alternativos. El azul es el valor por defecto de `:root` (identidad
+ * `tensi-600`), así que solo se declaran los otros tres. Cada bloque define el
+ * acento y sus derivados legibles en oscuro; la variante clara se declara
+ * después, tanto para `data-theme="light"` como para el fallback del sistema.
+ * `--accent-soft` y `--accent-line` se recalculan solos con `color-mix`.
+ */
+[data-accent="green"] {
+  --accent: #10b981;
+  --accent-hover: #34d399;
+  --accent-text: #34d399;
+  --accent-fg: #020617;
+  --focus: #34d399;
+}
+
+[data-accent="purple"] {
+  --accent: #8b5cf6;
+  --accent-hover: #a78bfa;
+  --accent-text: #a78bfa;
+  --accent-fg: #020617;
+  --focus: #a78bfa;
+}
+
+[data-accent="red"] {
+  --accent: #f43f5e;
+  --accent-hover: #fb7185;
+  --accent-text: #fb7185;
+  --accent-fg: #020617;
+  --focus: #fb7185;
+}
+
+[data-theme="light"][data-accent="green"] {
+  --accent: #059669;
+  --accent-hover: #047857;
+  --accent-text: #047857;
+  --accent-fg: #020617;
+  --focus: #059669;
+}
+
+[data-theme="light"][data-accent="purple"] {
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-text: #6d28d9;
+  --accent-fg: #ffffff;
+  --focus: #7c3aed;
+}
+
+[data-theme="light"][data-accent="red"] {
+  --accent: #e11d48;
+  --accent-hover: #be123c;
+  --accent-text: #be123c;
+  --accent-fg: #ffffff;
+  --focus: #e11d48;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme])[data-accent="green"] {
+    --accent: #059669;
+    --accent-hover: #047857;
+    --accent-text: #047857;
+    --accent-fg: #020617;
+    --focus: #059669;
+  }
+
+  :root:not([data-theme])[data-accent="purple"] {
+    --accent: #7c3aed;
+    --accent-hover: #6d28d9;
+    --accent-text: #6d28d9;
+    --accent-fg: #ffffff;
+    --focus: #7c3aed;
+  }
+
+  :root:not([data-theme])[data-accent="red"] {
+    --accent: #e11d48;
+    --accent-hover: #be123c;
+    --accent-text: #be123c;
+    --accent-fg: #ffffff;
+    --focus: #e11d48;
+  }
+}
+
+/*
+ * Alto contraste: refuerza textos secundarios y bordes en ambos temas. Los
+ * valores "normales" son los que ya define `:root` / `[data-theme="light"]`.
+ */
+[data-contrast="high"] {
+  --fg: #ffffff;
+  --fg-muted: #cbd5e1;
+  --fg-subtle: #94a3b8;
+  --line: #334155;
+  --line-strong: #475569;
+}
+
+[data-theme="light"][data-contrast="high"] {
+  --fg: #020617;
+  --fg-muted: #1e293b;
+  --fg-subtle: #334155;
+  --line: #cbd5e1;
+  --line-strong: #94a3b8;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme])[data-contrast="high"] {
+    --fg: #020617;
+    --fg-muted: #1e293b;
+    --fg-subtle: #334155;
+    --line: #cbd5e1;
+    --line-strong: #94a3b8;
+  }
+}
+
+/*
+ * Motion reducido: preferencia explícita de la app. Se aplica igual que la
+ * preferencia del sistema (`prefers-reduced-motion`), que siempre se respeta.
+ */
+[data-motion="reduced"] {
+  scroll-behavior: auto !important;
+}
+
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Densidad compacta: solo cambia los tokens de densidad. Las pantallas de
+ * landing y auth no usan `p-card`/`py-row`/`gap-gap`/`space-y-section`, así que
+ * mantienen su espaciado aunque el atributo esté presente.
+ */
+[data-density="compact"] {
+  --density-card-padding: 1rem;
+  --density-row-padding: 0.5rem;
+  --density-gap: 0.75rem;
+  --density-section-gap: 1.25rem;
 }
 
 body {

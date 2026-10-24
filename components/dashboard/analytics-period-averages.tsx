@@ -25,11 +25,11 @@ interface AnalyticsPeriodAveragesProps {
   actions?: ReactNode
 }
 
-const SYSTOLIC_COLOR = "#fb7185"
-const DIASTOLIC_COLOR = "#38bdf8"
+const SYSTOLIC_COLOR = "var(--color-chart-systolic)"
+const DIASTOLIC_COLOR = "var(--color-chart-diastolic)"
 
-const AXIS_COLOR = "#64748b"
-const GRID_COLOR = "#1e293b"
+const AXIS_COLOR = "var(--color-chart-axis)"
+const GRID_COLOR = "var(--color-chart-grid)"
 
 /**
  * Promedios por periodo (semanal / mensual / anual). Client component (Recharts
@@ -51,10 +51,10 @@ export function AnalyticsPeriodAverages({
   const header = (
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div>
-        <h2 className="text-sm font-semibold text-slate-100">
+        <h2 className="text-sm font-semibold text-fg">
           Promedios por periodo
         </h2>
-        <p className="mt-0.5 text-xs text-slate-400">
+        <p className="mt-0.5 text-xs text-fg-muted">
           {label} ·{" "}
           {points.length === 0
             ? "sin datos todavía"
@@ -67,9 +67,9 @@ export function AnalyticsPeriodAverages({
 
   if (points.length === 0) {
     return (
-      <Card className="space-y-4 p-6">
+      <Card className="space-y-4 p-card">
         {header}
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-fg-muted">
           Registra mediciones para ver tus promedios {label.toLowerCase()}es.
         </p>
       </Card>
@@ -79,7 +79,7 @@ export function AnalyticsPeriodAverages({
   const description = `Gráfica de promedios ${label.toLowerCase()}es de presión arterial sistólica y diastólica.`
 
   return (
-    <Card className="space-y-4 p-6">
+    <Card className="space-y-4 p-card">
       {header}
 
       {/* La gráfica no tiene tag nativo; role="img" + aria-label es el patrón accesible correcto. */}
@@ -104,15 +104,15 @@ export function AnalyticsPeriodAverages({
               domain={["dataMin - 10", "dataMax + 10"]}
             />
             <Tooltip
-              cursor={{ stroke: "#334155" }}
+              cursor={{ stroke: "var(--color-line-strong)" }}
               contentStyle={{
-                background: "#0f172a",
-                border: "1px solid #1e293b",
+                background: "var(--color-chart-tooltip)",
+                border: "1px solid var(--color-chart-tooltip-line)",
                 borderRadius: "0.75rem",
                 fontSize: "0.75rem"
               }}
-              labelStyle={{ color: "#e2e8f0" }}
-              itemStyle={{ color: "#cbd5e1" }}
+              labelStyle={{ color: "var(--color-fg)" }}
+              itemStyle={{ color: "var(--color-fg-muted)" }}
               formatter={(value, name) => [`${String(value)} mmHg`, String(name)]}
             />
             <Legend wrapperStyle={{ fontSize: "0.75rem" }} />
@@ -140,7 +140,7 @@ export function AnalyticsPeriodAverages({
           </LineChart>
         </ResponsiveContainer>
 
-        <figcaption className="mt-3 text-center text-xs text-slate-400">
+        <figcaption className="mt-3 text-center text-xs text-fg-muted">
           Sistólica (línea continua) y diastólica (línea discontinua) en mmHg por{" "}
           {label.toLowerCase()}.
         </figcaption>

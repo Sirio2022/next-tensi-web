@@ -3,9 +3,9 @@ import type { HTMLAttributes, Ref, ReactNode } from "react"
 export type CardTone = "default" | "upgrade"
 
 const CARD_TONE_CLASSES: Record<CardTone, string> = {
-  default: "bg-slate-900/60 border-slate-800/80",
+  default: "bg-card/60 border-line",
   upgrade:
-    "bg-linear-to-br from-indigo-950/80 via-slate-900 to-slate-950 border-indigo-500/30 shadow-2xl"
+    "bg-linear-to-br from-accent-soft via-card to-surface border-accent-line shadow-2xl"
 }
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {

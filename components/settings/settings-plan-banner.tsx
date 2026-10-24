@@ -23,7 +23,7 @@ export function SettingsPlanBanner({
   if (plan === "PREMIUM") {
     return (
       <div className="rounded-lg border border-amber-500/30 bg-linear-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 p-2.5 text-center">
-        <span className="flex items-center justify-center gap-1.5 text-xs font-bold text-amber-400">
+        <span className="flex items-center justify-center gap-1.5 text-xs font-bold text-tone-amber">
           <Crown className="size-3.5" aria-hidden />
           Plan Premium Activo
         </span>

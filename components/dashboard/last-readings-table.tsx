@@ -24,8 +24,8 @@ export function LastReadingsTable({
   readings
 }: Readonly<LastReadingsTableProps>) {
   return (
-    <Card className="space-y-4 p-6">
-      <h2 className="text-sm font-semibold text-slate-100">Últimas lecturas</h2>
+    <Card className="space-y-4 p-card">
+      <h2 className="text-sm font-semibold text-fg">Últimas lecturas</h2>
 
       <ul className="space-y-3">
         {readings.map((reading) => {
@@ -34,18 +34,18 @@ export function LastReadingsTable({
           return (
             <li
               key={reading.id}
-              className="flex items-center justify-between gap-3 rounded-xl border border-slate-800/60 bg-slate-950/60 p-3"
+              className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface/60 p-3"
             >
               <div className="min-w-0">
-                <p className="text-sm font-bold text-white">
+                <p className="text-sm font-bold text-fg">
                   {reading.systolic} / {reading.diastolic}{" "}
-                  <span className="text-[10px] font-normal text-slate-500">
+                  <span className="text-[10px] font-normal text-fg-subtle">
                     mmHg
                   </span>
                 </p>
                 <time
                   dateTime={reading.timestamp}
-                  className="text-[10px] text-slate-400"
+                  className="text-[10px] text-fg-muted"
                 >
                   {dateFormatter.format(new Date(reading.timestamp))}
                 </time>
@@ -58,7 +58,7 @@ export function LastReadingsTable({
 
       <Link
         href="/dashboard/history"
-        className="block text-center text-xs font-semibold text-tensi-400 transition-colors hover:text-tensi-300"
+        className="block text-center text-xs font-semibold text-accent-text transition-colors hover:text-accent-hover"
       >
         Ver historial →
       </Link>

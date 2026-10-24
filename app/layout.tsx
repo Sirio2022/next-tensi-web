@@ -1,4 +1,5 @@
 import { ToastProvider } from "@/components/site/toast"
+import { AppearanceScript } from "@/components/theme/appearance-script"
 import { QueryProvider } from "@/lib/query/query-provider"
 import type { Metadata, Viewport } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
@@ -56,8 +57,10 @@ export default function RootLayout({ children }: Readonly<LayoutProps<"/">>) {
       lang="es"
       data-scroll-behavior="smooth"
       className={`${plusJakartaSans.variable} h-full antialiased scroll-smooth`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col overflow-x-clip">
+        <AppearanceScript />
         <QueryProvider>
           <ToastProvider>{children}</ToastProvider>
         </QueryProvider>

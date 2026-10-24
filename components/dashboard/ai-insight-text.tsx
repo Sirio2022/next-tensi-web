@@ -28,7 +28,7 @@ export function AiInsightText({
             segment.bold ? (
               <strong
                 key={segmentIndex}
-                className="font-semibold text-slate-100"
+                className="font-semibold text-fg"
               >
                 {segment.text}
               </strong>
